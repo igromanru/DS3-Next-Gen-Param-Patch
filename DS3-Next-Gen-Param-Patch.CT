@@ -7,19 +7,39 @@
   </Forms>
   <CheatEntries>
     <CheatEntry>
-      <ID>249</ID>
-      <Description>"EquipParam"</Description>
+      <ID>250</ID>
+      <Description>"Initialize"</Description>
+      <Options moHideChildren="1"/>
       <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
+--IgroWidgetsPlaceholder
 
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
 
 </AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>249</ID>
+          <Description>"EquipWeapon"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
     </CheatEntry>
   </CheatEntries>
   <CheatCodes>
