@@ -15,7 +15,158 @@
       <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
---IgroWidgetsPlaceholder
+--[[START Igromanru's widgets class]]--
+-- Class for my UDF's
+IgroWidgets = {}
+
+function IgroWidgets:new()
+  setmetatable({}, self)
+  self.__index = self
+  return self
+end
+
+function IgroWidgets:stringTrim(s)
+  return s:gsub("^%s*(.-)%s*$", "%1")
+end
+
+function IgroWidgets:isNotEmpty(s)
+  return s ~= nil and self:stringTrim(s) ~= ''
+end
+
+function IgroWidgets:isEmpty(s)
+  return s == nil or self:stringTrim(s) == ''
+end
+
+function IgroWidgets:toHexLegth(number, length)
+  if length == nil then length = 1 end
+  length = length * 2
+  return string.format("%0"..length.."X",number)
+end
+
+function IgroWidgets:floatToHex(number, length)
+  local result = ""
+  local byteTable = floatToByteTable(number)
+
+  if length == nil then length = 1 end
+  if(length &gt; #byteTable) then
+    for i = 1, length-#byteTable do
+      result = "00"..result
+    end
+  end
+  for i, v in ipairs(byteTable) do
+    result = string.format('%02X', v) .. result
+  end
+  return result
+end
+
+function IgroWidgets:floatToDecimal(number, length)
+  return tonumber(self:floatToHex(number,length),16)
+end
+
+function IgroWidgets:floatToByteArray(number)
+  local result = ""
+  local byteTable = floatToByteTable(number)
+
+  for i, v in ipairs(byteTable) do
+    if(self:isNotEmpty(result)) then
+      result = result .. " "
+    end
+    result = result .. string.format('%02X', v)
+  end
+
+  return result
+end
+
+function IgroWidgets:floatToByteArray(number)
+  local result = ""
+  local byteTable = floatToByteTable(number)
+
+  for i, v in ipairs(byteTable) do
+    if(self:isNotEmpty(result)) then
+      result = result .. " "
+    end
+    result = result .. string.format('%02X', v)
+  end
+
+  return result
+end
+
+function IgroWidgets:decToHex(number, length)
+  return self:toHexLegth(number,length)
+end
+
+function IgroWidgets:decToByteArray(number, length)
+  return self:hexToByteArray(self:toHexLegth(number,length))
+end
+
+function IgroWidgets:hexToDecimal(hexString)
+  return tonumber(hexString,16)
+end
+
+function IgroWidgets:hexToFloat(hexString)
+  local byteTable = {}
+  for hexChar in string.gmatch(hexString,"(%x%x)") do
+    table.insert(byteTable,1,tonumber(hexChar,16))
+  end
+  return tonumber(string.format("%.2f", byteTableToFloat(byteTable)))
+end
+
+function IgroWidgets:hexToByteArray(hex)
+  local result = ""
+  local index = string.len(hex)-1
+  local tmp = ""
+  while index ~= nil and index &gt;= 0 do
+    tmp = string.sub(hex, index, index+1)
+    if igro:isNotEmpty(tmp) then
+      if igro:isNotEmpty(result) then
+        result = result .. " "
+      end
+      result = result .. tmp
+    else
+      break
+    end
+    index = index - 2
+    sleep(1)
+  end
+  result = string.gsub(result, "%s$", "")
+  return result
+end
+
+function IgroWidgets:byteArrayToHex(byteArray)
+  local result = ""
+  local index = 1
+  local tmp = ""
+  byteArray = string.gsub(byteArray, "%s", "")
+  index = string.len(byteArray)-1
+  while index ~= nil and index &gt;= 0 do
+    tmp = string.sub(byteArray, index, index+1)
+    if igro:isNotEmpty(tmp) then
+      result = result .. tmp
+    else
+      break
+    end
+    index = index - 2
+    sleep(1)
+  end
+  result = string.gsub(result, "%s$", "")
+  return result
+end
+
+function IgroWidgets:byteArrayToDecimal(byteArray)
+  return tonumber(self:byteArrayToHex(byteArray),16)
+end
+
+function IgroWidgets:byteArrayToFloat(byteArray)
+  return self:hexToFloat(self:byteArrayToHex(byteArray))
+end
+
+function IgroWidgets:getRecordById(id)
+  return getAddressList().getMemoryRecordByID(id)
+end
+
+-- Creating an instance of IgroWidgets
+igro = IgroWidgets:new()
+--[[END Igromanru's widgets class]]--
 
 [DISABLE]
 {$lua}
