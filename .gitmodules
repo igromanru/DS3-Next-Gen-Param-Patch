@@ -1,0 +1,3 @@
+[submodule "IgroWidgets"]
+	path = IgroWidgets
+	url = git@github.com:igromanru/CE-IgroWidgets.git
