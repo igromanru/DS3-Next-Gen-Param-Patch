@@ -321,19 +321,65 @@ paramsUtils:destroy()
 </AssemblerScript>
           <CheatEntries>
             <CheatEntry>
-              <ID>251</ID>
-              <Description>"EquipParamClass"</Description>
+              <ID>252</ID>
+              <Description>"BaseParamClass"</Description>
+              <Options moHideChildren="1"/>
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
 
+--[[START BaseParamClass class]]--
+BaseParamClass = {
+	id = 0,
+	patchOffsets = {},
+	param = "",
+}
+
+function BaseParamClass:new()
+	setmetatable({}, self)
+	self.__index = self
+
+	return self
+end
+
+--[[END BaseParamClass class]]--
+
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
 
 </AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>251</ID>
+                  <Description>"EquipParamClass"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START EquipParamClass class]]--
+EquipParamClass = BaseParamClass:new()
+
+function EquipParamClass:new()
+	setmetatable({}, self)
+	self.__index = self
+
+	return self
+end
+
+--[[END EquipParamClass class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+
+</AssemblerScript>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
