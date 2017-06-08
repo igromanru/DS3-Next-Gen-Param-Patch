@@ -201,22 +201,39 @@ if syntaxcheck then return end
 ParamsUtils = {}
 
 function ParamsUtils:new()
+	local function readIntegerSafe(Input)
+		local Value = readInteger(Input)
+		if Value &lt; 2147483647 then
+			return Value
+		else
+			return Value - 0x100000000
+		end
+	end
+	local function InitializeAddress()
+		autoAssemble([[
+			aobscanmodule(ParamPatchBase,DarkSoulsIII.exe,48 8B 0D ? ? ? ? 48 85 C9 74 0B 4C 8B C0 48 8B D7)
+			registersymbol(ParamPatchBase)
+		]])
+		local addr = getAddress("ParamPatchBase")
+		addr = addr + readIntegerSafe(addr + 0x3) + 7
+		addr = readQword(addr)+ 0x10
+		unregisterSymbol("ParamPatch")
+		registerSymbol("ParamPatch", addr, true)
+	end
+
 	setmetatable({}, self)
 	self.__index = self
 	self.MaxInt = 2147483647
 	self.MasterParamTable = {}
 
+    InitializeAddress()
 	self:ParamIndexer()
 	return self
 end
 
-function ParamsUtils:readInteger(Input)
-	local Value = readInteger(Input)
-	if Value &lt; 2147483647 then
-	return Value
-	else
-	return Value - 0x100000000
-	end
+function ParamsUtils:destroy()
+	unregistersymbol("ParamPatch")
+	unregistersymbol("ParamPatchAOB")
 end
 
 function ParamsUtils:ParamIndexer()
@@ -299,6 +316,7 @@ paramsUtils = ParamsUtils:new()
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
+paramsUtils:destroy()
 
 </AssemblerScript>
           <CheatEntries>
