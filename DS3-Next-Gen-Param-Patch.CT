@@ -240,8 +240,8 @@ function ParamsUtils:new()
 end
 
 function ParamsUtils:destroy()
-	unregistersymbol("ParamPatch")
-	unregistersymbol("ParamPatchAOB")
+	unregisterSymbol("ParamPatch")
+	unregisterSymbol("ParamPatchAOB")
 end
 
 function ParamsUtils:ParamIndexer()
