@@ -461,14 +461,10 @@ function BaseParamClass:new()
 end
 
 function BaseParamClass:AddPatch(offset, value, valueType)
-	table.insert(self.patchs,{offset, value, valueType})
+	table.insert(self.patchs,PatchInfo:new(offset, value, valueType))
 end
 
 function BaseParamClass:Patch()
-	local function PatchValue(id, infoArray)
-
-	end
--- ToDo
 	for i = 0, #self.patchs do
 		PatchValue(self.id, self.patchs[i])
 	end
