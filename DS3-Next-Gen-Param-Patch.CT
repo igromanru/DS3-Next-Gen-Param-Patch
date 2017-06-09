@@ -466,7 +466,7 @@ end
 
 function BaseParamClass:Patch()
 	for i = 0, #self.patchs do
-		PatchValue(self.id, self.patchs[i])
+		paramUtils:PatchValue(self.id, self.patchs[i])
 	end
 end
 
