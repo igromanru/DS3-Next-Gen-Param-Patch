@@ -418,15 +418,15 @@ function ParamUtils:ReadValue(patchInfo)
 end
 
 function ParamUtils:PatchValue(patchInfo)
-	if(patchInfo.patchInfo.valueType == PatchInfo.TYPE.BYTE) then
+	if(patchInfo.valueType == PatchInfo.TYPE.BYTE) then
 		writeBytes(patchInfo.address, patchInfo.value)
-	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.TWO_BYTE) then
+	elseif(patchInfo.valueType == PatchInfo.TYPE.TWO_BYTE) then
 		writeBytes(patchInfo.address, wordToByteTable(patchInfo.value))
-	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.FOUR_BYTE) then
+	elseif(patchInfo.valueType == PatchInfo.TYPE.FOUR_BYTE) then
 		writeInteger(patchInfo.address, patchInfo.value)
-	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.EIGHT_BYTE) then
+	elseif(patchInfo.valueType == PatchInfo.TYPE.EIGHT_BYTE) then
 		writeQword(patchInfo.address, patchInfo.value)
-	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.FLOAT) then
+	elseif(patchInfo.valueType == PatchInfo.TYPE.FLOAT) then
 		writeFloat(patchInfo.address, patchInfo.value)
 	end
 end
@@ -644,6 +644,58 @@ end
                     </CheatEntry>
                     <CheatEntry>
                       <ID>254</ID>
+                      <Description>"ReadValue 4 Byte Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "ReadValue 4 Byte"
+
+local darkHand = 0xA87500
+local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local offset = 0x14 -- fixPrice
+local info = PatchInfo:new(address + offset, 0, PatchInfo.TYPE.FOUR_BYTE)
+local value = paramUtils:ReadValue(info)
+
+if(type(value) ~= "number") then
+  message("'value' should be a number")
+elseif(value ~= 550) then
+  message("'value' should be '550' integer")
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>262</ID>
+                      <Description>"ReadValue 8 Byte Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "ReadValue 8 Byte"
+
+local darkHand = 0xA87500
+local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local offset = 0xC4 -- attackBasePhysics
+local info = PatchInfo:new(address + offset, 0, PatchInfo.TYPE.EIGHT_BYTE)
+local value = paramUtils:ReadValue(info)
+
+if(type(value) ~= "number") then
+  message("'value' should be a number")
+elseif(value ~= 88) then
+  message("'value' should be '88' integer")
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>261</ID>
                       <Description>"ReadValue Float Test"</Description>
                       <LastState/>
                       <VariableType>Auto Assembler Script</VariableType>
@@ -657,10 +709,164 @@ local offset = 0x30 -- Physical Block
 local info = PatchInfo:new(address + offset, 0, PatchInfo.TYPE.FLOAT)
 local value = paramUtils:ReadValue(info)
 
-if(type(value) == "float") then
-  message("'value' should be a float")
+if(type(value) ~= "number") then
+  message("'value' should be a number")
 elseif(value ~= 65.0) then
   message("'value' should be '65.0' float")
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>263</ID>
+                  <Description>"PatchValue Tests"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>264</ID>
+                      <Description>"PatchValue Byte Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "PatchValue Byte"
+
+local darkHand = 0xA87500
+local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local offset = 0xE3 -- wepmotionCategory
+local info = PatchInfo:new(address + offset, 69, PatchInfo.TYPE.BYTE)
+
+paramUtils:PatchValue(info)
+
+local value = paramUtils:ReadValue(info)
+
+if(type(value) ~= "number") then
+  message("'value' should be a number")
+elseif(value ~= 69) then
+  message("'value' should be '69' but it's "..value)
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>265</ID>
+                      <Description>"PatchValue 2 Byte Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "PatchValue 2 Byte"
+
+local darkHand = 0xA87500
+local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local offset = 0xCE -- saWeaponDamage
+local info = PatchInfo:new(address + offset, 33, PatchInfo.TYPE.TWO_BYTE)
+
+paramUtils:PatchValue(info)
+
+local value = paramUtils:ReadValue(info)
+
+if(type(value) ~= "number") then
+  message("'value' should be a number")
+elseif(value ~= 33) then
+  message("'value' should be '33'")
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>266</ID>
+                      <Description>"PatchValue 4 Byte Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "PatchValue 4 Byte"
+
+local darkHand = 0xA87500
+local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local offset = 0x14 -- fixPrice
+local info = PatchInfo:new(address + offset, 1337, PatchInfo.TYPE.FOUR_BYTE)
+
+paramUtils:PatchValue(info)
+
+local value = paramUtils:ReadValue(info)
+
+if(type(value) ~= "number") then
+  message("'value' should be a number")
+elseif(value ~= 1337) then
+  message("'value' should be '1337' integer")
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>267</ID>
+                      <Description>"PatchValue 8 Byte Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "PatchValue 8 Byte"
+
+local darkHand = 0xA87500
+local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local offset = 0xC4 -- attackBasePhysics
+local info = PatchInfo:new(address + offset, 85423, PatchInfo.TYPE.EIGHT_BYTE)
+
+paramUtils:PatchValue(info)
+
+local value = paramUtils:ReadValue(info)
+
+if(type(value) ~= "number") then
+  message("'value' should be a number")
+elseif(value ~= 85423) then
+  message("'value' should be '85423' integer")
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>268</ID>
+                      <Description>"PatchValue Float Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "PatchValue Float"
+
+local darkHand = 0xA87500
+local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local offset = 0x30 -- Physical Block
+local info = PatchInfo:new(address + offset, 13.0, PatchInfo.TYPE.FLOAT)
+
+paramUtils:PatchValue(info)
+
+local value = paramUtils:ReadValue(info)
+
+if(type(value) ~= "number") then
+  message("'value' should be a number")
+elseif(value ~= 13.0) then
+  message("'value' should be '13.0' float bit it's "..value)
 end
 
 [DISABLE]
