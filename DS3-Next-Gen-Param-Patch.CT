@@ -181,6 +181,12 @@ end
 igro = IgroWidgets:new()
 --[[END Igromanru's widgets class]]--
 
+TestName = ""
+-- Tests Part
+function message(msg)
+  showMessage(TestName.." Error: "..msg)
+end
+
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
@@ -512,11 +518,48 @@ if syntaxcheck then return end
               <Description>"ParamUtils Tests"</Description>
               <Options moHideChildren="1"/>
               <LastState Value="" RealAddress="00000000"/>
+              <Color>C0C0C0</Color>
               <GroupHeader>1</GroupHeader>
               <CheatEntries>
                 <CheatEntry>
+                  <ID>256</ID>
+                  <Description>"PatchInfo Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "PatchInfo"
+
+local object = PatchInfo:new(12345,1337,PatchInfo.TYPE.FOUR_BYTE)
+
+if(object == nil) then
+  message("PatchInfo object shouldn't be nil")
+elseif(object.address ~= 12345) then
+  message("'object.address' should be '12345'")
+elseif(object.value ~= 1337) then
+  message("'object.value' should be '1337'")
+elseif(object.valueType ~= PatchInfo.TYPE.FOUR_BYTE) then
+  message("'object.valueType' should be 'PatchInfo.TYPE.FOUR_BYTE'")
+elseif(PatchInfo.TYPE.BYTE ~= 0) then
+  message("'PatchInfo.TYPE.BYTE' should be '0'")
+elseif(PatchInfo.TYPE.TWO_BYTE ~= 1) then
+  message("'PatchInfo.TYPE.BYTE' should be '1'")
+elseif(PatchInfo.TYPE.FOUR_BYTE ~= 2) then
+  message("'PatchInfo.TYPE.BYTE' should be '2'")
+elseif(PatchInfo.TYPE.EIGHT_BYTE ~= 3) then
+  message("'PatchInfo.TYPE.BYTE' should be '3'")
+elseif(PatchInfo.TYPE.FLOAT ~= 4) then
+  message("'PatchInfo.TYPE.FLOAT' should be '4'")
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
                   <ID>254</ID>
-                  <Description>"ReadValue Tests"</Description>
+                  <Description>"ReadValue Test"</Description>
                   <LastState/>
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
@@ -530,6 +573,32 @@ local info = PatchInfo:new(address, 0, PatchInfo.TYPE.FLOAT)
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
+
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>257</ID>
+                  <Description>"GetIdAddress Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "GetIdAddress"
+
+local idTable = {
+	10,
+	12,
+	13,
+	14
+}
+
+local id = paramUtils:GetIdAddress(idTable, 2)
+
+if(id ~= 12) then
+  message("'id' should be '12'")
+end
+
+[DISABLE]
 
 </AssemblerScript>
                 </CheatEntry>
