@@ -401,26 +401,12 @@ function ParamUtils:PatchValueWithBackup(patchInfo, uuid)
 	self:PatchValue(patchInfo)
 end
 
-function ParamUtils:PatchValue(patchInfo)
-	if(patchInfo.patchInfo.valueType == PatchInfo.TYPE.BYTE) then
-		writeBytes(patchInfo.address, patchInfo.value)
-	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.TWO_BYTE) then
-		writeWord(patchInfo.address, patchInfo.value)
-	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.FOUR_BYTE) then
-		writeInteger(patchInfo.address, patchInfo.value)
-	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.EIGHT_BYTE) then
-		writeQword(patchInfo.address, patchInfo.value)
-	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.FLOAT) then
-		writeFloat(patchInfo.address, patchInfo.value)
-	end
-end
-
 function ParamUtils:ReadValue(patchInfo)
 	local value = 0
 	if(patchInfo.valueType == PatchInfo.TYPE.BYTE) then
 		value = readBytes(patchInfo.address, 1)
 	elseif(patchInfo.valueType == PatchInfo.TYPE.TWO_BYTE) then
-		value = readWord(patchInfo.address)
+		value = byteTableToWord(readBytes(patchInfo.address, 2, true))
 	elseif(patchInfo.valueType == PatchInfo.TYPE.FOUR_BYTE) then
 		value = readInteger(patchInfo.address)
 	elseif(patchInfo.valueType == PatchInfo.TYPE.EIGHT_BYTE) then
@@ -429,6 +415,20 @@ function ParamUtils:ReadValue(patchInfo)
 		value = readFloat(patchInfo.address)
 	end
 	return value
+end
+
+function ParamUtils:PatchValue(patchInfo)
+	if(patchInfo.patchInfo.valueType == PatchInfo.TYPE.BYTE) then
+		writeBytes(patchInfo.address, patchInfo.value)
+	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.TWO_BYTE) then
+		writeBytes(patchInfo.address, wordToByteTable(patchInfo.value))
+	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.FOUR_BYTE) then
+		writeInteger(patchInfo.address, patchInfo.value)
+	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.EIGHT_BYTE) then
+		writeQword(patchInfo.address, patchInfo.value)
+	elseif(patchInfo.patchInfo.valueType == PatchInfo.TYPE.FLOAT) then
+		writeFloat(patchInfo.address, patchInfo.value)
+	end
 end
 
 -- Creating an instance of ParamUtils
@@ -558,25 +558,6 @@ end
 </AssemblerScript>
                 </CheatEntry>
                 <CheatEntry>
-                  <ID>254</ID>
-                  <Description>"ReadValue Test"</Description>
-                  <LastState/>
-                  <VariableType>Auto Assembler Script</VariableType>
-                  <AssemblerScript>[ENABLE]
-{$lua}
-if syntaxcheck then return end
-
---A87500 (Dark Hand)
-local info = PatchInfo:new(address, 0, PatchInfo.TYPE.FLOAT)
-
-
-[DISABLE]
-{$lua}
-if syntaxcheck then return end
-
-</AssemblerScript>
-                </CheatEntry>
-                <CheatEntry>
                   <ID>257</ID>
                   <Description>"GetIdAddress Test"</Description>
                   <LastState/>
@@ -601,6 +582,93 @@ end
 [DISABLE]
 
 </AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>258</ID>
+                  <Description>"ReadValue Tests"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>259</ID>
+                      <Description>"ReadValue Byte Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "ReadValue Byte"
+
+local darkHand = 0xA87500
+local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local offset = 0xE3 -- wepmotionCategory
+local info = PatchInfo:new(address + offset, 0, PatchInfo.TYPE.BYTE)
+local value = paramUtils:ReadValue(info)
+
+if(type(value) ~= "number") then
+  message("'value' should be a number")
+elseif(value ~= 42) then
+  message("'value' should be '42'")
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>260</ID>
+                      <Description>"ReadValue 2 Byte Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "ReadValue 2 Byte"
+
+local darkHand = 0xA87500
+local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local offset = 0xCE -- saWeaponDamage
+local info = PatchInfo:new(address + offset, 0, PatchInfo.TYPE.TWO_BYTE)
+local value = paramUtils:ReadValue(info)
+
+if(type(value) ~= "number") then
+  message("'value' should be a number")
+elseif(value ~= 14) then
+  message("'value' should be '14'")
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>254</ID>
+                      <Description>"ReadValue Float Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+TestName = "ReadValue Float"
+
+local darkHand = 0xA87500
+local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local offset = 0x30 -- Physical Block
+local info = PatchInfo:new(address + offset, 0, PatchInfo.TYPE.FLOAT)
+local value = paramUtils:ReadValue(info)
+
+if(type(value) == "float") then
+  message("'value' should be a float")
+elseif(value ~= 65.0) then
+  message("'value' should be '65.0' float")
+end
+
+[DISABLE]
+{$lua}
+
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
                 </CheatEntry>
               </CheatEntries>
             </CheatEntry>
