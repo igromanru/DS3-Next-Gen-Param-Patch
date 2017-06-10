@@ -7,199 +7,12 @@
   </Forms>
   <CheatEntries>
     <CheatEntry>
-      <ID>250</ID>
-      <Description>"Initialize"</Description>
+      <ID>249</ID>
+      <Description>"ParamUtils"</Description>
       <Options moHideChildren="1"/>
       <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>[ENABLE]
-{$lua}
-if syntaxcheck then return end
---[[START Igromanru's widgets class]]--
--- Class for my UDF's
-IgroWidgets = {}
-
-function IgroWidgets:new()
-  setmetatable({}, self)
-  self.__index = self
-  self.addressList = getAddressList()
-  return self
-end
-
-function IgroWidgets:stringTrim(s)
-  return s:gsub("^%s*(.-)%s*$", "%1")
-end
-
-function IgroWidgets:isNotEmpty(s)
-  return s ~= nil and self:stringTrim(s) ~= ''
-end
-
-function IgroWidgets:isEmpty(s)
-  return s == nil or self:stringTrim(s) == ''
-end
-
-function IgroWidgets:toHex(number)
-  return string.format("%X",number)
-end
-
-function IgroWidgets:toHexLegth(number, length)
-  if length == nil then length = 1 end
-  length = length * 2
-  return string.format("%0"..length.."X",number)
-end
-
-function IgroWidgets:floatToHex(number, length)
-  local result = ""
-  local byteTable = floatToByteTable(number)
-
-  if length == nil then length = 1 end
-  if(length &gt; #byteTable) then
-    for i = 1, length-#byteTable do
-      result = "00"..result
-    end
-  end
-  for i, v in ipairs(byteTable) do
-    result = string.format('%02X', v) .. result
-  end
-  return result
-end
-
-function IgroWidgets:floatToDecimal(number, length)
-  return tonumber(self:floatToHex(number,length),16)
-end
-
-function IgroWidgets:floatToByteArray(number)
-  local result = ""
-  local byteTable = floatToByteTable(number)
-
-  for i, v in ipairs(byteTable) do
-    if(self:isNotEmpty(result)) then
-      result = result .. " "
-    end
-    result = result .. string.format('%02X', v)
-  end
-
-  return result
-end
-
-function IgroWidgets:floatToByteArray(number)
-  local result = ""
-  local byteTable = floatToByteTable(number)
-
-  for i, v in ipairs(byteTable) do
-    if(self:isNotEmpty(result)) then
-      result = result .. " "
-    end
-    result = result .. string.format('%02X', v)
-  end
-
-  return result
-end
-
-function IgroWidgets:decToHex(number, length)
-  return self:toHexLegth(number,length)
-end
-
-function IgroWidgets:decToByteArray(number, length)
-  return self:hexToByteArray(self:toHexLegth(number,length))
-end
-
-function IgroWidgets:hexToDecimal(hexString)
-  return tonumber(hexString,16)
-end
-
-function IgroWidgets:hexToFloat(hexString)
-  local byteTable = {}
-  for hexChar in string.gmatch(hexString,"(%x%x)") do
-    table.insert(byteTable,1,tonumber(hexChar,16))
-  end
-  return tonumber(string.format("%.2f", byteTableToFloat(byteTable)))
-end
-
-function IgroWidgets:hexToByteArray(hex)
-  local result = ""
-  local index = string.len(hex)-1
-  local tmp = ""
-  while index ~= nil and index &gt;= 0 do
-    tmp = string.sub(hex, index, index+1)
-    if igro:isNotEmpty(tmp) then
-      if igro:isNotEmpty(result) then
-        result = result .. " "
-      end
-      result = result .. tmp
-    else
-      break
-    end
-    index = index - 2
-    sleep(1)
-  end
-  result = string.gsub(result, "%s$", "")
-  return result
-end
-
-function IgroWidgets:byteArrayToHex(byteArray)
-  local result = ""
-  local index = 1
-  local tmp = ""
-  byteArray = string.gsub(byteArray, "%s", "")
-  index = string.len(byteArray)-1
-  while index ~= nil and index &gt;= 0 do
-    tmp = string.sub(byteArray, index, index+1)
-    if igro:isNotEmpty(tmp) then
-      result = result .. tmp
-    else
-      break
-    end
-    index = index - 2
-    sleep(1)
-  end
-  result = string.gsub(result, "%s$", "")
-  return result
-end
-
-function IgroWidgets:byteArrayToDecimal(byteArray)
-  return tonumber(self:byteArrayToHex(byteArray),16)
-end
-
-function IgroWidgets:byteArrayToFloat(byteArray)
-  return self:hexToFloat(self:byteArrayToHex(byteArray))
-end
-
-function IgroWidgets:getRecordById(id)
-  return self.addressList.getMemoryRecordByID(id)
-end
-
-function IgroWidgets:getRecordByDescription(description)
-  return self.addressList.getMemoryRecordByDescription(description)
-end
-
-function IgroWidgets:getRecord(index)
-  return self.addressList.getMemoryRecord(index)
-end
-
--- Creating an instance of IgroWidgets
-igro = IgroWidgets:new()
---[[END Igromanru's widgets class]]--
-
-TestName = ""
--- Tests Part
-function message(msg)
-  showMessage(TestName.." Error: "..msg)
-end
-
-[DISABLE]
-{$lua}
-if syntaxcheck then return end
-
-</AssemblerScript>
-      <CheatEntries>
-        <CheatEntry>
-          <ID>249</ID>
-          <Description>"ParamUtils"</Description>
-          <Options moHideChildren="1"/>
-          <LastState/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
 
@@ -278,8 +91,12 @@ function ParamUtils:new()
 end
 
 function ParamUtils:destroy()
+	unregisterSymbol("ParamPatchBase")
 	unregisterSymbol("ParamPatch")
-	unregisterSymbol("ParamPatchAOB")
+end
+
+function ParamUtils:toHex(number)
+  return string.format("%X",number)
 end
 
 function ParamUtils:ParamIndexer()
@@ -304,7 +121,7 @@ end
 function ParamUtils:GetIdAddress(IdTable, Id)
 	local result = IdTable[Id]
 	if result == nil then
-		showMessage("ID:"..Id.." (hex:"..igro:toHex(Id) ..") couldn't be found")
+		showMessage("ID:"..Id.." (hex:"..self:toHex(Id) ..") couldn't be found")
 	end
 	return result
 end
@@ -435,20 +252,26 @@ end
 paramUtils = ParamUtils:new()
 --[[END ParamUtils class]]--
 
+TestName = ""
+-- Tests Part
+function message(msg)
+  showMessage(TestName.." Error: "..msg)
+end
+
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
 paramUtils:destroy()
 
 </AssemblerScript>
-          <CheatEntries>
-            <CheatEntry>
-              <ID>252</ID>
-              <Description>"BaseParamClass"</Description>
-              <Options moHideChildren="1"/>
-              <LastState/>
-              <VariableType>Auto Assembler Script</VariableType>
-              <AssemblerScript>[ENABLE]
+      <CheatEntries>
+        <CheatEntry>
+          <ID>252</ID>
+          <Description>"BaseParamClass"</Description>
+          <Options moHideChildren="1"/>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
 
@@ -483,13 +306,13 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
-              <CheatEntries>
-                <CheatEntry>
-                  <ID>251</ID>
-                  <Description>"EquipParamClass"</Description>
-                  <LastState/>
-                  <VariableType>Auto Assembler Script</VariableType>
-                  <AssemblerScript>[ENABLE]
+          <CheatEntries>
+            <CheatEntry>
+              <ID>251</ID>
+              <Description>"EquipParamClass"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
 
@@ -510,23 +333,23 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
-                </CheatEntry>
-              </CheatEntries>
             </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>253</ID>
+          <Description>"ParamUtils Tests"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <Color>C0C0C0</Color>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
             <CheatEntry>
-              <ID>253</ID>
-              <Description>"ParamUtils Tests"</Description>
-              <Options moHideChildren="1"/>
-              <LastState Value="" RealAddress="00000000"/>
-              <Color>C0C0C0</Color>
-              <GroupHeader>1</GroupHeader>
-              <CheatEntries>
-                <CheatEntry>
-                  <ID>256</ID>
-                  <Description>"PatchInfo Test"</Description>
-                  <LastState/>
-                  <VariableType>Auto Assembler Script</VariableType>
-                  <AssemblerScript>[ENABLE]
+              <ID>256</ID>
+              <Description>"PatchInfo Test"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "PatchInfo"
 
@@ -556,13 +379,13 @@ end
 {$lua}
 
 </AssemblerScript>
-                </CheatEntry>
-                <CheatEntry>
-                  <ID>257</ID>
-                  <Description>"GetIdAddress Test"</Description>
-                  <LastState/>
-                  <VariableType>Auto Assembler Script</VariableType>
-                  <AssemblerScript>[ENABLE]
+            </CheatEntry>
+            <CheatEntry>
+              <ID>257</ID>
+              <Description>"GetIdAddress Test"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "GetIdAddress"
 
@@ -582,20 +405,20 @@ end
 [DISABLE]
 
 </AssemblerScript>
-                </CheatEntry>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>258</ID>
+              <Description>"ReadValue Tests"</Description>
+              <Options moHideChildren="1"/>
+              <LastState Value="" RealAddress="00000000"/>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
                 <CheatEntry>
-                  <ID>258</ID>
-                  <Description>"ReadValue Tests"</Description>
-                  <Options moHideChildren="1"/>
-                  <LastState Value="" RealAddress="00000000"/>
-                  <GroupHeader>1</GroupHeader>
-                  <CheatEntries>
-                    <CheatEntry>
-                      <ID>259</ID>
-                      <Description>"ReadValue Byte Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                  <ID>259</ID>
+                  <Description>"ReadValue Byte Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "ReadValue Byte"
 
@@ -615,13 +438,13 @@ end
 {$lua}
 
 </AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>260</ID>
-                      <Description>"ReadValue 2 Byte Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>260</ID>
+                  <Description>"ReadValue 2 Byte Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "ReadValue 2 Byte"
 
@@ -641,13 +464,13 @@ end
 {$lua}
 
 </AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>254</ID>
-                      <Description>"ReadValue 4 Byte Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>254</ID>
+                  <Description>"ReadValue 4 Byte Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "ReadValue 4 Byte"
 
@@ -667,13 +490,13 @@ end
 {$lua}
 
 </AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>262</ID>
-                      <Description>"ReadValue 8 Byte Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>262</ID>
+                  <Description>"ReadValue 8 Byte Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "ReadValue 8 Byte"
 
@@ -693,13 +516,13 @@ end
 {$lua}
 
 </AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>261</ID>
-                      <Description>"ReadValue Float Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>261</ID>
+                  <Description>"ReadValue Float Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "ReadValue Float"
 
@@ -719,22 +542,22 @@ end
 {$lua}
 
 </AssemblerScript>
-                    </CheatEntry>
-                  </CheatEntries>
                 </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>263</ID>
+              <Description>"PatchValue Tests"</Description>
+              <Options moHideChildren="1"/>
+              <LastState Value="" RealAddress="00000000"/>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
                 <CheatEntry>
-                  <ID>263</ID>
-                  <Description>"PatchValue Tests"</Description>
-                  <Options moHideChildren="1"/>
-                  <LastState Value="" RealAddress="00000000"/>
-                  <GroupHeader>1</GroupHeader>
-                  <CheatEntries>
-                    <CheatEntry>
-                      <ID>264</ID>
-                      <Description>"PatchValue Byte Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                  <ID>264</ID>
+                  <Description>"PatchValue Byte Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "PatchValue Byte"
 
@@ -757,13 +580,13 @@ end
 {$lua}
 
 </AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>265</ID>
-                      <Description>"PatchValue 2 Byte Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>265</ID>
+                  <Description>"PatchValue 2 Byte Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "PatchValue 2 Byte"
 
@@ -786,13 +609,13 @@ end
 {$lua}
 
 </AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>266</ID>
-                      <Description>"PatchValue 4 Byte Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>266</ID>
+                  <Description>"PatchValue 4 Byte Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "PatchValue 4 Byte"
 
@@ -815,13 +638,13 @@ end
 {$lua}
 
 </AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>267</ID>
-                      <Description>"PatchValue 8 Byte Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>267</ID>
+                  <Description>"PatchValue 8 Byte Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "PatchValue 8 Byte"
 
@@ -844,13 +667,13 @@ end
 {$lua}
 
 </AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>268</ID>
-                      <Description>"PatchValue Float Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>268</ID>
+                  <Description>"PatchValue Float Test"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
 {$lua}
 TestName = "PatchValue Float"
 
@@ -873,8 +696,6 @@ end
 {$lua}
 
 </AssemblerScript>
-                    </CheatEntry>
-                  </CheatEntries>
                 </CheatEntry>
               </CheatEntries>
             </CheatEntry>
