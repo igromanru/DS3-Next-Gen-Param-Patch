@@ -33,18 +33,18 @@ PatchInfo = {
 		FLOAT = 4
 	}
 }
-function PatchInfo:new(adr, val, valType)
+function PatchInfo:new(address, value, valueType)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
-	if(adr ~= nil) then
-		self.address = adr
+	if(address ~= nil) then
+		o.address = address
 	end
-	if(val ~= nil) then
-		self.value = val
+	if(value ~= nil) then
+		o.value = value
 	end
-	if(valType ~= nil) then
-		self.valueType = valType
+	if(valueType ~= nil) then
+		o.valueType = valueType
 	end
 
 	return o
@@ -87,7 +87,7 @@ function ParamUtils:new()
 	self.__index = self
 
     InitializeAddress()
-	self:paramIndexer()
+	o:paramIndexer()
 	return o
 end
 
@@ -219,13 +219,9 @@ function ParamUtils:restore(...)
 end
 
 function ParamUtils:patchValueWithBackup(patchInfo, uuid)
-	showMessage("Patch start: address:"..self:toHex(patchInfo.address).." value:"..patchInfo.value.." uuid:"..uuid)
 	local readValue = self:readValue(patchInfo)
-	local object = PatchInfo:new(patchInfo.address, readValue, patchInfo.valType)
 	self:patchValue(patchInfo)
-	table.insert(self.patchBackUp[uuid], object)
-	showMessage("Patch: address:"..self:toHex(patchInfo.address).." value:"..patchInfo.value.." uuid:"..uuid.." readValue:"..readValue)
-	showMessage("Patch backup: address:"..self:toHex(object.address).." value:"..object.value)
+	table.insert(self.patchBackUp[uuid], PatchInfo:new(patchInfo.address, readValue, patchInfo.valueType))
 end
 
 function ParamUtils:readValue(patchInfo)
@@ -307,8 +303,8 @@ function BaseParamClass:init()
 end
 
 function BaseParamClass:patchValue(offset, value, valueType)
-	local object = PatchInfo:new(self.address + offset, value, valueType)
-	paramUtils:patchValueWithBackup(object, self.backupUuid)
+	local patchInfo = PatchInfo:new(self.address + offset, value, valueType)
+	paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
 end
 
 function BaseParamClass:patchByte(offset, value)
@@ -357,11 +353,11 @@ function EquipParamWeapon:new(id, uuid)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
-	self.param = "EquipParamWeapon"
-	self.id = id
-	self.backupUuid = uuid
+	o.param = "EquipParamWeapon"
+	o.id = id
+	o.backupUuid = uuid
 
-	self:init()
+	o:init()
 	return o
 end
 
@@ -876,4 +872,11 @@ end
 Ctrl+N - toggle Noclip
 	
 </Comments>
+  <LuaScript>local patchInfo = PatchInfo:new(140694525647672,123,2)
+local readValue = paramUtils:readValue(patchInfo)
+local object = PatchInfo:new(patchInfo.address, readValue, patchInfo.valueType)
+table.insert(paramUtils.patchBackUp[uuid], object)
+paramUtils:patchValue(patchInfo)
+showMessage("Patch: address:"..self:toHex(patchInfo.address).." value:"..patchInfo.value..
+</LuaScript>
 </CheatTable>
