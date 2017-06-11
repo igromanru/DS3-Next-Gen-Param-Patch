@@ -463,12 +463,12 @@ end
             </CheatEntry>
             <CheatEntry>
               <ID>257</ID>
-              <Description>"GetIdAddress Test"</Description>
+              <Description>"getIdAddress Test"</Description>
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
-TestName = "GetIdAddress"
+TestName = memrec.Description
 
 local idTable = {
 	10,
@@ -477,11 +477,12 @@ local idTable = {
 	14
 }
 
-local id = paramUtils:GetIdAddress(idTable, 2)
+local id = paramUtils:getIdAddress(idTable, 2)
 
 if(id ~= 12) then
   message("'id' should be '12'")
 end
+
 
 [DISABLE]
 
@@ -489,7 +490,7 @@ end
             </CheatEntry>
             <CheatEntry>
               <ID>258</ID>
-              <Description>"ReadValue Tests"</Description>
+              <Description>"readValue Tests"</Description>
               <Options moHideChildren="1"/>
               <LastState Value="" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
@@ -501,13 +502,13 @@ end
                   <VariableType>Auto Assembler Script</VariableType>
                   <AssemblerScript>[ENABLE]
 {$lua}
-TestName = "ReadValue Byte"
+TestName = memrec.Description
 
 local darkHand = 0xA87500
-local address = paramUtils:GetIdAddressFromParam("EquipParamWeapon",darkHand)
+local address = paramUtils:getIdAddressFromParam("EquipParamWeapon",darkHand)
 local offset = 0xE3 -- wepmotionCategory
 local info = PatchInfo:new(address + offset, 0, PatchInfo.TYPE.BYTE)
-local value = paramUtils:ReadValue(info)
+local value = paramUtils:readValue(info)
 
 if(type(value) ~= "number") then
   message("'value' should be a number")
@@ -628,7 +629,7 @@ end
             </CheatEntry>
             <CheatEntry>
               <ID>263</ID>
-              <Description>"PatchValue Tests"</Description>
+              <Description>"patchValue Tests"</Description>
               <Options moHideChildren="1"/>
               <LastState Value="" RealAddress="00000000"/>
               <GroupHeader>1</GroupHeader>
@@ -873,6 +874,4 @@ end
 Ctrl+N - toggle Noclip
 	
 </Comments>
-  <LuaScript>
-</LuaScript>
 </CheatTable>
