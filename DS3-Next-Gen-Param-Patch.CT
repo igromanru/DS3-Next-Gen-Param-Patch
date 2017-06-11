@@ -33,20 +33,21 @@ PatchInfo = {
 		FLOAT = 4
 	}
 }
-function PatchInfo:new(address, value, valueType)
-	setmetatable({}, self)
+function PatchInfo:new(adr, val, valType)
+	local o = {}
+	setmetatable(o, self)
 	self.__index = self
-	if(address ~= nil) then
-		self.address = address
+	if(adr ~= nil) then
+		self.address = adr
 	end
-	if(value ~= nil) then
-		self.value = value
+	if(val ~= nil) then
+		self.value = val
 	end
-	if(valueType ~= nil) then
-		self.valueType = valueType
+	if(valType ~= nil) then
+		self.valueType = valType
 	end
 
-	return self
+	return o
 end
 
 --[[END PatchInfo class]]--
@@ -81,13 +82,13 @@ function ParamUtils:new()
 		unregisterSymbol("ParamPatch")
 		registerSymbol("ParamPatch", addr, true)
 	end
-
-	setmetatable({}, self)
+	local o = {}
+	setmetatable(o, self)
 	self.__index = self
 
     InitializeAddress()
 	self:paramIndexer()
-	return self
+	return o
 end
 
 function ParamUtils:destroy()
@@ -209,7 +210,8 @@ end
 function ParamUtils:restore(...)
 	local arg = table.pack(...)
 	for i,uuid in ipairs(arg) do
-		for key,patchInfo in pairs(self.patchBackUp[uuid]) do
+		for index,patchInfo in ipairs(self.patchBackUp[uuid]) do
+			--showMessage("Restore: address:"..self:toHex(patchInfo.address).." value:"..patchInfo.value.." uuid:"..uuid)
 			self:patchValue(patchInfo)
 		end
 		self.patchBackUp[uuid] = nil
@@ -217,9 +219,13 @@ function ParamUtils:restore(...)
 end
 
 function ParamUtils:patchValueWithBackup(patchInfo, uuid)
+	showMessage("Patch start: address:"..self:toHex(patchInfo.address).." value:"..patchInfo.value.." uuid:"..uuid)
 	local readValue = self:readValue(patchInfo)
-	table.insert(self.patchBackUp[uuid], {PatchInfo:new(patchInfo.address, readValue, patchInfo.valueType)})
+	local object = PatchInfo:new(patchInfo.address, readValue, patchInfo.valType)
 	self:patchValue(patchInfo)
+	table.insert(self.patchBackUp[uuid], object)
+	showMessage("Patch: address:"..self:toHex(patchInfo.address).." value:"..patchInfo.value.." uuid:"..uuid.." readValue:"..readValue)
+	showMessage("Patch backup: address:"..self:toHex(object.address).." value:"..object.value)
 end
 
 function ParamUtils:readValue(patchInfo)
@@ -277,7 +283,7 @@ paramUtils:destroy()
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
 {$lua}
---if syntaxcheck then return end
+if syntaxcheck then return end
 
 --[[START BaseParamClass class]]--
 BaseParamClass = {
@@ -287,23 +293,22 @@ BaseParamClass = {
 	address = 0
 }
 
-function BaseParamClass:new()
-	setmetatable({}, self)
+function BaseParamClass:new(o)
+	o = o or {}
+	setmetatable(o, self)
 	self.__index = self
 
-	return self
+	return o
 end
 
 function BaseParamClass:init()
+	paramUtils.patchBackUp[self.backupUuid] = {}
 	self.address = paramUtils:getIdAddressFromParam(self.param, self.id)
 end
 
-function BaseParamClass:createPatchInfo(offset, value, valueType)
-	return PatchInfo:new(address + offset, value, valueType)
-end
-
 function BaseParamClass:patchValue(offset, value, valueType)
-	paramUtils:PatchValueWithBackup(self:createPatchInfo(offset, value, valueType), self.backupUuid)
+	local object = PatchInfo:new(self.address + offset, value, valueType)
+	paramUtils:patchValueWithBackup(object, self.backupUuid)
 end
 
 function BaseParamClass:patchByte(offset, value)
@@ -338,24 +343,26 @@ if syntaxcheck then return end
             <CheatEntry>
               <ID>251</ID>
               <Description>"EquipParamWeapon"</Description>
+              <Options moHideChildren="1"/>
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
---if syntaxcheck then return end
+if syntaxcheck then return end
 
 --[[START EquipParamWeapon class]]--
 EquipParamWeapon = BaseParamClass:new()
 
 function EquipParamWeapon:new(id, uuid)
-	setmetatable({}, self)
+	local o = {}
+	setmetatable(o, self)
 	self.__index = self
 	self.param = "EquipParamWeapon"
 	self.id = id
 	self.backupUuid = uuid
 
 	self:init()
-	return self
+	return o
 end
 
 function EquipParamWeapon:effectOnHit1(value)
@@ -377,6 +384,39 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>269</ID>
+                  <Description>"EquipParamWeapon Tests"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <Color>C0C0C0</Color>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>270</ID>
+                      <Description>"effectOnHit Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x5F39BC --Chaos Dark Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
+equipWeapon:effectOnHit1(10564)
+equipWeapon:effectOnHit2(112079000)
+equipWeapon:effectOnHit3(110)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("effectOnHitTest")
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
