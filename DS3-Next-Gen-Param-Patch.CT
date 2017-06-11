@@ -33,6 +33,7 @@ PatchInfo = {
 		FLOAT = 4
 	}
 }
+
 function PatchInfo:new(address, value, valueType)
 	local o = {}
 	setmetatable(o, self)
@@ -872,11 +873,6 @@ end
 Ctrl+N - toggle Noclip
 	
 </Comments>
-  <LuaScript>local patchInfo = PatchInfo:new(140694525647672,123,2)
-local readValue = paramUtils:readValue(patchInfo)
-local object = PatchInfo:new(patchInfo.address, readValue, patchInfo.valueType)
-table.insert(paramUtils.patchBackUp[uuid], object)
-paramUtils:patchValue(patchInfo)
-showMessage("Patch: address:"..self:toHex(patchInfo.address).." value:"..patchInfo.value..
+  <LuaScript>
 </LuaScript>
 </CheatTable>
