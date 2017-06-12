@@ -450,6 +450,61 @@ function EquipParamWeapon:effectOnSelf3(value)
 	self:patch4Byte(0x54, value)
 end
 
+-- Insert Origin Equip Weapon offsets here
+
+-- Insert Anti Damage Rate offsets here
+
+-- Insert AC-BA here
+
+function EquipParamWeapon:durability(value)
+	self:patch2Byte(0xBC, value)
+end
+
+function EquipParamWeapon:durabilityMax(value)
+	self:patch2Byte(0xBE, value)
+end
+
+-- Insert C0-C2 here
+
+function EquipParamWeapon:attackBasePhysics(value)
+	self:patch2Byte(0xC4, value)
+end
+
+function EquipParamWeapon:attackBaseMagic(value)
+	self:patch2Byte(0xC6, value)
+end
+
+function EquipParamWeapon:attackBaseFire(value)
+	self:patch2Byte(0xC8, value)
+end
+
+function EquipParamWeapon:attackBaseThunder(value)
+	self:patch2Byte(0xCa, value)
+end
+
+function EquipParamWeapon:attackBaseStamina(value) -- Stamina consuption to block
+	self:patch2Byte(0xCC, value)
+end
+
+-- Insert CE-ED here
+
+-- Requirements
+function EquipParamWeapon:properStrength(value)
+	self:patchByte(0xEE, value)
+end
+
+function EquipParamWeapon:properAgility(value)
+	self:patchByte(0xEF, value)
+end
+
+function EquipParamWeapon:properMagic(value)
+	self:patchByte(0xF0, value)
+end
+
+function EquipParamWeapon:properFaith(value)
+	self:patchByte(0xF1, value)
+end
+
 --[[END EquipParamWeapon class]]--
 
 [DISABLE]
