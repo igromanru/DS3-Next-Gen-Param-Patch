@@ -291,9 +291,17 @@ function ParamUtils:patchValue(patchInfo)
 end
 
 function ParamUtils:writeBinary(patchInfo)
-	--local prevValue = self:readByte(patchInfo)
-	--patchInfo.value = bOr(prevValue,patchInfo.binaryOffset)
-	-- todo, allow to set a flag to 0 :thonking:
+	if(patchInfo.binaryOffset &gt; 0) then
+		local prevValue = self:readByte(patchInfo)
+		if(patchInfo.value == 0) then
+			patchInfo.value = bOr(prevValue,patchInfo.binaryOffset)
+		else
+			patchInfo.value = bAnd(prevValue, ~patchInfo.binaryOffset)
+		end
+		writeBytes(patchInfo.address, patchInfo.value)
+	else
+		self:error("To write a binary you've to set the 'binaryOffset'")
+	end
 end
 
 function ParamUtils:writeByte(patchInfo)
