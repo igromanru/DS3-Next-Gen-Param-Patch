@@ -30,7 +30,8 @@ PatchInfo = {
 		TWO_BYTE = 1,
 		FOUR_BYTE = 2,
 		EIGHT_BYTE = 3,
-		FLOAT = 4
+		FLOAT = 4,
+		UINT = 5
 	}
 }
 
@@ -99,6 +100,10 @@ end
 
 function ParamUtils:toHex(number)
   return string.format("%X",number)
+end
+
+function ParamUtils:error(message)
+  error("ParamUtils Error:\r\n"..message)
 end
 
 function ParamUtils:paramIndexer()
@@ -231,7 +236,7 @@ function ParamUtils:readValue(patchInfo)
 		value = readBytes(patchInfo.address, 1)
 	elseif(patchInfo.valueType == PatchInfo.TYPE.TWO_BYTE) then
 		value = byteTableToWord(readBytes(patchInfo.address, 2, true))
-	elseif(patchInfo.valueType == PatchInfo.TYPE.FOUR_BYTE) then
+	elseif(patchInfo.valueType == PatchInfo.TYPE.FOUR_BYTE or patchInfo.valueType == PatchInfo.TYPE.UINT) then
 		value = readInteger(patchInfo.address)
 	elseif(patchInfo.valueType == PatchInfo.TYPE.EIGHT_BYTE) then
 		value = readQword(patchInfo.address)
@@ -243,15 +248,53 @@ end
 
 function ParamUtils:patchValue(patchInfo)
 	if(patchInfo.valueType == PatchInfo.TYPE.BYTE) then
-		writeBytes(patchInfo.address, patchInfo.value)
+		if(patchInfo.value &gt; 255) then
+			self:error("Byte can't be bigger then 255")
+		elseif(patchInfo.value &lt; 0) then
+			self:error("Byte can't be smaller then 0")
+		else
+			writeBytes(patchInfo.address, patchInfo.value)
+		end
 	elseif(patchInfo.valueType == PatchInfo.TYPE.TWO_BYTE) then
-		writeBytes(patchInfo.address, wordToByteTable(patchInfo.value))
+		if(patchInfo.value &gt; 65535) then
+			self:error("2 Bytes can't be bigger then 65535")
+		elseif(patchInfo.value &lt; 0) then
+			self:error("2 Bytes can't be smaller then 0")
+		else
+			writeBytes(patchInfo.address, wordToByteTable(patchInfo.value))
+		end
 	elseif(patchInfo.valueType == PatchInfo.TYPE.FOUR_BYTE) then
-		writeInteger(patchInfo.address, patchInfo.value)
+		if(patchInfo.value &gt; 2147483647) then
+			self:error("4 Bytes can't be bigger then 2147483647")
+		elseif(patchInfo.value &lt; -2147483648) then
+			self:error("4 Bytes can't be smaller then -2147483648")
+		else
+			writeInteger(patchInfo.address, patchInfo.value)
+		end
 	elseif(patchInfo.valueType == PatchInfo.TYPE.EIGHT_BYTE) then
-		writeQword(patchInfo.address, patchInfo.value)
+		if(patchInfo.value &gt; 9223372036854775807) then
+			self:error("8 Bytes can't be bigger then 9223372036854775807")
+		elseif(patchInfo.value &lt; -9223372036854775808) then
+			self:error("8 Bytes can't be smaller then -9223372036854775808")
+		else
+			writeQword(patchInfo.address, patchInfo.value)
+		end
 	elseif(patchInfo.valueType == PatchInfo.TYPE.FLOAT) then
-		writeFloat(patchInfo.address, patchInfo.value)
+		if(patchInfo.value &gt; 3.4028235E38) then
+			self:error("Float can't be bigger then 3.4028235E38")
+		elseif(patchInfo.value &lt; -3.4028235E38) then
+			self:error("Float can't be smaller then -3.4028235E38")
+		else
+			writeFloat(patchInfo.address, patchInfo.value)
+		end
+	elseif(patchInfo.valueType == PatchInfo.TYPE.UINT) then
+		if(patchInfo.value &gt; 4294967295) then
+			self:error("Unsinged integer can't be bigger then 4294967295")
+		elseif(patchInfo.value &lt; 0) then
+			self:error("Unsinged integer can't be smaller then 0")
+		else
+			writeInteger(patchInfo.address, patchInfo.value)
+		end
 	end
 end
 
