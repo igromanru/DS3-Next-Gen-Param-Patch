@@ -134,7 +134,9 @@ function ParamUtils:toHex(number)
 end
 
 function ParamUtils:error(message)
-  error("ParamUtils Error:\r\n"..message)
+	local output = "ParamUtils Error:\r\n"..message
+	showMessage(output)
+	error(output)
 end
 
 function ParamUtils:paramIndexer()
@@ -159,7 +161,7 @@ end
 function ParamUtils:getIdAddress(IdTable, Id)
 	local result = IdTable[Id]
 	if result == nil then
-		showMessage("ID:"..Id.." (hex:"..self:toHex(Id) ..") couldn't be found")
+		self:error("ID:"..Id.." (hex:"..self:toHex(Id) ..") couldn't be found")
 	end
 	return result
 end
@@ -240,7 +242,7 @@ function ParamUtils:patchMultipleOffsets(paramName, id, patchInfoTable, uuid)
 			self:patchValueWithBackup(patchInfo,uuid)
 		end
 	else
-		showMessage("Error: The UUID "..uuid.." is already in use.")
+        self:error("The UUID "..uuid.." is already in use.")
 	end
 end
 
@@ -248,7 +250,6 @@ function ParamUtils:restore(...)
 	local arg = table.pack(...)
 	for i,uuid in ipairs(arg) do
 		for index,patchInfo in ipairs(self.patchBackUp[uuid]) do
-			--showMessage("Restore: address:"..self:toHex(patchInfo.address).." value:"..patchInfo.value.." uuid:"..uuid)
 			self:patchValue(patchInfo)
 		end
 		self.patchBackUp[uuid] = nil
@@ -310,13 +311,11 @@ end
 function ParamUtils:writeBinary(patchInfo)
 	if(patchInfo.binaryOffset &gt; 0) then
 		local prevValue = self:readByte(patchInfo)
-		showMessage("value old:"..patchInfo.value.." prevValue:"..prevValue.." offset:"..patchInfo.binaryOffset)
 		if(patchInfo.value == 0) then
 			patchInfo.value = bAnd(prevValue, ~patchInfo.binaryOffset)
 		else
 			patchInfo.value = bOr(prevValue,patchInfo.binaryOffset)
 		end
-		showMessage("value new:"..patchInfo.value)
 		writeBytes(patchInfo.address, patchInfo.value)
 	else
 		self:error("To write a binary you've to set the 'binaryOffset'")
