@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="26">
+<CheatTable CheatEngineTableVersion="24">
   <CheatEntries>
     <CheatEntry>
       <ID>249</ID>
@@ -516,6 +516,7 @@ function EquipParamWeapon:wanderingEquipId(value)
 	self:patch4Byte(0x8, value)
 end
 
+-- Weight
 function EquipParamWeapon:weight(value)
 	self:patchFloat(0xC, value)
 end
@@ -524,6 +525,7 @@ function EquipParamWeapon:weaponWeightRate(value)
 	self:patchFloat(0x10, value)
 end
 
+-- Prices
 function EquipParamWeapon:fixPrice(value)
 	self:patch4Byte(0x14, value)
 end
@@ -536,6 +538,7 @@ function EquipParamWeapon:sellValue(value)
 	self:patch4Byte(0x1C, value)
 end
 
+-- Scaling
 function EquipParamWeapon:correctStrength(value)
 	self:patchFloat(0x20, value)
 end
@@ -552,6 +555,7 @@ function EquipParamWeapon:correctFaith(value)
 	self:patchFloat(0x2C, value)
 end
 
+--
 function EquipParamWeapon:physGuardCutRate(value)
 	self:patchFloat(0x30, value)
 end
@@ -568,6 +572,7 @@ function EquipParamWeapon:thunGuardCutRate(value)
 	self:patchFloat(0x3C, value)
 end
 
+-- Effects on hit
 function EquipParamWeapon:effectOnHit1(value)
 	self:patch4Byte(0x40, value)
 end
@@ -580,6 +585,7 @@ function EquipParamWeapon:effectOnHit3(value)
 	self:patch4Byte(0x48, value)
 end
 
+-- Effects on self
 function EquipParamWeapon:effectOnSelf1(value)
 	self:patch4Byte(0x4C, value)
 end
@@ -598,6 +604,7 @@ end
 
 -- Insert AC-BA here
 
+-- Durability
 function EquipParamWeapon:durability(value)
 	self:patch2Byte(0xBC, value)
 end
@@ -767,6 +774,28 @@ equipWeapon:isEnhance(0)
 --if syntaxcheck then return end
 
 paramUtils:restore("isEnhanceTest")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>272</ID>
+                      <Description>"Scaling Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
+equipWeapon:correctStrength(100)
+equipWeapon:correctAgility(100)
+equipWeapon:correctMagic(100)
+equipWeapon:correctFaith(100)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("ScalingTest")
 </AssemblerScript>
                     </CheatEntry>
                   </CheatEntries>
