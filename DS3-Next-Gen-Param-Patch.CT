@@ -129,8 +129,14 @@ function ParamUtils:destroy()
 	unregisterSymbol("ParamPatch")
 end
 
-function ParamUtils:toHex(number)
-  return string.format("%X",number)
+function ParamUtils:toHex(number, length)
+	local result = ""
+	if(length ~= nil and length &gt; 0) then
+		result = string.format("%0"..length.."X",number)
+	else
+		result = string.format("%X",number)
+	end
+	return result
 end
 
 function ParamUtils:error(message)
@@ -441,6 +447,11 @@ function BaseParamClass:init()
 	self.address = paramUtils:getIdAddressFromParam(self.param, self.id)
 end
 
+function BaseParamClass:stripIdForParams()
+	local idHex = paramUtils:toHex(self.id, 8)
+	self.id = tonumber(idHex:sub(2),16)
+end
+
 function BaseParamClass:patchValue(offset, value, valueType, binaryOffset)
 	local patchInfo = PatchInfo:new(self.address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
 	paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
@@ -501,6 +512,7 @@ function EquipParamWeapon:new(id, uuid)
 	o.backupUuid = uuid
 
 	o:init()
+    o:stripIdForParams()
 	return o
 end
 
