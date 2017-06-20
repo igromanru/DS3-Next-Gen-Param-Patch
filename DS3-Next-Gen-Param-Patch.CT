@@ -1160,21 +1160,21 @@ elseif(object.value ~= 1337) then
   message("'object.value' should be '1337'")
 elseif(object.valueType ~= PatchInfo.TYPE.FOUR_BYTE) then
   message("'object.valueType' should be 'PatchInfo.TYPE.FOUR_BYTE'")
-elseif(PatchInfo.TYPE.BYTE ~= 0) then
-  message("'PatchInfo.TYPE.BYTE' should be '0'")
-elseif(PatchInfo.TYPE.TWO_BYTE ~= 1) then
+elseif(PatchInfo.TYPE.BINARY ~= 0) then
+  message("'PatchInfo.TYPE.BINARY' should be '0'")
+elseif(PatchInfo.TYPE.BYTE ~= 1) then
   message("'PatchInfo.TYPE.BYTE' should be '1'")
-elseif(PatchInfo.TYPE.FOUR_BYTE ~= 2) then
+elseif(PatchInfo.TYPE.TWO_BYTE ~= 2) then
   message("'PatchInfo.TYPE.BYTE' should be '2'")
-elseif(PatchInfo.TYPE.EIGHT_BYTE ~= 3) then
+elseif(PatchInfo.TYPE.FOUR_BYTE ~= 3) then
   message("'PatchInfo.TYPE.BYTE' should be '3'")
-elseif(PatchInfo.TYPE.FLOAT ~= 4) then
-  message("'PatchInfo.TYPE.FLOAT' should be '4'")
+elseif(PatchInfo.TYPE.EIGHT_BYTE ~= 4) then
+  message("'PatchInfo.TYPE.BYTE' should be '4'")
+elseif(PatchInfo.TYPE.FLOAT ~= 5) then
+  message("'PatchInfo.TYPE.FLOAT' should be '5'")
 end
 
 [DISABLE]
-{$lua}
-
 </AssemblerScript>
             </CheatEntry>
             <CheatEntry>
