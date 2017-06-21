@@ -1144,6 +1144,228 @@ paramUtils:restore("ScalingTest")
               </CheatEntries>
             </CheatEntry>
             <CheatEntry>
+              <ID>278</ID>
+              <Description>"EquipParamProtector"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START EquipParamProtector class]]--
+EquipParamProtector = BaseParamClass:new()
+
+function EquipParamProtector:new(id, uuid)
+	local o = {}
+	setmetatable(o, self)
+	self.__index = self
+	o.param = "EquipParamProtector"
+	o.id = id
+	o.backupUuid = uuid
+
+	o:init()
+	o:stripIdForParams()
+	return o
+end
+
+
+
+
+--[[END EquipParamProtector class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>279</ID>
+                  <Description>"EquipParamWeapon Tests"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <Color>C0C0C0</Color>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>280</ID>
+                      <Description>"effectOnHit Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
+equipWeapon:effectOnHit1(10564)
+equipWeapon:effectOnHit2(112079000)
+equipWeapon:effectOnHit3(110)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("effectOnHitTest")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>281</ID>
+                      <Description>"isEnhance Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"isEnhanceTest")
+equipWeapon:isEnhance(0)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("isEnhanceTest")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>282</ID>
+                      <Description>"Scaling Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
+equipWeapon:correctStrength(100)
+equipWeapon:correctAgility(100)
+equipWeapon:correctMagic(100)
+equipWeapon:correctFaith(100)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("ScalingTest")
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>293</ID>
+              <Description>"EquipParamGoods"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START EquipParamGoods class]]--
+EquipParamGoods = BaseParamClass:new()
+
+function EquipParamGoods:new(id, uuid)
+	local o = {}
+	setmetatable(o, self)
+	self.__index = self
+	o.param = "EquipParamGoods"
+	o.id = id
+	o.backupUuid = uuid
+
+	o:init()
+	o:stripIdForParams()
+	return o
+end
+
+
+
+
+--[[END EquipParamGoods class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>294</ID>
+                  <Description>"EquipParamWeapon Tests"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <Color>C0C0C0</Color>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>295</ID>
+                      <Description>"effectOnHit Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
+equipWeapon:effectOnHit1(10564)
+equipWeapon:effectOnHit2(112079000)
+equipWeapon:effectOnHit3(110)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("effectOnHitTest")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>296</ID>
+                      <Description>"isEnhance Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"isEnhanceTest")
+equipWeapon:isEnhance(0)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("isEnhanceTest")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>297</ID>
+                      <Description>"Scaling Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
+equipWeapon:correctStrength(100)
+equipWeapon:correctAgility(100)
+equipWeapon:correctMagic(100)
+equipWeapon:correctFaith(100)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("ScalingTest")
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
               <ID>273</ID>
               <Description>"SpEffectParam"</Description>
               <Options moHideChildren="1"/>
@@ -1258,6 +1480,228 @@ paramUtils:restore("isEnhanceTest")
                     </CheatEntry>
                     <CheatEntry>
                       <ID>277</ID>
+                      <Description>"Scaling Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
+equipWeapon:correctStrength(100)
+equipWeapon:correctAgility(100)
+equipWeapon:correctMagic(100)
+equipWeapon:correctFaith(100)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("ScalingTest")
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>283</ID>
+              <Description>"Magic"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START Magic class]]--
+Magic = BaseParamClass:new()
+
+function Magic:new(id, uuid)
+	local o = {}
+	setmetatable(o, self)
+	self.__index = self
+	o.param = "Magic"
+	o.id = id
+	o.backupUuid = uuid
+
+	o:init()
+	o:stripIdForParams()
+	return o
+end
+
+
+
+
+--[[END Magic class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>284</ID>
+                  <Description>"EquipParamWeapon Tests"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <Color>C0C0C0</Color>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>285</ID>
+                      <Description>"effectOnHit Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
+equipWeapon:effectOnHit1(10564)
+equipWeapon:effectOnHit2(112079000)
+equipWeapon:effectOnHit3(110)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("effectOnHitTest")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>286</ID>
+                      <Description>"isEnhance Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"isEnhanceTest")
+equipWeapon:isEnhance(0)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("isEnhanceTest")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>287</ID>
+                      <Description>"Scaling Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
+equipWeapon:correctStrength(100)
+equipWeapon:correctAgility(100)
+equipWeapon:correctMagic(100)
+equipWeapon:correctFaith(100)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("ScalingTest")
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>288</ID>
+              <Description>"Bullet"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START Bullet class]]--
+Bullet = BaseParamClass:new()
+
+function Bullet:new(id, uuid)
+	local o = {}
+	setmetatable(o, self)
+	self.__index = self
+	o.param = "Bullet"
+	o.id = id
+	o.backupUuid = uuid
+
+	o:init()
+	o:stripIdForParams()
+	return o
+end
+
+
+
+
+--[[END Bullet class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>289</ID>
+                  <Description>"EquipParamWeapon Tests"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <Color>C0C0C0</Color>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>290</ID>
+                      <Description>"effectOnHit Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
+equipWeapon:effectOnHit1(10564)
+equipWeapon:effectOnHit2(112079000)
+equipWeapon:effectOnHit3(110)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("effectOnHitTest")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>291</ID>
+                      <Description>"isEnhance Test"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+--if syntaxcheck then return end
+local weapon = 0x001EAB90 --Long Sword
+local equipWeapon = EquipParamWeapon:new(weapon,"isEnhanceTest")
+equipWeapon:isEnhance(0)
+
+[DISABLE]
+{$lua}
+--if syntaxcheck then return end
+
+paramUtils:restore("isEnhanceTest")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>292</ID>
                       <Description>"Scaling Test"</Description>
                       <LastState/>
                       <VariableType>Auto Assembler Script</VariableType>
