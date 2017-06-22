@@ -1290,7 +1290,7 @@ if not syntaxcheck then
   }
 
   for i,id in ipairs(catalysts) do
-	local weapon = EquipParamWeapon:new(id,"EveryCatalystCanCastEverything"..i)
+	local weapon = EquipParamWeapon:new(id,"EveryCatalystCanCastEverything")
 	weapon:enableMagic(1)
 	weapon:enablePyromancy(1)
 	weapon:enableMiracle(1)
@@ -1300,9 +1300,7 @@ end
 [DISABLE]
 {$lua}
 if not syntaxcheck then
-  for i = 1, 33 do
-	paramUtils:restore("EveryCatalystCanCastEverything"..i)
-  end
+  paramUtils:restore("EveryCatalystCanCastEverything")
 end
 </AssemblerScript>
                     </CheatEntry>
@@ -2472,6 +2470,44 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1337011522</ID>
+                  <Description>"Converted Scripts"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>1337011428</ID>
+                      <Description>"Every Pine &amp; Bundle Infinite"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+	Author: Igromanru
+	Description: Makes Every Pine &amp; Bundle Infinite (cycle himself)
+}
+[ENABLE]
+{$lua}
+if not syntaxcheck then
+  local catalysts = {2100,2110,2120,2130,2150,2170,2180,2190}
+
+  for i,id in ipairs(catalysts) do
+	local effect = SpEffectParam:new(id,"EveryPineAndBundleInfinite")
+	effect:cycleOccurrenceSpEffectId(id)
+  end
+end
+
+[DISABLE]
+{$lua}
+if not syntaxcheck then
+  paramUtils:restore("EveryPineAndBundleInfinite")
+end
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>283</ID>
@@ -2733,6 +2769,41 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1337011521</ID>
+                  <Description>"Converted Scripts"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>92124</ID>
+                      <Description>"Remove FP and Stamina costs from Crystal Hail"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+	Author: Igromanru
+	Description: Removes FP and Stamina costs from the Crystal Hail
+}
+[ENABLE]
+{$lua}
+if not syntaxcheck then
+  local magic = Magic:new(0x4014F348,"CrystalHailNoFPCost")
+  magic:FPCost(0)
+  magic:StaminaCost(0)
+end
+
+[DISABLE]
+{$lua}
+if not syntaxcheck then
+  paramUtils:restore("CrystalHailNoFPCost")
+end
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>288</ID>
