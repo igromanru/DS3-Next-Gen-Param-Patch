@@ -1397,80 +1397,6 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
-              <CheatEntries>
-                <CheatEntry>
-                  <ID>279</ID>
-                  <Description>"EquipParamWeapon Tests"</Description>
-                  <Options moHideChildren="1"/>
-                  <LastState Value="" RealAddress="00000000"/>
-                  <Color>C0C0C0</Color>
-                  <GroupHeader>1</GroupHeader>
-                  <CheatEntries>
-                    <CheatEntry>
-                      <ID>280</ID>
-                      <Description>"effectOnHit Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
-equipWeapon:effectOnHit1(10564)
-equipWeapon:effectOnHit2(112079000)
-equipWeapon:effectOnHit3(110)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("effectOnHitTest")
-</AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>281</ID>
-                      <Description>"isEnhance Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"isEnhanceTest")
-equipWeapon:isEnhance(0)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("isEnhanceTest")
-</AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>282</ID>
-                      <Description>"Scaling Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
-equipWeapon:correctStrength(100)
-equipWeapon:correctAgility(100)
-equipWeapon:correctMagic(100)
-equipWeapon:correctFaith(100)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("ScalingTest")
-</AssemblerScript>
-                    </CheatEntry>
-                  </CheatEntries>
-                </CheatEntry>
-              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>293</ID>
@@ -1777,86 +1703,13 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
-              <CheatEntries>
-                <CheatEntry>
-                  <ID>294</ID>
-                  <Description>"EquipParamWeapon Tests"</Description>
-                  <Options moHideChildren="1"/>
-                  <LastState Value="" RealAddress="00000000"/>
-                  <Color>C0C0C0</Color>
-                  <GroupHeader>1</GroupHeader>
-                  <CheatEntries>
-                    <CheatEntry>
-                      <ID>295</ID>
-                      <Description>"effectOnHit Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
-equipWeapon:effectOnHit1(10564)
-equipWeapon:effectOnHit2(112079000)
-equipWeapon:effectOnHit3(110)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("effectOnHitTest")
-</AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>296</ID>
-                      <Description>"isEnhance Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"isEnhanceTest")
-equipWeapon:isEnhance(0)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("isEnhanceTest")
-</AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>297</ID>
-                      <Description>"Scaling Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
-equipWeapon:correctStrength(100)
-equipWeapon:correctAgility(100)
-equipWeapon:correctMagic(100)
-equipWeapon:correctFaith(100)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("ScalingTest")
-</AssemblerScript>
-                    </CheatEntry>
-                  </CheatEntries>
-                </CheatEntry>
-              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>273</ID>
               <Description>"SpEffectParam"</Description>
               <Options moHideChildren="1"/>
               <LastState/>
+              <Color>0080FF</Color>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
@@ -1907,7 +1760,178 @@ function SpEffectParam:maxStaminaRate(value)
 end
 
 --Damage Cut
+function SpEffectParam:slashDamageCutRate(value)
+	self:patchFloat(0x1C, value)
+end
 
+function SpEffectParam:blowDamageCutRate(value)
+	self:patchFloat(0x20, value)
+end
+
+function SpEffectParam:thrustDamageCutRate(value)
+	self:patchFloat(0x24, value)
+end
+
+function SpEffectParam:neutralDamageCutRate(value)
+	self:patchFloat(0x28, value)
+end
+
+function SpEffectParam:magicDamageCutRate(value)
+	self:patchFloat(0x2C, value)
+end
+
+function SpEffectParam:fireDamageCutRate(value)
+	self:patchFloat(0x30, value)
+end
+
+function SpEffectParam:thunderDamageCutRate(value)
+	self:patchFloat(0x34, value)
+end
+
+--Rate
+function SpEffectParam:physicsAttackRate(value)
+	self:patchFloat(0x38, value)
+end
+
+function SpEffectParam:magicAttackRate(value)
+	self:patchFloat(0x3C, value)
+end
+
+function SpEffectParam:fireAttackRate(value)
+	self:patchFloat(0x40, value)
+end
+
+function SpEffectParam:thunderAttackRate(value)
+	self:patchFloat(0x44, value)
+end
+
+--Power Rate
+function SpEffectParam:physicsAttackPowerRate(value)
+	self:patchFloat(0x48, value)
+end
+
+function SpEffectParam:magicAttackPowerRate(value)
+	self:patchFloat(0x4C, value)
+end
+
+function SpEffectParam:fireAttackPowerRate(value)
+	self:patchFloat(0x50, value)
+end
+
+function SpEffectParam:thunderAttackPowerRate(value)
+	self:patchFloat(0x54, value)
+end
+
+function SpEffectParam:physicsAttackPower(value)
+	self:patch4Byte(0x58, value)
+end
+
+function SpEffectParam:magicAttackPower(value)
+	self:patch4Byte(0x5C, value)
+end
+
+function SpEffectParam:fireAttackPower(value)
+	self:patch4Byte(0x60, value)
+end
+
+function SpEffectParam:thunderAttackPower(value)
+	self:patch4Byte(0x64, value)
+end
+
+--Diffence Rate
+function SpEffectParam:physicsDiffenceRate(value)
+	self:patchFloat(0x68, value)
+end
+
+function SpEffectParam:magicDiffenceRate(value)
+	self:patchFloat(0x6C, value)
+end
+
+function SpEffectParam:fireDiffenceRate(value)
+	self:patchFloat(0x70, value)
+end
+
+function SpEffectParam:thunderDiffenceRate(value)
+	self:patchFloat(0x74, value)
+end
+
+function SpEffectParam:physicsDiffence(value)
+	self:patch4Byte(0x78, value)
+end
+
+function SpEffectParam:magicDiffence(value)
+	self:patch4Byte(0x7C, value)
+end
+
+function SpEffectParam:fireDiffence(value)
+	self:patch4Byte(0x80, value)
+end
+
+function SpEffectParam:thunderDiffence(value)
+	self:patch4Byte(0x84, value)
+end
+
+--Change Rare 1
+function SpEffectParam:noGuardDamageRate(value)
+	self:patchFloat(0x88, value)
+end
+
+function SpEffectParam:vitalSpotChangeRate(value)
+	self:patchFloat(0x8C, value)
+end
+
+function SpEffectParam:normalSpotChangeRate(value)
+	self:patchFloat(0x90, value)
+end
+
+function SpEffectParam:maxHpChangeRate(value)
+	self:patchFloat(0x94, value)
+end
+
+
+function SpEffectParam:behaviorId(value)
+	self:patch4Byte(0x98, value)
+end
+
+--Change Rare 2
+function SpEffectParam:changeHpRate(value)
+	self:patchFloat(0x9C, value)
+end
+
+function SpEffectParam:changeHpPoint(value)
+	self:patch4Byte(0xA0, value)
+end
+
+function SpEffectParam:changeMpRate(value)
+	self:patchFloat(0xA4, value)
+end
+
+function SpEffectParam:changeMpPoint(value)
+	self:patch4Byte(0xA8, value)
+end
+
+function SpEffectParam:mpRecoverChangeSpeed(value)
+	self:patch4Byte(0xAC, value)
+end
+
+function SpEffectParam:changeStaminaRate(value)
+	self:patchFloat(0xB0, value)
+end
+
+function SpEffectParam:changeStaminaPoint(value)
+	self:patch4Byte(0xB4, value)
+end
+
+function SpEffectParam:staminaRecoverChangeSpeed(value)
+	self:patch4Byte(0xB8, value)
+end
+
+
+function SpEffectParam:magicEffectTimeChange(value)
+	self:patchFloat(0xBC, value)
+end
+
+-- C0+ insert here
 
 --[[END SpEffectParam class]]--
 
@@ -1916,86 +1940,13 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
-              <CheatEntries>
-                <CheatEntry>
-                  <ID>274</ID>
-                  <Description>"EquipParamWeapon Tests"</Description>
-                  <Options moHideChildren="1"/>
-                  <LastState Value="" RealAddress="00000000"/>
-                  <Color>C0C0C0</Color>
-                  <GroupHeader>1</GroupHeader>
-                  <CheatEntries>
-                    <CheatEntry>
-                      <ID>275</ID>
-                      <Description>"effectOnHit Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
-equipWeapon:effectOnHit1(10564)
-equipWeapon:effectOnHit2(112079000)
-equipWeapon:effectOnHit3(110)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("effectOnHitTest")
-</AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>276</ID>
-                      <Description>"isEnhance Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"isEnhanceTest")
-equipWeapon:isEnhance(0)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("isEnhanceTest")
-</AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>277</ID>
-                      <Description>"Scaling Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
-equipWeapon:correctStrength(100)
-equipWeapon:correctAgility(100)
-equipWeapon:correctMagic(100)
-equipWeapon:correctFaith(100)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("ScalingTest")
-</AssemblerScript>
-                    </CheatEntry>
-                  </CheatEntries>
-                </CheatEntry>
-              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>283</ID>
               <Description>"Magic"</Description>
               <Options moHideChildren="1"/>
               <LastState/>
+              <Color>008000</Color>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
@@ -2017,8 +1968,231 @@ function Magic:new(id, uuid)
 	return o
 end
 
+function Magic:YesNoDialogBox(value)
+	self:patchByte(0x0, value)
+end
+
+function Magic:LimitCancelSpEffectID(value)
+	self:patch4Byte(0x4, value)
+end
+
+function Magic:SortID(value)
+	self:patch2Byte(0x8, value)
+end
+
+function Magic:ReferenceID(value)
+	self:patch2Byte(0xA, value)
+end
+
+function Magic:FPCost(value)
+	self:patch2Byte(0xC, value)
+end
+
+function Magic:StaminaCost(value)
+	self:patch2Byte(0xE, value)
+end
+
+function Magic:IconID(value)
+	self:patch2Byte(0x10, value)
+end
+
+function Magic:BehaviorID(value)
+	self:patch2Byte(0x12, value)
+end
+
+function Magic:MaterialItemID(value)
+	self:patch2Byte(0x14, value)
+end
+
+function Magic:ReplaceMagicID(value)
+	self:patch2Byte(0x16, value)
+end
+
+function Magic:NumberofCasts(value)
+	self:patch2Byte(0x18, value)
+end
+
+function Magic:Humanity(value)
+	self:patchByte(0x1A, value)
+end
+
+function Magic:OverDexterity(value)
+	self:patchByte(0x1B, value)
+end
+
+function Magic:SFXVariation(value)
+	self:patchByte(0x1C, value)
+end
+
+function Magic:SlotsUsed(value)
+	self:patchByte(0x1D, value)
+end
+
+function Magic:RequiredINT(value)
+	self:patchByte(0x1E, value)
+end
+
+function Magic:RequiredFAI(value)
+	self:patchByte(0x1F, value)
+end
+
+function Magic:DexterityMinimumCastSpeedScaling(value)
+	self:patchByte(0x20, value)
+end
+
+function Magic:DexterityMaximumCastSpeedScaling(value)
+	self:patchByte(0x21, value)
+end
+
+function Magic:EzStateBehaviorType(value)
+	self:patchByte(0x22, value)
+end
+
+function Magic:ReferenceCategory(value)
+	self:patchByte(0x23, value)
+end
+
+function Magic:SpEffectCategory(value)
+	self:patchByte(0x24, value)
+end
+
+function Magic:CastAnimation(value)
+	self:patchByte(0x25, value)
+end
+
+function Magic:MenuType(value)
+	self:patchByte(0x26, value)
+end
+
+function Magic:HasSpEffectType(value)
+	self:patchByte(0x27, value)
+end
+
+function Magic:ReplaceCategory(value)
+	self:patchByte(0x28, value)
+end
+
+function Magic:UseLimitCategory(value)
+	self:patchByte(0x29, value)
+end
+
+-- insert Vow Types 1 here
+
+function Magic:EnableMulti(value)
+	self:patchBinary(0x2B, value, 0)
+end
+
+function Magic:EnableMultOnly(value)
+	self:patchBinary(0x2B, value, 1)
+end
+
+function Magic:IsWeaponEnchant(value)
+	self:patchBinary(0x2B, value, 2)
+end
+
+function Magic:IsShieldEnchant(value)
+	self:patchBinary(0x2B, value, 3)
+end
+
+function Magic:EnableHuman(value)
+	self:patchBinary(0x2B, value, 4)
+end
+
+function Magic:EnableDragonPhantom(value)
+	self:patchBinary(0x2B, value, 5)
+end
+
+function Magic:EnableWhitePhantom(value)
+	self:patchBinary(0x2B, value, 6)
+end
+
+function Magic:EnableBlackPhantom(value)
+	self:patchBinary(0x2B, value, 7)
+end
+
+function Magic:DisableOffline(value)
+	self:patchBinary(0x2C, value, 0)
+end
+
+function Magic:UsesMiracleResonance(value)
+	self:patchBinary(0x2C, value, 1)
+end
+
+-- insert Vow Types 2 here
+
+-- insert 2E-2F
+
+function Magic:sfxID1(value)
+	self:patch4Byte(0x30, value)
+end
+
+function Magic:sfxID2(value)
+	self:patch4Byte(0x34, value)
+end
+
+function Magic:sfxID3(value)
+	self:patch4Byte(0x38, value)
+end
+
+-- insert 3C-40
+
+--Faith Breakpoints
+function Magic:FaithBreakpoint20(value)
+	self:patchByte(0x41, value)
+end
+
+function Magic:FaithBreakpoint30(value)
+	self:patchByte(0x42, value)
+end
+
+function Magic:FaithBreakpoint40(value)
+	self:patchByte(0x43, value)
+end
+
+function Magic:FaithBreakpoint60(value)
+	self:patchByte(0x44, value)
+end
+
+-- insert 45-47
 
 
+--Spell cast at X Faith
+function Magic:Spellcastat20Faith(value)
+	self:patch4Byte(0x48, value)
+end
+
+function Magic:Spellcastat20Faith(value)
+	self:patch4Byte(0x4C, value)
+end
+
+function Magic:Spellcastat20Faith(value)
+	self:patch4Byte(0x50, value)
+end
+
+function Magic:Spellcastat20Faith(value)
+	self:patch4Byte(0x54, value)
+end
+
+-- insert 58-60
+
+-- Bullets
+function Magic:Bullet1(value)
+	self:patch4Byte(0x64, value)
+end
+
+function Magic:Bullet2(value)
+	self:patch4Byte(0x68, value)
+end
+
+function Magic:Bullet3(value)
+	self:patch4Byte(0x6C, value)
+end
+
+-- insert 6C
+
+function Magic:Bullet4(value)
+	self:patch4Byte(0x70, value)
+end
 
 --[[END Magic class]]--
 
@@ -2027,80 +2201,6 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
-              <CheatEntries>
-                <CheatEntry>
-                  <ID>284</ID>
-                  <Description>"EquipParamWeapon Tests"</Description>
-                  <Options moHideChildren="1"/>
-                  <LastState Value="" RealAddress="00000000"/>
-                  <Color>C0C0C0</Color>
-                  <GroupHeader>1</GroupHeader>
-                  <CheatEntries>
-                    <CheatEntry>
-                      <ID>285</ID>
-                      <Description>"effectOnHit Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
-equipWeapon:effectOnHit1(10564)
-equipWeapon:effectOnHit2(112079000)
-equipWeapon:effectOnHit3(110)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("effectOnHitTest")
-</AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>286</ID>
-                      <Description>"isEnhance Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"isEnhanceTest")
-equipWeapon:isEnhance(0)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("isEnhanceTest")
-</AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>287</ID>
-                      <Description>"Scaling Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
-equipWeapon:correctStrength(100)
-equipWeapon:correctAgility(100)
-equipWeapon:correctMagic(100)
-equipWeapon:correctFaith(100)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("ScalingTest")
-</AssemblerScript>
-                    </CheatEntry>
-                  </CheatEntries>
-                </CheatEntry>
-              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>288</ID>
@@ -2138,80 +2238,6 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
-              <CheatEntries>
-                <CheatEntry>
-                  <ID>289</ID>
-                  <Description>"EquipParamWeapon Tests"</Description>
-                  <Options moHideChildren="1"/>
-                  <LastState Value="" RealAddress="00000000"/>
-                  <Color>C0C0C0</Color>
-                  <GroupHeader>1</GroupHeader>
-                  <CheatEntries>
-                    <CheatEntry>
-                      <ID>290</ID>
-                      <Description>"effectOnHit Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
-equipWeapon:effectOnHit1(10564)
-equipWeapon:effectOnHit2(112079000)
-equipWeapon:effectOnHit3(110)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("effectOnHitTest")
-</AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>291</ID>
-                      <Description>"isEnhance Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"isEnhanceTest")
-equipWeapon:isEnhance(0)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("isEnhanceTest")
-</AssemblerScript>
-                    </CheatEntry>
-                    <CheatEntry>
-                      <ID>292</ID>
-                      <Description>"Scaling Test"</Description>
-                      <LastState/>
-                      <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
-{$lua}
---if syntaxcheck then return end
-local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
-equipWeapon:correctStrength(100)
-equipWeapon:correctAgility(100)
-equipWeapon:correctMagic(100)
-equipWeapon:correctFaith(100)
-
-[DISABLE]
-{$lua}
---if syntaxcheck then return end
-
-paramUtils:restore("ScalingTest")
-</AssemblerScript>
-                    </CheatEntry>
-                  </CheatEntries>
-                </CheatEntry>
-              </CheatEntries>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
