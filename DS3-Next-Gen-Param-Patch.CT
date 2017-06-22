@@ -4,6 +4,7 @@
     <CheatEntry>
       <ID>249</ID>
       <Description>"ParamUtils"</Description>
+      <Options moHideChildren="1"/>
       <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>[ENABLE]
@@ -419,7 +420,7 @@ paramUtils:destroy()
           <ID>252</ID>
           <Description>"BaseParamClass"</Description>
           <Options moHideChildren="1"/>
-          <LastState Activated="1"/>
+          <LastState/>
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
 {$lua}
@@ -494,6 +495,7 @@ end
               <Description>"EquipParamWeapon"</Description>
               <Options moHideChildren="1"/>
               <LastState/>
+              <Color>008000</Color>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
@@ -1147,6 +1149,7 @@ paramUtils:restore("ScalingTest")
               <Description>"EquipParamProtector"</Description>
               <Options moHideChildren="1"/>
               <LastState/>
+              <Color>008000</Color>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
@@ -1168,7 +1171,223 @@ function EquipParamProtector:new(id, uuid)
 	return o
 end
 
+function EquipParamProtector:sortId(value)
+	self:patch4Byte(0x0, value)
+end
 
+function EquipParamProtector:wanderingEquipId(value)
+	self:patch4Byte(0x4, value)
+end
+
+function EquipParamProtector:vagrantItemLotId(value)
+	self:patch4Byte(0x8, value)
+end
+
+function EquipParamProtector:vagrantBonusEneDropItemLotId(value)
+	self:patch4Byte(0xC, value)
+end
+
+function EquipParamProtector:vagrantItemEneDropItemLotId(value)
+	self:patch4Byte(0x10, value)
+end
+
+--Prices
+function EquipParamProtector:fixPrice(value)
+	self:patch4Byte(0x14, value)
+end
+
+function EquipParamProtector:basicPrice(value)
+	self:patch4Byte(0x18, value)
+end
+
+function EquipParamProtector:sellValue(value)
+	self:patch4Byte(0x1C, value)
+end
+
+function EquipParamProtector:weight(value)
+	self:patchFloat(0x20, value)
+end
+
+--Effect On Equip
+function EquipParamProtector:residentSpEffectId(value)
+	self:patch4Byte(0x24, value)
+end
+
+function EquipParamProtector:residentSpEffectId2(value)
+	self:patch4Byte(0x28, value)
+end
+
+function EquipParamProtector:residentSpEffectId3(value)
+	self:patch4Byte(0x2C, value)
+end
+
+
+function EquipParamProtector:materialSetId(value)
+	self:patch4Byte(0x30, value)
+end
+
+function EquipParamProtector:partsDamageRate(value)
+	self:patchFloat(0x34, value)
+end
+
+function EquipParamProtector:corectSARecover(value)
+	self:patchFloat(0x38, value)
+end
+
+--Origin Equip Pros
+function EquipParamProtector:originEquipPro(value)
+	self:patch4Byte(0x3C, value)
+end
+
+function EquipParamProtector:originEquipPro1(value)
+	self:patch4Byte(0x40, value)
+end
+
+function EquipParamProtector:originEquipPro2(value)
+	self:patch4Byte(0x44, value)
+end
+
+function EquipParamProtector:originEquipPro3(value)
+	self:patch4Byte(0x48, value)
+end
+
+function EquipParamProtector:originEquipPro4(value)
+	self:patch4Byte(0x4C, value)
+end
+
+function EquipParamProtector:originEquipPro5(value)
+	self:patch4Byte(0x50, value)
+end
+
+function EquipParamProtector:originEquipPro6(value)
+	self:patch4Byte(0x54, value)
+end
+
+function EquipParamProtector:originEquipPro7(value)
+	self:patch4Byte(0x58, value)
+end
+
+function EquipParamProtector:originEquipPro8(value)
+	self:patch4Byte(0x5C, value)
+end
+
+function EquipParamProtector:originEquipPro9(value)
+	self:patch4Byte(0x60, value)
+end
+
+function EquipParamProtector:originEquipPro10(value)
+	self:patch4Byte(0x64, value)
+end
+
+function EquipParamProtector:originEquipPro11(value)
+	self:patch4Byte(0x68, value)
+end
+
+function EquipParamProtector:originEquipPro12(value)
+	self:patch4Byte(0x6C, value)
+end
+
+function EquipParamProtector:originEquipPro13(value)
+	self:patch4Byte(0x70, value)
+end
+
+function EquipParamProtector:originEquipPro14(value)
+	self:patch4Byte(0x74, value)
+end
+
+function EquipParamProtector:originEquipPro15(value)
+	self:patch4Byte(0x78, value)
+end
+
+
+function EquipParamProtector:equipModelId(value)
+	self:patch2Byte(0xA0, value)
+end
+
+function EquipParamProtector:iconIdM(value)
+	self:patch2Byte(0xA2, value)
+end
+
+function EquipParamProtector:iconIdF(value)
+	self:patch4Byte(0xA4, value)
+end
+
+function EquipParamProtector:knockbackBounceRate(value)
+	self:patch2Byte(0xA8, value)
+end
+
+--Durability
+function EquipParamProtector:durability(value)
+	self:patch2Byte(0xAA, value)
+end
+
+function EquipParamProtector:durabilityMax(value)
+	self:patch2Byte(0xAC, value)
+end
+
+
+function EquipParamProtector:saDurability(value)
+	self:patch2Byte(0xAE, value)
+end
+
+--Resistence
+function EquipParamProtector:resistPoison(value)
+	self:patch2Byte(0xC0, value)
+end
+
+function EquipParamProtector:resistDisease(value)
+	self:patch2Byte(0xC2, value)
+end
+
+function EquipParamProtector:resistBlood(value)
+	self:patch2Byte(0xC4, value)
+end
+
+function EquipParamProtector:resistCurse(value)
+	self:patchByte(0xC6, value)
+end
+
+--Defense
+function EquipParamProtector:defensePhysical(value)
+	self:patchFloat(0xE0, value)
+end
+
+function EquipParamProtector:defenseSlash(value)
+	self:patchFloat(0xE4, value)
+end
+
+function EquipParamProtector:defenseStrike(value)
+	self:patchFloat(0xE8, value)
+end
+
+function EquipParamProtector:defenseThrust(value)
+	self:patchFloat(0xEC, value)
+end
+
+function EquipParamProtector:defenseMagic(value)
+	self:patchFloat(0xF0, value)
+end
+
+function EquipParamProtector:defenseFire(value)
+	self:patchFloat(0xE4, value)
+end
+
+function EquipParamProtector:defenseThunder(value)
+	self:patchFloat(0xE8, value)
+end
+
+
+function EquipParamProtector:Poise(value)
+	self:patchFloat(0x110, value)
+end
+
+function EquipParamProtector:defenseDark(value)
+	self:patchFloat(0x118, value)
+end
+
+function EquipParamProtector:resistFrost(value)
+	self:patch2Byte(0x12C, value)
+end
 
 
 --[[END EquipParamProtector class]]--
@@ -1258,6 +1477,7 @@ paramUtils:restore("ScalingTest")
               <Description>"EquipParamGoods"</Description>
               <Options moHideChildren="1"/>
               <LastState/>
+              <Color>008000</Color>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
