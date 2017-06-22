@@ -646,28 +646,28 @@ function EquipParamWeapon:thunGuardCutRate(value)
 end
 
 -- Effects on hit
-function EquipParamWeapon:effectOnHit1(value)
+function EquipParamWeapon:spEffectBehaviorId(value)
 	self:patch4Byte(0x40, value)
 end
 
-function EquipParamWeapon:effectOnHit2(value)
+function EquipParamWeapon:spEffectBehaviorId1(value)
 	self:patch4Byte(0x44, value)
 end
 
-function EquipParamWeapon:effectOnHit3(value)
+function EquipParamWeapon:spEffectBehaviorId2(value)
 	self:patch4Byte(0x48, value)
 end
 
 -- Effects on self
-function EquipParamWeapon:effectOnSelf1(value)
+function EquipParamWeapon:residentSpEffectId(value)
 	self:patch4Byte(0x4C, value)
 end
 
-function EquipParamWeapon:effectOnSelf2(value)
+function EquipParamWeapon:residentSpEffectId11(value)
 	self:patch4Byte(0x50, value)
 end
 
-function EquipParamWeapon:effectOnSelf3(value)
+function EquipParamWeapon:residentSpEffectId2(value)
 	self:patch4Byte(0x54, value)
 end
 
@@ -1120,6 +1120,14 @@ function EquipParamWeapon:swordArt(value)
 	self:patch4Byte(0x194, value)
 end
 
+
+function EquipParamWeapon:correctLuck(value)
+	self:patchFloat(0x198, value)
+end
+
+function EquipParamWeapon:scalingCategories(value)
+	self:patch4Byte(0x228, value)
+end
 -- insert Unknown 3 197-258 here
 
 --[[END EquipParamWeapon class]]--
@@ -1148,9 +1156,9 @@ if syntaxcheck then return end
 --if syntaxcheck then return end
 local weapon = 0x001EAB90 --Long Sword
 local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
-equipWeapon:effectOnHit1(10564)
-equipWeapon:effectOnHit2(112079000)
-equipWeapon:effectOnHit3(110)
+equipWeapon:spEffectBehaviorId(10564)
+equipWeapon:spEffectBehaviorId1(112079000)
+equipWeapon:spEffectBehaviorId2(110)
 
 [DISABLE]
 {$lua}
