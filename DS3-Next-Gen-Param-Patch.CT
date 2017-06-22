@@ -188,8 +188,20 @@ function ParamUtils:getIdAddressFromParam(paramName, id)
 	local result = 0
 	local idTable = self:getParamIdTable(paramName)
 
-	if(idTable ~= nil) then
+	if(idTable ~= nil and #idTable &gt; 0) then
 		result = self:getIdAddress(idTable, id)
+	end
+	return result
+end
+
+function ParamUtils:getAllAddressFromParam(paramName)
+	local result = {}
+	local idTable = self:getParamIdTable(paramName)
+
+	if(idTable ~= nil and #idTable &gt; 0) then
+		for id,address in pairs(idTable) do
+			table.insert(result, address)
+		end
 	end
 	return result
 end
@@ -434,10 +446,19 @@ BaseParamClass = {
 	address = 0
 }
 
-function BaseParamClass:new(o)
-	o = o or {}
+function BaseParamClass:new(param, uuid, id)
+	local o = {}
 	setmetatable(o, self)
 	self.__index = self
+	if(param ~= nil) then
+		o.param = param
+	end
+	if(uuid ~= nil) then
+		o.backupUuid = uuid
+	end
+	if(id ~= nil) then
+		o.id = id
+	end
 
 	return o
 end
@@ -447,11 +468,50 @@ function BaseParamClass:init()
 	self.address = paramUtils:getIdAddressFromParam(self.param, self.id)
 end
 
-function BaseParamClass:stripIdForParams()
-	local idHex = paramUtils:toHex(self.id, 8)
-	self.id = tonumber(idHex:sub(2),16)
+-- Removes first Hex digit of the ID
+function BaseParamClass:stripIdForParams(id)
+	local idHex = paramUtils:toHex(id, 8)
+	return tonumber(idHex:sub(2),16)
 end
 
+function BaseParamClass:stripSelfIdForParams()
+	return self:stripIdForParams(self.id)
+end
+
+--Patch all values
+function BaseParamClass:patchAll(offset, value, valueType, binaryOffset)
+	local addresses = paramUtils:getAllAddressFromParam(self.param)
+	for i,address in ipairs(addresses) do
+		local patchInfo = PatchInfo:new(address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
+		paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
+	end
+end
+
+function BaseParamClass:patchAllBinary(offset, value, binaryOffset)
+	self:patchAll(offset, value, PatchInfo.TYPE.BINARY, binaryOffset)
+end
+
+function BaseParamClass:patchAllByte(offset, value)
+	self:patchAll(offset, value, PatchInfo.TYPE.BYTE)
+end
+
+function BaseParamClass:patchAll2Byte(offset, value)
+	self:patchAll(offset, value, PatchInfo.TYPE.TWO_BYTE)
+end
+
+function BaseParamClass:patchAll4Byte(offset, value)
+	self:patchAll(offset, value, PatchInfo.TYPE.FOUR_BYTE)
+end
+
+function BaseParamClass:patchAll8Byte(offset, value)
+	self:patchAll(offset, value, PatchInfo.TYPE.EIGHT_BYTE)
+end
+
+function BaseParamClass:patchAllFloat(offset, value)
+	self:patchAll(offset, value, PatchInfo.TYPE.FLOAT)
+end
+
+-- Patch value
 function BaseParamClass:patchValue(offset, value, valueType, binaryOffset)
 	local patchInfo = PatchInfo:new(self.address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
 	paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
