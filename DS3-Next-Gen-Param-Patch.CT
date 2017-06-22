@@ -1211,11 +1211,18 @@ paramUtils:restore("ScalingTest")
                   </CheatEntries>
                 </CheatEntry>
                 <CheatEntry>
-                  <ID>489725</ID>
-                  <Description>"Weapon Modification"</Description>
-                  <LastState/>
-                  <VariableType>Auto Assembler Script</VariableType>
-                  <AssemblerScript>[ENABLE]
+                  <ID>489727</ID>
+                  <Description>"Converted Scripts"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>489725</ID>
+                      <Description>"Weapon Modification"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
 {$lua}
 if not syntaxcheck then
   local WeaponId = 0x4C4B40 -- Uchigatana
@@ -1263,6 +1270,92 @@ if not syntaxcheck then
    paramUtils:restore("weaponModificationTut")
 end
 </AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>489726</ID>
+                      <Description>"Every Catalyst can cast everything"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+	Author: Igromanru
+	Description: Patch all catalyst to allow cast any sorcery, pyromancy and miracle
+}
+[ENABLE]
+{$lua}
+if not syntaxcheck then
+  local catalysts = {13050000, 13260000, 13290000, 13270000, 13280000, 13300000, 13210000, 13220000, 13230000,
+	13430000, 13240000, 13250000, 13140000, 13060000, 13170000, 13180000, 13190000, 13070000, 13080000, 13420000,
+	13200000, 13110000, 13100000, 13440000, 13160000, 13400000, 13410000, 2160000, 4130000, 13120000, 8220000,
+	10160000, 12070000
+  }
+
+  for i,id in ipairs(catalysts) do
+	local weapon = EquipParamWeapon:new(id,"EveryCatalystCanCastEverything"..i)
+	weapon:enableMagic(1)
+	weapon:enablePyromancy(1)
+	weapon:enableMiracle(1)
+  end
+end
+
+[DISABLE]
+{$lua}
+if not syntaxcheck then
+  for i = 1, 33 do
+	paramUtils:restore("EveryCatalystCanCastEverything"..i)
+  end
+end
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>489728</ID>
+                      <Description>"Pyromancy Flame cast everything"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+	Author: Igromanru
+	Description: Patch Pyromancy Flame to allow cast any sorcery, pyromancy and miracle
+}
+[ENABLE]
+{$lua}
+if not syntaxcheck then
+  local weapon = EquipParamWeapon:new(0xCC77C0,"PyromancyFlameCastEverything")
+  weapon:enableMagic(1)
+  weapon:enablePyromancy(1)
+  weapon:enableMiracle(1)
+end
+
+[DISABLE]
+{$lua}
+if not syntaxcheck then
+  paramUtils:restore("PyromancyFlameCastEverything")
+end
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011520</ID>
+                      <Description>"Placing a red sign on weapon equip - Weapon Self Effect "</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+	Author: Igromanru
+	Description: Place a red sign on equipping a Long Sword.
+}
+[ENABLE]
+{$lua}
+if not syntaxcheck then
+  local WeaponId = 0x1EAB90 --Long Sword
+  local weapon = EquipParamWeapon:new(WeaponId,"LongSwordPlaceRedSignOnEquip")
+  weapon:residentSpEffectId(10)
+end
+
+[DISABLE]
+{$lua}
+if not syntaxcheck then
+  paramUtils:restore("LongSwordPlaceRedSignOnEquip")
+end
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
                 </CheatEntry>
               </CheatEntries>
             </CheatEntry>
