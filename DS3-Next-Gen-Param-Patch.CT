@@ -1769,7 +1769,7 @@ if syntaxcheck then return end
               <Description>"SpEffectParam"</Description>
               <Options moHideChildren="1"/>
               <LastState/>
-              <Color>0080FF</Color>
+              <Color>008000</Color>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
@@ -1991,7 +1991,324 @@ function SpEffectParam:magicEffectTimeChange(value)
 	self:patchFloat(0xBC, value)
 end
 
--- C0+ insert here
+--Durability
+function SpEffectParam:insideDurability(value)
+	self:patch4Byte(0xC0, value)
+end
+
+function SpEffectParam:maxDurability(value)
+	self:patch4Byte(0xC4, value)
+end
+
+
+function SpEffectParam:staminaAttackRate(value)
+	self:patchFloat(0xC8, value)
+end
+
+function SpEffectParam:poizonAttackPower(value)
+	self:patch4Byte(0xCC, value)
+end
+
+function SpEffectParam:registIllness(value)
+	self:patch4Byte(0xD0, value)
+end
+
+function SpEffectParam:registBlood(value)
+	self:patch4Byte(0xD4, value)
+end
+
+function SpEffectParam:registCurse(value)
+	self:patch4Byte(0xD8, value)
+end
+
+function SpEffectParam:fallDamageRate(value)
+	self:patchFloat(0xDC, value)
+end
+
+function SpEffectParam:soulRate(value)
+	self:patchFloat(0xE0, value)
+end
+
+function SpEffectParam:equipWeightChangeRate(value)
+	self:patchFloat(0xE4, value)
+end
+
+function SpEffectParam:allItemWeightChangeRate(value)
+	self:patchFloat(0xE8, value)
+end
+
+function SpEffectParam:soul(value)
+	self:patch4Byte(0xEC, value)
+end
+
+function SpEffectParam:animIdOffset(value)
+	self:patch4Byte(0xF0, value)
+end
+
+function SpEffectParam:haveSoulRate(value)
+	self:patchFloat(0xF4, value)
+end
+
+function SpEffectParam:targetPriority(value)
+	self:patchFloat(0xF8, value)
+end
+
+function SpEffectParam:sightSearchEnemyCut(value)
+	self:patch4Byte(0xFC, value)
+end
+
+function SpEffectParam:hearingSearchEnemyCut(value)
+	self:patchFloat(0x100, value)
+end
+
+function SpEffectParam:grabityRate(value)
+	self:patchFloat(0x104, value)
+end
+
+--Change Rate 3
+function SpEffectParam:registPoizonChangeRate(value)
+	self:patchFloat(0x108, value)
+end
+
+function SpEffectParam:registIllnessChangeRate(value)
+	self:patchFloat(0x10C, value)
+end
+
+function SpEffectParam:registBloodChangeRate(value)
+	self:patchFloat(0x110, value)
+end
+
+function SpEffectParam:registCurseChangeRate(value)
+	self:patchFloat(0x114, value)
+end
+
+
+function SpEffectParam:soulStealRate(value)
+	self:patchFloat(0x118, value)
+end
+
+function SpEffectParam:lifeReductionRate(value)
+	self:patchFloat(0x11C, value)
+end
+
+function SpEffectParam:hpRecoverRate(value)
+	self:patchFloat(0x120, value)
+end
+
+function SpEffectParam:replaceSpEffectId(value)
+	self:patch4Byte(0x124, value)
+end
+
+function SpEffectParam:cycleOccurrenceSpEffectId(value)
+	self:patch4Byte(0x128, value)
+end
+
+function SpEffectParam:atkOccurence(value)
+	self:patch4Byte(0x12C, value)
+end
+
+function SpEffectParam:guardDefFlickPowerRate(value)
+	self:patchFloat(0x130, value)
+end
+
+function SpEffectParam:guardStaminaCutRate(value)
+	self:patchFloat(0x134, value)
+end
+
+function SpEffectParam:rayCastPassedTime(value)
+	self:patch2Byte(0x138, value)
+end
+
+function SpEffectParam:changeSuperArmorPoint(value)
+	self:patch2Byte(0x13A, value)
+end
+
+function SpEffectParam:bowDistRate(value)
+	self:patch2Byte(0x13C, value)
+end
+
+function SpEffectParam:spCategory(value)
+	self:patch2Byte(0x13E, value)
+end
+
+function SpEffectParam:categoryPriority(value)
+	self:patchByte(0x140, value)
+end
+
+function SpEffectParam:saveCategory(value)
+	self:patchByte(0x141, value)
+end
+
+function SpEffectParam:changeMagicSlot(value)
+	self:patchByte(0x142, value)
+end
+
+function SpEffectParam:changeMiracleSlot(value)
+	self:patchByte(0x143, value)
+end
+
+function SpEffectParam:heroPointDamage(value)
+	self:patchByte(0x144, value)
+end
+
+function SpEffectParam:defFlickPower(value)
+	self:patchByte(0x145, value)
+end
+
+function SpEffectParam:flickDamageCutRate(value)
+	self:patchByte(0x146, value)
+end
+
+function SpEffectParam:bloodDamageRate(value)
+	self:patchByte(0x147, value)
+end
+
+--Damage Level
+function SpEffectParam:dmgLv_None(value)
+	self:patchByte(0x148, value)
+end
+
+function SpEffectParam:dmgLv_S(value)
+	self:patchByte(0x149, value)
+end
+
+function SpEffectParam:dmgLv_M(value)
+	self:patchByte(0x14A, value)
+end
+
+function SpEffectParam:dmgLv_L(value)
+	self:patchByte(0x14B, value)
+end
+
+function SpEffectParam:dmgLv_BlowM(value)
+	self:patchByte(0x14C, value)
+end
+
+function SpEffectParam:dmgLv_Push(value)
+	self:patchByte(0x14D, value)
+end
+
+function SpEffectParam:dmgLv_Strike(value)
+	self:patchByte(0x14E, value)
+end
+
+function SpEffectParam:dmgLv_BlowS(value)
+	self:patchByte(0x14F, value)
+end
+
+function SpEffectParam:dmgLv_Min(value)
+	self:patchByte(0x150, value)
+end
+
+function SpEffectParam:dmgLv_Uppercut(value)
+	self:patchByte(0x151, value)
+end
+
+function SpEffectParam:dmgLv_BlowLL(value)
+	self:patchByte(0x152, value)
+end
+
+function SpEffectParam:dmgLv_Breath(value)
+	self:patchByte(0x153, value)
+end
+
+
+function SpEffectParam:atkAttribute(value)
+	self:patchByte(0x154, value)
+end
+
+function SpEffectParam:spAttribute(value)
+	self:patchByte(0x155, value)
+end
+
+function SpEffectParam:stateInfo(value)
+	self:patchByte(0x156, value)
+end
+
+function SpEffectParam:wepParamChange(value)
+	self:patchByte(0x157, value)
+end
+
+function SpEffectParam:moveType(value)
+	self:patchByte(0x158, value)
+end
+
+function SpEffectParam:lifeReductionType(value)
+	self:patchByte(0x159, value)
+end
+
+function SpEffectParam:throwCondition(value)
+	self:patchByte(0x15A, value)
+end
+
+function SpEffectParam:addBehaviorJudgeId_condition(value)
+	self:patchByte(0x15B, value)
+end
+
+function SpEffectParam:addBehaviorJudgeId_add(value)
+	self:patchByte(0x15C, value)
+end
+
+-- insert Minor 1 here
+
+-- insert Unknown here
+
+function SpEffectParam:frostAttackPower(value)
+	self:patch4Byte(0x1AC, value)
+end
+
+function SpEffectParam:darkDamageCutRate(value)
+	self:patchFloat(0x1D4, value)
+end
+
+function SpEffectParam:darkDifferenceRate(value)
+	self:patchFloat(0x1D8, value)
+end
+
+function SpEffectParam:darkAttackPower(value)
+	self:patch4Byte(0x1E4, value)
+end
+
+function SpEffectParam:registFrostChange(value)
+	self:patch4Byte(0x2BC, value)
+end
+
+--Buff's
+function SpEffectParam:VigorBuff(value)
+	self:patchByte(0x308, value)
+end
+
+function SpEffectParam:AttunementBuff(value)
+	self:patchByte(0x308, value)
+end
+
+function SpEffectParam:EnduranceBuff(value)
+	self:patchByte(0x308, value)
+end
+
+function SpEffectParam:VitalityBuff(value)
+	self:patchByte(0x308, value)
+end
+
+function SpEffectParam:StrenghtBuff(value)
+	self:patchByte(0x308, value)
+end
+
+function SpEffectParam:DextrerityBuff(value)
+	self:patchByte(0x308, value)
+end
+
+function SpEffectParam:IntelligenceBuff(value)
+	self:patchByte(0x308, value)
+end
+
+function SpEffectParam:FaithBuff(value)
+	self:patchByte(0x308, value)
+end
+
+function SpEffectParam:LuckBuff(value)
+	self:patchByte(0x308, value)
+end
 
 --[[END SpEffectParam class]]--
 
