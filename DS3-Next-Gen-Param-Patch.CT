@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="26">
+<CheatTable CheatEngineTableVersion="24">
   <CheatEntries>
     <CheatEntry>
       <ID>249</ID>
@@ -139,9 +139,9 @@ function ParamUtils:toHex(number, length)
 	return result
 end
 
-function ParamUtils:error(message)
+function ParamUtils:logError(message)
 	local output = "ParamUtils Error:\r\n"..message
-	showMessage(output)
+	print(output)
 	error(output)
 end
 
@@ -166,8 +166,8 @@ end
 
 function ParamUtils:getIdAddress(IdTable, Id)
 	local result = IdTable[Id]
-	if result == nil then
-		self:error("ID:"..Id.." (hex:"..self:toHex(Id) ..") couldn't be found")
+	if(result == nil or result &lt; 0) then
+		self:logError("ID: "..Id.." (0x"..self:toHex(Id) ..") couldn't be found")
 	end
 	return result
 end
@@ -188,8 +188,10 @@ function ParamUtils:getIdAddressFromParam(paramName, id)
 	local result = 0
 	local idTable = self:getParamIdTable(paramName)
 
-	if(idTable ~= nil and #idTable &gt; 0) then
+	if(idTable ~= nil) then
 		result = self:getIdAddress(idTable, id)
+	else
+		self:logError("Addresses for Param: '"..paramName.."' couldn't be found")
 	end
 	return result
 end
@@ -198,7 +200,7 @@ function ParamUtils:getAllAddressFromParam(paramName)
 	local result = {}
 	local idTable = self:getParamIdTable(paramName)
 
-	if(idTable ~= nil and #idTable &gt; 0) then
+	if(idTable ~= nil) then
 		for id,address in pairs(idTable) do
 			table.insert(result, address)
 		end
@@ -260,7 +262,7 @@ function ParamUtils:patchMultipleOffsets(paramName, id, patchInfoTable, uuid)
 			self:patchValueWithBackup(patchInfo,uuid)
 		end
 	else
-        self:error("The UUID "..uuid.." is already in use.")
+        self:logError("The UUID "..uuid.." is already in use.")
 	end
 end
 
@@ -336,15 +338,15 @@ function ParamUtils:writeBinary(patchInfo)
 		end
 		writeBytes(patchInfo.address, patchInfo.value)
 	else
-		self:error("To write a binary you've to set the 'binaryOffset'")
+		self:logError("To write a binary you've to set the 'binaryOffset'")
 	end
 end
 
 function ParamUtils:writeByte(patchInfo)
 	if(patchInfo.value &gt; 255) then
-		self:error("Byte can't be bigger then 255")
+		self:logError("Byte can't be bigger then 255")
 	elseif(patchInfo.value &lt; 0) then
-		self:error("Byte can't be smaller then 0")
+		self:logError("Byte can't be smaller then 0")
 	else
 		writeBytes(patchInfo.address, patchInfo.value)
 	end
@@ -352,9 +354,9 @@ end
 
 function ParamUtils:write2Byte(patchInfo)
 	if(patchInfo.value &gt; 65535) then
-		self:error("2 Bytes can't be bigger then 65535")
+		self:logError("2 Bytes can't be bigger then 65535")
 	elseif(patchInfo.value &lt; 0) then
-		self:error("2 Bytes can't be smaller then 0")
+		self:logError("2 Bytes can't be smaller then 0")
 	else
 		writeBytes(patchInfo.address, wordToByteTable(patchInfo.value))
 	end
@@ -362,9 +364,9 @@ end
 
 function ParamUtils:write4Byte(patchInfo)
 	if(patchInfo.value &gt; 4294967295) then
-		self:error("4 Bytes can't be bigger then 4294967295")
+		self:logError("4 Bytes can't be bigger then 4294967295")
 	elseif(patchInfo.value &lt; -2147483648) then
-		self:error("4 Bytes can't be smaller then -2147483648")
+		self:logError("4 Bytes can't be smaller then -2147483648")
 	else
 		writeInteger(patchInfo.address, patchInfo.value)
 	end
@@ -372,9 +374,9 @@ end
 
 function ParamUtils:write8Byte(patchInfo)
 	if(patchInfo.value &gt; 9223372036854775807) then
-		self:error("8 Bytes can't be bigger then 9223372036854775807")
+		self:logError("8 Bytes can't be bigger then 9223372036854775807")
 	elseif(patchInfo.value &lt; -9223372036854775808) then
-		self:error("8 Bytes can't be smaller then -9223372036854775808")
+		self:logError("8 Bytes can't be smaller then -9223372036854775808")
 	else
 		writeQword(patchInfo.address, patchInfo.value)
 	end
@@ -382,9 +384,9 @@ end
 
 function ParamUtils:writeFloat(patchInfo)
 	if(patchInfo.value &gt; 3.4028235E38) then
-		self:error("Float can't be bigger then 3.4028235E38")
+		self:logError("Float can't be bigger then 3.4028235E38")
 	elseif(patchInfo.value &lt; -3.4028235E38) then
-		self:error("Float can't be smaller then -3.4028235E38")
+		self:logError("Float can't be smaller then -3.4028235E38")
 	else
 		writeFloat(patchInfo.address, patchInfo.value)
 	end
@@ -409,6 +411,15 @@ end
 
 function ParamUtils:readFloat(patchInfo)
 	return readFloat(patchInfo.address)
+end
+
+function ParamUtils:printAllBackups()
+  for uuid,tBackup in pairs(self.patchBackUp) do
+	print("UUID: "..uuid)
+	for i,object in ipairs(tBackup) do
+	  print("Address: "..object.address.." Value: "..object.value.." Type: "..object.valueType)
+	end
+  end
 end
 
 -- Creating an instance of ParamUtils
@@ -464,8 +475,10 @@ function BaseParamClass:new(param, uuid, id)
 end
 
 function BaseParamClass:init()
-	paramUtils.patchBackUp[self.backupUuid] = {}
-	self.address = paramUtils:getIdAddressFromParam(self.param, self.id)
+  if(paramUtils.patchBackUp[self.backupUuid] == nil) then
+    paramUtils.patchBackUp[self.backupUuid] = {}
+  end
+  self.address = paramUtils:getIdAddressFromParam(self.param, self.id)
 end
 
 -- Removes first Hex digit of the ID
@@ -663,7 +676,7 @@ function EquipParamWeapon:residentSpEffectId(value)
 	self:patch4Byte(0x4C, value)
 end
 
-function EquipParamWeapon:residentSpEffectId11(value)
+function EquipParamWeapon:residentSpEffectId1(value)
 	self:patch4Byte(0x50, value)
 end
 
@@ -797,6 +810,10 @@ function EquipParamWeapon:parryDamageLife(value)
 end
 
 --Attack Damage
+function EquipParamWeapon:attackBasePhysics(value)
+	self:patch2Byte(0xC4, value)
+end
+
 function EquipParamWeapon:attackBaseMagic(value)
 	self:patch2Byte(0xC6, value)
 end
@@ -806,7 +823,7 @@ function EquipParamWeapon:attackBaseFire(value)
 end
 
 function EquipParamWeapon:attackBaseThunder(value)
-	self:patch2Byte(0xCa, value)
+	self:patch2Byte(0xCA, value)
 end
 
 function EquipParamWeapon:attackBaseStamina(value) -- Stamina consuption to block
@@ -1224,51 +1241,50 @@ paramUtils:restore("ScalingTest")
                       <VariableType>Auto Assembler Script</VariableType>
                       <AssemblerScript>[ENABLE]
 {$lua}
-if not syntaxcheck then
-  local WeaponId = 0x4C4B40 -- Uchigatana
+--if syntaxcheck then return end
 
-  local equipWeapon = EquipParamWeapon:new(WeaponId,"weaponModificationTut")
-  -- Attack Damage
-  equipWeapon:attackBasePhysics(200) -- Physical Damage - 200
-  equipWeapon:attackBaseMagic(50)    -- Magic Damage - 50
-  equipWeapon:attackBaseFire(50)     -- Fire Damage - 50
-  equipWeapon:attackBaseThunder(50)  -- Lightning Damage - 50
-  equipWeapon:attackBaseDark(150)    -- Dark Damage - 150
-  -- Requirements
-  equipWeapon:properStrength(0)      -- Required STR - 0
-  equipWeapon:properAgility(0)       -- Required DEX - 0
-  equipWeapon:properMagic(0)         -- Required INT - 0
-  equipWeapon:properFaith(0)         -- Required FTH - 0
-  -- Scaling
-  equipWeapon:correctStrength(150)   -- STR Scaling - 150
-  equipWeapon:correctAgility(150)    -- DEX Scaling - 150
-  equipWeapon:correctMagic(50)       -- INT Scaling - 50
-  equipWeapon:correctFaith(50)       -- FTH Scaling - 50
-  -- Block
-  equipWeapon:physGuardCutRate(50)   -- Physical Block - 50
-  equipWeapon:magGuardCutRate(50)    -- Magic Block - 50
-  equipWeapon:fireGuardCutRate(50)   -- Fire Block - 50
-  equipWeapon:thunGuardCutRate(50)   -- Lightning Block - 50
-  equipWeapon:darkGuardCutRate(50)   -- Dark Block - 50
-  --Effects on Hit
-  equipWeapon:spEffectBehaviorId(3151) --Effect on Hit 1 -- Undead Hunter Charm
-  equipWeapon:spEffectBehaviorId1(110) --Effect on Hit 2 -- Bonfire
-  equipWeapon:spEffectBehaviorId2(2030)--Effect on Hit 2 -- Green Moss
-  --Effects on Self
-  equipWeapon:residentSpEffectId(112079000)  --Effect on Self 1 -- Pontiff's Left Eye effect
-  equipWeapon:residentSpEffectId1(112042000) --Effect on Self 2 -- Silvercat Ring effect
-  equipWeapon:residentSpEffectId2(112042000) --Effect on Self 2 -- Carthus Milkring
+local WeaponId = 0x4C4B40 -- Uchigatana
 
-  equipWeapon:saWeaponDamage(0)     -- Poise Damage - 100
+local equipWeapon = EquipParamWeapon:new(WeaponId,"weaponModificationTut")
+-- Attack Damage
+equipWeapon:attackBasePhysics(200) -- Physical Damage - 200
+equipWeapon:attackBaseMagic(50)    -- Magic Damage - 50
+equipWeapon:attackBaseFire(50)     -- Fire Damage - 50
+equipWeapon:attackBaseThunder(50)  -- Lightning Damage - 50
+equipWeapon:attackBaseDark(150)    -- Dark Damage - 150
+-- Requirements
+equipWeapon:properStrength(0)      -- Required STR - 0
+equipWeapon:properAgility(0)       -- Required DEX - 0
+equipWeapon:properMagic(0)         -- Required INT - 0
+equipWeapon:properFaith(0)         -- Required FTH - 0
+-- Scaling
+equipWeapon:correctStrength(150)   -- STR Scaling - 150
+equipWeapon:correctAgility(150)    -- DEX Scaling - 150
+equipWeapon:correctMagic(50)       -- INT Scaling - 50
+equipWeapon:correctFaith(50)       -- FTH Scaling - 50
+-- Block
+equipWeapon:physGuardCutRate(50)   -- Physical Block - 50
+equipWeapon:magGuardCutRate(50)    -- Magic Block - 50
+equipWeapon:fireGuardCutRate(50)   -- Fire Block - 50
+equipWeapon:thunGuardCutRate(50)   -- Lightning Block - 50
+equipWeapon:darkGuardCutRate(50)   -- Dark Block - 50
+--Effects on Hit
+equipWeapon:spEffectBehaviorId(3151) --Effect on Hit 1 -- Undead Hunter Charm
+equipWeapon:spEffectBehaviorId1(110) --Effect on Hit 2 -- Bonfire
+equipWeapon:spEffectBehaviorId2(2030)--Effect on Hit 2 -- Green Moss
+--Effects on Self
+equipWeapon:residentSpEffectId(112079000)  --Effect on Self 1 -- Pontiff's Left Eye effect
+equipWeapon:residentSpEffectId1(112042000) --Effect on Self 2 -- Silvercat Ring effect
+equipWeapon:residentSpEffectId2(112042000) --Effect on Self 2 -- Carthus Milkring
 
-  equipWeapon:weight(0)             -- Weight - 0
-end
+equipWeapon:saWeaponDamage(0)     -- Poise Damage - 100
+
+equipWeapon:weight(0)             -- Weight - 0
 
 [DISABLE]
 {$lua}
-if not syntaxcheck then
-   paramUtils:restore("weaponModificationTut")
-end
+--if syntaxcheck then return end
+paramUtils:restore("weaponModificationTut")
 </AssemblerScript>
                     </CheatEntry>
                     <CheatEntry>
