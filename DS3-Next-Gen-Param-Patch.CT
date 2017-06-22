@@ -475,7 +475,7 @@ function BaseParamClass:stripIdForParams(id)
 end
 
 function BaseParamClass:stripSelfIdForParams()
-	return self:stripIdForParams(self.id)
+	self.id = self:stripIdForParams(self.id)
 end
 
 --Patch all values
@@ -573,7 +573,7 @@ function EquipParamWeapon:new(id, uuid)
 	o.backupUuid = uuid
 
 	o:init()
-    o:stripIdForParams()
+    o:stripSelfIdForParams()
 	return o
 end
 
@@ -1227,7 +1227,7 @@ function EquipParamProtector:new(id, uuid)
 	o.backupUuid = uuid
 
 	o:init()
-	o:stripIdForParams()
+	o:stripSelfIdForParams()
 	return o
 end
 
@@ -1481,7 +1481,7 @@ function EquipParamGoods:new(id, uuid)
 	o.backupUuid = uuid
 
 	o:init()
-	o:stripIdForParams()
+	o:stripSelfIdForParams()
 	return o
 end
 
@@ -2024,7 +2024,7 @@ function Magic:new(id, uuid)
 	o.backupUuid = uuid
 
 	o:init()
-	o:stripIdForParams()
+	o:stripSelfIdForParams()
 	return o
 end
 
@@ -2284,7 +2284,7 @@ function Bullet:new(id, uuid)
 	o.backupUuid = uuid
 
 	o:init()
-	o:stripIdForParams()
+	o:stripSelfIdForParams()
 	return o
 end
 
