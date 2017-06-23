@@ -3609,60 +3609,6 @@ end
       </CheatEntries>
     </CheatEntry>
   </CheatEntries>
-  <CheatCodes>
-    <CodeEntry>
-      <Description>Gestures access :mov eax,[rcx]</Description>
-      <Address>14081D330</Address>
-      <ModuleName>DarkSoulsIII.exe</ModuleName>
-      <ModuleNameOffset>81D330</ModuleNameOffset>
-      <Before>
-        <Byte>72</Byte>
-        <Byte>C1</Byte>
-        <Byte>FF</Byte>
-        <Byte>CC</Byte>
-        <Byte>8B</Byte>
-      </Before>
-      <Actual>
-        <Byte>8B</Byte>
-        <Byte>01</Byte>
-      </Actual>
-      <After>
-        <Byte>89</Byte>
-        <Byte>02</Byte>
-        <Byte>48</Byte>
-        <Byte>8B</Byte>
-        <Byte>C2</Byte>
-      </After>
-    </CodeEntry>
-    <CodeEntry>
-      <Description>HP :mov [rbx+000000D8],eax</Description>
-      <Address>140E94AA7</Address>
-      <ModuleName>DarkSoulsIII.exe</ModuleName>
-      <ModuleNameOffset>E94AA7</ModuleNameOffset>
-      <Before>
-        <Byte>C8</Byte>
-        <Byte>CE</Byte>
-        <Byte>04</Byte>
-        <Byte>8B</Byte>
-        <Byte>00</Byte>
-      </Before>
-      <Actual>
-        <Byte>89</Byte>
-        <Byte>83</Byte>
-        <Byte>D8</Byte>
-        <Byte>00</Byte>
-        <Byte>00</Byte>
-        <Byte>00</Byte>
-      </Actual>
-      <After>
-        <Byte>85</Byte>
-        <Byte>C0</Byte>
-        <Byte>55</Byte>
-        <Byte>48</Byte>
-        <Byte>BD</Byte>
-      </After>
-    </CodeEntry>
-  </CheatCodes>
   <UserdefinedSymbols>
     <SymbolEntry>
       <Name>newmem2</Name>
@@ -3693,8 +3639,5 @@ end
       <Address>08DB0000</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
-  <Comments>Hotkeys:
-Ctrl+N - toggle Noclip
-	
-</Comments>
+  <Comments>Copyright (C) 2017 Igromanru </Comments>
 </CheatTable>
