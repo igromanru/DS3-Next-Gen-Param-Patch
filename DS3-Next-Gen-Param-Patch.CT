@@ -2563,6 +2563,31 @@ if not syntaxcheck then
 end
 </AssemblerScript>
                     </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011528</ID>
+                      <Description>"Player tracker"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Authror: Igromanru
+  Description: Activates invader (players) trackers
+}
+[ENABLE]
+{$lua}
+if not syntaxcheck then
+  local effectId = 40 -- idle effect
+  local effect = SpEffectParam:new(effectId,"PlayerTrackerSlow")
+  effect:stateInfo(40)
+  effect:wepParamChange(1)
+end
+
+[DISABLE]
+{$lua}
+if not syntaxcheck then
+   paramUtils:restore("PlayerTrackerSlow")
+end
+</AssemblerScript>
+                    </CheatEntry>
                   </CheatEntries>
                 </CheatEntry>
                 <CheatEntry>
