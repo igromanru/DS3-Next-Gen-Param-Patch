@@ -1250,15 +1250,56 @@ paramUtils:restore("ScalingTest")
                   <CheatEntries>
                     <CheatEntry>
                       <ID>1337011527</ID>
-                      <Description>"Curse dagger"</Description>
+                      <Description>"Onikiri and Ubadachi art swap"</Description>
                       <LastState/>
                       <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description:
+}
+[ENABLE]
 {$lua}
 if syntaxcheck then return end
 
-local equipWeapon = EquipParamWeapon:new(0xF4240,"curseDaggerMeme")
-equipWeapon:spEffectBehaviorId(33) -- Curse
+local weaponId = 0x00F58390 --Onikiri and Ubadachi
+local equipWeapon = EquipParamWeapon:new(weaponId,"OnikiriandUbadachiArtSwap")
+equipWeapon:swordArt(800) --
+
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("OnikiriandUbadachiArtSwap")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011529</ID>
+                      <Description>"Curse dagger's"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: Gives all daggers curse.
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+local daggers = {
+  0x000F4240, --Dagger
+  0x000F9060, --Parrying Dagger
+  0x000F90C4, --Heavy Parrying Dagger
+  0x000F9128, --Sharp Parrying Dagger
+  0x00111700, --Handmaid's Dagger
+  0x00116520, --Aquamarine Dagger
+  0x00F50E60, --Brigand Twindaggers
+}
+
+for i,id in ipairs(daggers) do
+  local equipWeapon = EquipParamWeapon:new(id,"curseDaggerMeme")
+  equipWeapon:spEffectBehaviorId2(33) -- Curse
+end
+
 
 [DISABLE]
 {$lua}
@@ -3167,55 +3208,55 @@ function Bullet:launchConditionType(value)
 end
 
 --Falgs
-function Magic:FollowType(value)
+function Bullet:FollowType(value)
 	self:patchBinary(0x9A, value, 0)
 end
 
-function Magic:EmittePosType(value)
+function Bullet:EmittePosType(value)
 	self:patchBinary(0x9A, value, 1)
 end
 
-function Magic:isAttackSFX(value)
+function Bullet:isAttackSFX(value)
 	self:patchBinary(0x9A, value, 2)
 end
 
-function Magic:isEndlessHit(value)
+function Bullet:isEndlessHit(value)
 	self:patchBinary(0x9A, value, 3)
 end
 
-function Magic:isPenetrateMap(value)
+function Bullet:isPenetrateMap(value)
 	self:patchBinary(0x9B, value, 0)
 end
 
-function Magic:isHitBothTeam(value)
+function Bullet:isHitBothTeam(value)
 	self:patchBinary(0x9B, value, 1)
 end
 
-function Magic:isUseSharedHitList(value)
+function Bullet:isUseSharedHitList(value)
 	self:patchBinary(0x9B, value, 2)
 end
 
-function Magic:isUseMultiDmyPolyIfPlace(value)
+function Bullet:isUseMultiDmyPolyIfPlace(value)
 	self:patchBinary(0x9B, value, 3)
 end
 
-function Magic:attachEffectType(value)
+function Bullet:attachEffectType(value)
 	self:patchBinary(0x9B, value, 4)
 end
 
-function Magic:isHitForceMagic(value)
+function Bullet:isHitForceBullet(value)
 	self:patchBinary(0x9B, value, 5)
 end
 
-function Magic:isIgnoreSfxIfHitWater(value)
+function Bullet:isIgnoreSfxIfHitWater(value)
 	self:patchBinary(0x9B, value, 6)
 end
 
-function Magic:isIgnoreMoveStateIfHitWater(value)
+function Bullet:isIgnoreMoveStateIfHitWater(value)
 	self:patchBinary(0x9B, value, 7)
 end
 
-function Magic:isHitDarkForceMagic(value)
+function Bullet:isHitDarkForceBullet(value)
 	self:patchBinary(0x9C, value, 0)
 end
 
@@ -3639,5 +3680,6 @@ end
       <Address>08DB0000</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
-  <Comments>Copyright (C) 2017 Igromanru </Comments>
+  <Comments>Copyright (C) 2017 Igromanru 
+</Comments>
 </CheatTable>
