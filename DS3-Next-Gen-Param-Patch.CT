@@ -1242,6 +1242,33 @@ paramUtils:restore("ScalingTest")
                   </CheatEntries>
                 </CheatEntry>
                 <CheatEntry>
+                  <ID>1337011526</ID>
+                  <Description>"new scripts"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>1337011527</ID>
+                      <Description>"Curse dagger"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+local equipWeapon = EquipParamWeapon:new(0xF4240,"curseDaggerMeme")
+equipWeapon:spEffectBehaviorId(33) -- Curse
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("curseDaggerMeme")
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+                <CheatEntry>
                   <ID>489727</ID>
                   <Description>"Converted Scripts"</Description>
                   <Options moHideChildren="1"/>
