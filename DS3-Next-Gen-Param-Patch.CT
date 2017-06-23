@@ -164,12 +164,28 @@ function ParamUtils:paramIndexer()
 	end
 end
 
-function ParamUtils:getIdAddress(IdTable, Id)
-	local result = IdTable[Id]
+function ParamUtils:getIdAddress(idTable, Id)
+	local result = idTable[Id]
 	if(result == nil or result &lt; 0) then
 		self:logError("ID: "..Id.." (0x"..self:toHex(Id) ..") couldn't be found")
 	end
 	return result
+end
+
+function ParamUtils:getIdFromAddress(idTable, address)
+  local result = 0
+  if(idTable ~= nil and address ~= nil) then
+    for id,addr in pairs(idTable) do
+	  if(addr == address) then
+	    result = id
+	    break
+	  end
+	end
+  end
+  if(result == 0) then
+    self:logError("ID for address: "..self:toHex(address).." couldn't be found")
+  end
+  return result
 end
 
 function ParamUtils:getParamIdTable(ParamName)
@@ -192,6 +208,18 @@ function ParamUtils:getIdAddressFromParam(paramName, id)
 		result = self:getIdAddress(idTable, id)
 	else
 		self:logError("Addresses for Param: '"..paramName.."' couldn't be found")
+	end
+	return result
+end
+
+function ParamUtils:getIdFromAddressParam(paramName, address)
+	local result = 0
+	local idTable = self:getParamIdTable(paramName)
+
+	if(idTable ~= nil) then
+		result = self:getIdFromAddress(idTable, address)
+	else
+		self:logError("ID for Param: '"..paramName.."', address: '"..self:toHex(address).."' couldn't be found")
 	end
 	return result
 end
@@ -3644,6 +3672,41 @@ end
 </AssemblerScript>
                 </CheatEntry>
               </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1337011530</ID>
+          <Description>"scripts"</Description>
+          <Options moHideChildren="1"/>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>1337011531</ID>
+              <Description>"Find ID by address"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{
+  Author: Igromanru
+  Description: Searches for an ID by address in an param
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+local address = 0x --enter address to search for the ID
+local paramName = "" -- enter Param Name here
+--------------------------------------------------------
+local id = paramUtils:getIdFromAddressParam(paramName, address)
+if(id ~= nil and id &gt; 0) then
+  print("Your ID is "..id.."(0x"..paramUtils:toHex(id)..")")
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
