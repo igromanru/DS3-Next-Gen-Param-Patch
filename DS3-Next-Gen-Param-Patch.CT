@@ -200,7 +200,7 @@ function ParamUtils:getParamIdTable(ParamName)
 	return IDTable
 end
 
-function ParamUtils:getIdAddressFromParam(paramName, id)
+function ParamUtils:getIdAddressInParam(paramName, id)
 	local result = 0
 	local idTable = self:getParamIdTable(paramName)
 
@@ -212,16 +212,31 @@ function ParamUtils:getIdAddressFromParam(paramName, id)
 	return result
 end
 
-function ParamUtils:getIdFromAddressParam(paramName, address)
+function ParamUtils:getIdFromAddressInParam(paramName, address)
 	local result = 0
 	local idTable = self:getParamIdTable(paramName)
 
 	if(idTable ~= nil) then
 		result = self:getIdFromAddress(idTable, address)
-	else
-		self:logError("ID for Param: '"..paramName.."', address: '"..self:toHex(address).."' couldn't be found")
 	end
 	return result
+end
+
+function ParamUtils:getIdByAddressInAnyParam(address)
+  local result = 0
+  if(self.masterParamTable ~= nil) then
+    for param,paramAddr in pairs(self.masterParamTable) do
+	  local idTable = self:getParamIdTable(param)
+	  if(idTable ~= nil) then
+		local id = self:getIdFromAddress(idTable, address)
+		if(id &gt; 0) then
+		  result = id
+		  break
+		end
+	  end
+	end
+  end
+  return result
 end
 
 function ParamUtils:getAllAddressFromParam(paramName)
@@ -284,7 +299,7 @@ end
 
 function ParamUtils:patchMultipleOffsets(paramName, id, patchInfoTable, uuid)
 	if(self.patchBackUp[uuid] == nil) then
-		local address = getIdAddressFromParam()
+		local address = getIdAddressInParam()
 		for key,patchInfo in pairs(patchInfoTable) do
 			patchInfo.address = address
 			self:patchValueWithBackup(patchInfo,uuid)
@@ -3684,7 +3699,7 @@ end
           <CheatEntries>
             <CheatEntry>
               <ID>1337011531</ID>
-              <Description>"Find ID by address"</Description>
+              <Description>"Find ID by address in special param"</Description>
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>{
@@ -3698,7 +3713,32 @@ if syntaxcheck then return end
 local address = 0x --enter address to search for the ID
 local paramName = "" -- enter Param Name here
 --------------------------------------------------------
-local id = paramUtils:getIdFromAddressParam(paramName, address)
+local id = paramUtils:getIdFromAddressInParam(paramName, address)
+if(id ~= nil and id &gt; 0) then
+  print("Your ID is "..id.."(0x"..paramUtils:toHex(id)..")")
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337011532</ID>
+              <Description>"Find ID by address in any param"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{
+  Author: Igromanru
+  Description: Searches for an ID by address in an param
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+local address = 0x --enter address to search for the ID
+--------------------------------------------------------
+local id = paramUtils:getIdByAddressInAnyParam(address)
 if(id ~= nil and id &gt; 0) then
   print("Your ID is "..id.."(0x"..paramUtils:toHex(id)..")")
 end
