@@ -3484,6 +3484,32 @@ if syntaxcheck then return end
 paramUtils:restore("SetAllBulletsLifeToZero")
 </AssemblerScript>
                     </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011540</ID>
+                      <Description>"Perserverence Warmth"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Authror: Igromanru
+  Credits: Fockboxx (from Reverse Souls) (original script)
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local effectId = 12470000 -- Warmth
+local effect = SpEffectParam:new("PerserverenceWarmth", effectId)
+effect:life(9999.0) -- Life of bullet
+effect:hitRadius(9999.0)
+effect:hitRadiusMax(-1.0)
+effect:spEffectId2(120700) -- Perserverence Effect
+effect:spEffectId3(3100) -- Repair Powder effect
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("PerserverenceWarmth")
+</AssemblerScript>
+                    </CheatEntry>
                   </CheatEntries>
                 </CheatEntry>
               </CheatEntries>
