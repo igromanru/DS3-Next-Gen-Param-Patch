@@ -535,7 +535,9 @@ function BaseParamClass:init()
   if(paramUtils.patchBackUp[self.backupUuid] == nil) then
     paramUtils.patchBackUp[self.backupUuid] = {}
   end
-  self.address = paramUtils:getIdAddressFromParam(self.param, self.id)
+  if(self.id ~= nil and self.id &gt; 0) then
+    self.address = paramUtils:getIdAddressInParam(self.param, self.id)
+  end
 end
 
 -- Removes first Hex digit of the ID
@@ -545,7 +547,9 @@ function BaseParamClass:stripIdForParams(id)
 end
 
 function BaseParamClass:stripSelfIdForParams()
-	self.id = self:stripIdForParams(self.id)
+  if(self.id ~= nil and self.id &gt; 0) then
+    self.id = self:stripIdForParams(self.id)
+  end
 end
 
 --Patch all values
@@ -634,12 +638,14 @@ if syntaxcheck then return end
 --[[START EquipParamWeapon class]]--
 EquipParamWeapon = BaseParamClass:new()
 
-function EquipParamWeapon:new(id, uuid)
+function EquipParamWeapon:new(uuid, id)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
 	o.param = "EquipParamWeapon"
-	o.id = id
+	if(id ~= nil) then
+	  o.id = id
+    end
 	o.backupUuid = uuid
 
 	o:init()
@@ -1229,7 +1235,7 @@ if syntaxcheck then return end
 {$lua}
 --if syntaxcheck then return end
 local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"effectOnHitTest")
+local equipWeapon = EquipParamWeapon:new("effectOnHitTest", weapon)
 equipWeapon:spEffectBehaviorId(10564)
 equipWeapon:spEffectBehaviorId1(112079000)
 equipWeapon:spEffectBehaviorId2(110)
@@ -1250,7 +1256,7 @@ paramUtils:restore("effectOnHitTest")
 {$lua}
 --if syntaxcheck then return end
 local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"isEnhanceTest")
+local equipWeapon = EquipParamWeapon:new("isEnhanceTest", weapon)
 equipWeapon:isEnhance(0)
 
 [DISABLE]
@@ -1269,7 +1275,7 @@ paramUtils:restore("isEnhanceTest")
 {$lua}
 --if syntaxcheck then return end
 local weapon = 0x001EAB90 --Long Sword
-local equipWeapon = EquipParamWeapon:new(weapon,"ScalingTest")
+local equipWeapon = EquipParamWeapon:new("ScalingTest",weapon)
 equipWeapon:correctStrength(100)
 equipWeapon:correctAgility(100)
 equipWeapon:correctMagic(100)
@@ -1305,7 +1311,7 @@ paramUtils:restore("ScalingTest")
 if syntaxcheck then return end
 
 local weaponId = 0x00F58390 --Onikiri and Ubadachi
-local equipWeapon = EquipParamWeapon:new(weaponId,"OnikiriandUbadachiArtSwap")
+local equipWeapon = EquipParamWeapon:new("OnikiriandUbadachiArtSwap",weaponId)
 equipWeapon:swordArt(800) --
 
 
@@ -1339,7 +1345,7 @@ local daggers = {
 }
 
 for i,id in ipairs(daggers) do
-  local equipWeapon = EquipParamWeapon:new(id,"curseDaggerMeme")
+  local equipWeapon = EquipParamWeapon:new("curseDaggerMeme",id)
   equipWeapon:spEffectBehaviorId2(33) -- Curse
 end
 
@@ -1364,13 +1370,17 @@ paramUtils:restore("curseDaggerMeme")
                       <Description>"Weapon Modification"</Description>
                       <LastState/>
                       <VariableType>Auto Assembler Script</VariableType>
-                      <AssemblerScript>[ENABLE]
+                      <AssemblerScript>{
+	Author: Igromanru
+	Description: Simple example how to modify a weapon.
+}
+[ENABLE]
 {$lua}
---if syntaxcheck then return end
+if syntaxcheck then return end
 
 local WeaponId = 0x4C4B40 -- Uchigatana
 
-local equipWeapon = EquipParamWeapon:new(WeaponId,"weaponModificationTut")
+local equipWeapon = EquipParamWeapon:new("weaponModificationTut",WeaponId)
 -- Attack Damage
 equipWeapon:attackBasePhysics(200) -- Physical Damage - 200
 equipWeapon:attackBaseMagic(50)    -- Magic Damage - 50
@@ -1408,7 +1418,7 @@ equipWeapon:weight(0)             -- Weight - 0
 
 [DISABLE]
 {$lua}
---if syntaxcheck then return end
+if syntaxcheck then return end
 paramUtils:restore("weaponModificationTut")
 </AssemblerScript>
                     </CheatEntry>
@@ -1431,7 +1441,7 @@ if not syntaxcheck then
   }
 
   for i,id in ipairs(catalysts) do
-	local weapon = EquipParamWeapon:new(id,"EveryCatalystCanCastEverything")
+	local weapon = EquipParamWeapon:new("EveryCatalystCanCastEverything", id)
 	weapon:enableMagic(1)
 	weapon:enablePyromancy(1)
 	weapon:enableMiracle(1)
@@ -1457,7 +1467,7 @@ end
 [ENABLE]
 {$lua}
 if not syntaxcheck then
-  local weapon = EquipParamWeapon:new(0xCC77C0,"PyromancyFlameCastEverything")
+  local weapon = EquipParamWeapon:new("PyromancyFlameCastEverything", 0xCC77C0)
   weapon:enableMagic(1)
   weapon:enablePyromancy(1)
   weapon:enableMiracle(1)
@@ -1483,7 +1493,7 @@ end
 {$lua}
 if not syntaxcheck then
   local WeaponId = 0x1EAB90 --Long Sword
-  local weapon = EquipParamWeapon:new(WeaponId,"LongSwordPlaceRedSignOnEquip")
+  local weapon = EquipParamWeapon:new("LongSwordPlaceRedSignOnEquip", WeaponId)
   weapon:residentSpEffectId(10)
 end
 
@@ -1492,6 +1502,31 @@ end
 if not syntaxcheck then
   paramUtils:restore("LongSwordPlaceRedSignOnEquip")
 end
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011534</ID>
+                      <Description>"No requirements for all weapons"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: Removes requirements from all weapons
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local object = EquipParamWeapon:new("NoRequirementsForAllWeapons")
+object:patchAllByte(0xEE,0) -- Str
+object:patchAllByte(0xEF,0) -- Dex
+object:patchAllByte(0xF0,0) -- Int
+object:patchAllByte(0xF1,0) -- Fth
+
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("NoRequirementsForAllWeapons")
 </AssemblerScript>
                     </CheatEntry>
                   </CheatEntries>
@@ -1512,12 +1547,14 @@ if syntaxcheck then return end
 --[[START EquipParamProtector class]]--
 EquipParamProtector = BaseParamClass:new()
 
-function EquipParamProtector:new(id, uuid)
+function EquipParamProtector:new(uuid, id)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
 	o.param = "EquipParamProtector"
-	o.id = id
+	if(id ~= nil) then
+	  o.id = id
+    end
 	o.backupUuid = uuid
 
 	o:init()
@@ -1766,12 +1803,14 @@ if syntaxcheck then return end
 --[[START EquipParamGoods class]]--
 EquipParamGoods = BaseParamClass:new()
 
-function EquipParamGoods:new(id, uuid)
+function EquipParamGoods:new(uuid, id)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
 	o.param = "EquipParamGoods"
-	o.id = id
+	if(id ~= nil) then
+	  o.id = id
+    end
 	o.backupUuid = uuid
 
 	o:init()
@@ -2072,12 +2111,14 @@ if syntaxcheck then return end
 --[[START SpEffectParam class]]--
 SpEffectParam = BaseParamClass:new()
 
-function SpEffectParam:new(id, uuid)
+function SpEffectParam:new(uuid, id)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
 	o.param = "SpEffectParam"
-	o.id = id
+	if(id ~= nil) then
+	  o.id = id
+    end
 	o.backupUuid = uuid
 
 	o:init()
@@ -2635,7 +2676,7 @@ local pines = {2100,2110,2120,2130,2150,2170,2180,2190,2100}
 
 for i,id in ipairs(pines) do
   if(pines[i+1] ~= nil) then
-	local effect = SpEffectParam:new(id,"MultibuffPineCycle")
+	local effect = SpEffectParam:new("MultibuffPineCycle",id)
 	effect:cycleOccurrenceSpEffectId(pines[i+1])
   end
 end
@@ -2660,7 +2701,7 @@ end
 {$lua}
 if not syntaxcheck then
   local effectId = 40 -- idle effect
-  local effect = SpEffectParam:new(effectId,"PlayerTrackerSlow")
+  local effect = SpEffectParam:new("PlayerTrackerSlow", effectId)
   effect:stateInfo(40)
   effect:wepParamChange(1)
 end
@@ -2683,12 +2724,43 @@ end
                   <CheatEntries>
                     <CheatEntry>
                       <ID>1337011428</ID>
+                      <Description>"Knight's Ring buff increases all stats by 30"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+	Author: Igromanru
+	Description: Knight's Ring buff increases all stats by 30
+    Credits: Oden for base idea
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local effect = SpEffectParam:new("KnightsRingBuffIncreasesAllStatsBy30",112046000)
+effect:VigorBuff(30)
+effect:AttunementBuff(30)
+effect:EnduranceBuff(30)
+effect:VitalityBuff(30)
+effect:StrenghtBuff(30)
+effect:DextrerityBuff(30)
+effect:IntelligenceBuff(30)
+effect:FaithBuff(30)
+effect:LuckBuff(30)
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("KnightsRingBuffIncreasesAllStatsBy30")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011539</ID>
                       <Description>"Every Pine &amp; Bundle Infinite"</Description>
                       <LastState/>
                       <VariableType>Auto Assembler Script</VariableType>
                       <AssemblerScript>{
 	Author: Igromanru
 	Description: Makes Every Pine &amp; Bundle Infinite (cycle himself)
+    Credis: Jessica for base idea
 }
 [ENABLE]
 {$lua}
@@ -2696,7 +2768,7 @@ if not syntaxcheck then
   local catalysts = {2100,2110,2120,2130,2150,2170,2180,2190}
 
   for i,id in ipairs(catalysts) do
-	local effect = SpEffectParam:new(id,"EveryPineAndBundleInfinite")
+	local effect = SpEffectParam:new("EveryPineAndBundleInfinite",id)
 	effect:cycleOccurrenceSpEffectId(id)
   end
 end
@@ -2706,6 +2778,27 @@ end
 if not syntaxcheck then
   paramUtils:restore("EveryPineAndBundleInfinite")
 end
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011537</ID>
+                      <Description>"Restrict All Effects"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: Restrict All Effects
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local object = SpEffectParam:new("RestrictAllEffectsUuid31s")
+object:patchAll4Byte(0x16C,4)
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("RestrictAllEffectsUuid31s")
 </AssemblerScript>
                     </CheatEntry>
                   </CheatEntries>
@@ -2726,12 +2819,14 @@ if syntaxcheck then return end
 --[[START Magic class]]--
 Magic = BaseParamClass:new()
 
-function Magic:new(id, uuid)
+function Magic:new(uuid, id)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
 	o.param = "Magic"
-	o.id = id
+	if(id ~= nil) then
+	  o.id = id
+    end
 	o.backupUuid = uuid
 
 	o:init()
@@ -2992,7 +3087,7 @@ if syntaxcheck then return end
 [ENABLE]
 {$lua}
 if not syntaxcheck then
-  local magic = Magic:new(0x4014F348,"CrystalHailNoFPCost")
+  local magic = Magic:new("CrystalHailNoFPCost", 0x4014F348)
   magic:FPCost(0)
   magic:StaminaCost(0)
 end
@@ -3002,6 +3097,29 @@ end
 if not syntaxcheck then
   paramUtils:restore("CrystalHailNoFPCost")
 end
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011535</ID>
+                      <Description>"No requirements for all spells"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: Removes requirements from all spells
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local object = Magic:new("NoRequirementsForAllSpells")
+object:patchAllByte(0x1E,0) -- INT
+object:patchAllByte(0x1F,0) -- FTH
+
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("NoRequirementsForAllSpells")
 </AssemblerScript>
                     </CheatEntry>
                   </CheatEntries>
@@ -3022,12 +3140,14 @@ if syntaxcheck then return end
 --[[START Bullet class]]--
 Bullet = BaseParamClass:new()
 
-function Bullet:new(id, uuid)
+function Bullet:new(uuid, id)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
 	o.param = "Bullet"
-	o.id = id
+    if(id ~= nil) then
+	  o.id = id
+    end
 	o.backupUuid = uuid
 
 	o:init()
@@ -3319,8 +3439,60 @@ if syntaxcheck then return end
                   <Options moHideChildren="1"/>
                   <LastState Value="" RealAddress="00000000"/>
                   <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>1337011536</ID>
+                      <Description>"All bullets gives Bonfire &amp; Budding Green Moss on Hit"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: All bullets gives Bonfire &amp; Budding Green Moss on Hit
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local object = Bullet:new("AllBulletsAppliesBoneFireAndGreenMoss")
+object:patchAll4Byte(0x6C,110)  --Apply Bonfire on spEffectId0
+object:patchAll4Byte(0x74,2030) --Apply Green Moss on spEffectId2
+
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("AllBulletsAppliesBoneFireAndGreenMoss")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011538</ID>
+                      <Description>"Set all bullets life to 0"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: Changes all bullets life to 0
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local object = Bullet:new("SetAllBulletsLifeToZero")
+object:patchAllFloat(0x10,0.0)
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("SetAllBulletsLifeToZero")
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
                 </CheatEntry>
               </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337011533</ID>
+              <Description>"Scripts"</Description>
+              <LastState Value="" RealAddress="00000000"/>
+              <GroupHeader>1</GroupHeader>
             </CheatEntry>
           </CheatEntries>
         </CheatEntry>
