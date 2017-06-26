@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="26">
+<CheatTable CheatEngineTableVersion="24">
   <CheatEntries>
     <CheatEntry>
       <ID>249</ID>
@@ -310,13 +310,15 @@ function ParamUtils:patchMultipleOffsets(paramName, id, patchInfoTable, uuid)
 end
 
 function ParamUtils:restore(...)
-	local arg = table.pack(...)
-	for key,uuid in pairs(arg) do
-		for index,patchInfo in pairs(self.patchBackUp[uuid]) do
-			self:patchValue(patchInfo)
-		end
-		self.patchBackUp[uuid] = nil
+  local arg = table.pack(...)
+  for key,uuid in pairs(arg) do
+    if(self.patchBackUp[uuid] ~= nil) then
+      for index,patchInfo in pairs(self.patchBackUp[uuid]) do
+	    self:patchValue(patchInfo)
+	  end
+	  self.patchBackUp[uuid] = nil
 	end
+  end
 end
 
 function ParamUtils:patchValueWithBackup(patchInfo, uuid)
@@ -538,6 +540,7 @@ function BaseParamClass:init(param, uuid, id)
       paramUtils.patchBackUp[self.backupUuid] = {}
     end
     if(self.id ~= nil and self.id &gt; 0) then
+	  self:stripSelfIdForParams()
       self.address = paramUtils:getIdAddressInParam(self.param, self.id)
     end
   end
@@ -647,7 +650,6 @@ function EquipParamWeapon:new(uuid, id)
 	setmetatable(o, self)
 
 	o:init("EquipParamWeapon", uuid, id)
-    o:stripSelfIdForParams()
 	return o
 end
 
@@ -1551,7 +1553,6 @@ function EquipParamProtector:new(uuid, id)
 	setmetatable(o, self)
 
 	o:init("EquipParamProtector", uuid, id)
-	o:stripSelfIdForParams()
 	return o
 end
 
@@ -1802,7 +1803,6 @@ function EquipParamGoods:new(uuid, id)
 	setmetatable(o, self)
 
 	o:init("EquipParamGoods", uuid, id)
-	o:stripSelfIdForParams()
 	return o
 end
 
@@ -2084,6 +2084,59 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1337011543</ID>
+                  <Description>"new scripts"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>1337011544</ID>
+                      <Description>"Makes projectiles not consumable"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+	Author: Igromanru
+	Description: Makes projectiles not consumable
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local goods = {
+  0x40000122, --Kukri
+  0x40000124, --Firebomb
+  0x40000125, --Dung Pie
+  0x40000126, --Alluring Skull
+  0x40000128, --Undead Hunter Charm
+  0x40000129, --Black Firebomb
+  0x4000012B, --Rope Firebomb
+  0x4000012C, --Lightning Urn
+  0x4000012E, --Rope Black Firebomb
+  0x4000012F, --Stalk Dung Pie
+  0x40000130, --Duel Charm
+  0x40000136, --Throwing Knife
+  0x40000137, --Poison Throwing Knife
+}
+
+for i,id in pairs(goods) do
+  if(id ~= nil) then
+	local good = EquipParamGoods:new("MakesprojectilesnotconsumableUuidge2",id)
+	good:isConsume(0)
+  end
+end
+
+[DISABLE]
+{$lua}
+if not syntaxcheck then
+  paramUtils:restore("MakesprojectilesnotconsumableUuidge2")
+end
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>273</ID>
@@ -2597,35 +2650,35 @@ function SpEffectParam:VigorBuff(value)
 end
 
 function SpEffectParam:AttunementBuff(value)
-	self:patchByte(0x308, value)
+	self:patchByte(0x309, value)
 end
 
 function SpEffectParam:EnduranceBuff(value)
-	self:patchByte(0x308, value)
+	self:patchByte(0x30A, value)
 end
 
 function SpEffectParam:VitalityBuff(value)
-	self:patchByte(0x308, value)
+	self:patchByte(0x30B, value)
 end
 
 function SpEffectParam:StrenghtBuff(value)
-	self:patchByte(0x308, value)
+	self:patchByte(0x30C, value)
 end
 
 function SpEffectParam:DextrerityBuff(value)
-	self:patchByte(0x308, value)
+	self:patchByte(0x30D, value)
 end
 
 function SpEffectParam:IntelligenceBuff(value)
-	self:patchByte(0x308, value)
+	self:patchByte(0x30E, value)
 end
 
 function SpEffectParam:FaithBuff(value)
-	self:patchByte(0x308, value)
+	self:patchByte(0x30F, value)
 end
 
 function SpEffectParam:LuckBuff(value)
-	self:patchByte(0x308, value)
+	self:patchByte(0x310, value)
 end
 
 --[[END SpEffectParam class]]--
@@ -2871,7 +2924,6 @@ function Magic:new(uuid, id)
 	setmetatable(o, self)
 
 	o:init("Magic", uuid, id)
-	o:stripSelfIdForParams()
 	return o
 end
 
@@ -3163,6 +3215,29 @@ if syntaxcheck then return end
 paramUtils:restore("NoRequirementsForAllSpells")
 </AssemblerScript>
                     </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011542</ID>
+                      <Description>"Remove FP and Stamina costs from all spells"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: Remove FP and Stamina costs from all spells
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local object = Magic:new("RemoveFPandStaminacostsfromallspells")
+object:patchAll2Byte(0xC,0) -- FPCost
+object:patchAll2Byte(0xE,0) -- StaminaCost
+
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("RemoveFPandStaminacostsfromallspells")
+</AssemblerScript>
+                    </CheatEntry>
                   </CheatEntries>
                 </CheatEntry>
               </CheatEntries>
@@ -3187,7 +3262,6 @@ function Bullet:new(uuid, id)
 	setmetatable(o, self)
 
 	o:init("Bullet", uuid, id)
-	o:stripSelfIdForParams()
 	return o
 end
 
@@ -4703,7 +4777,6 @@ assert(false)
                                   <VariableType>String</VariableType>
                                   <Length>0</Length>
                                   <Unicode>0</Unicode>
-                                  <CodePage>0</CodePage>
                                   <ZeroTerminate>1</ZeroTerminate>
                                   <Address>+13C</Address>
                                 </CheatEntry>
