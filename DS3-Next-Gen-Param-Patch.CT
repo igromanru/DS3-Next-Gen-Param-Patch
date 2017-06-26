@@ -311,8 +311,8 @@ end
 
 function ParamUtils:restore(...)
 	local arg = table.pack(...)
-	for i,uuid in ipairs(arg) do
-		for index,patchInfo in ipairs(self.patchBackUp[uuid]) do
+	for key,uuid in pairs(arg) do
+		for index,patchInfo in pairs(self.patchBackUp[uuid]) do
 			self:patchValue(patchInfo)
 		end
 		self.patchBackUp[uuid] = nil
@@ -325,7 +325,7 @@ function ParamUtils:patchValueWithBackup(patchInfo, uuid)
 
 	self:patchValue(patchInfo)
 
-	for i,object in ipairs(self.patchBackUp[uuid]) do
+	for key,object in pairs(self.patchBackUp[uuid]) do
 		if(object.address == patchInfo.address) then
 			backup = false
 			break
@@ -469,7 +469,7 @@ function ParamUtils:printAllBackups()
   if(self.patchBackUp ~= nil) then
     for uuid,tBackup in pairs(self.patchBackUp) do
 	  print("UUID: "..uuid)
-	  for i,object in ipairs(tBackup) do
+	  for key,object in pairs(tBackup) do
 	    print("Address: "..object.address.." Value: "..object.value.." Type: "..object.valueType)
 	  end
     end
@@ -558,7 +558,7 @@ end
 --Patch all values
 function BaseParamClass:patchAll(offset, value, valueType, binaryOffset)
 	local addresses = paramUtils:getAllAddressFromParam(self.param)
-	for i,address in ipairs(addresses) do
+	for key,address in pairs(addresses) do
 		local patchInfo = PatchInfo:new(address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
 		paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
 	end
@@ -2783,6 +2783,69 @@ object:patchAll4Byte(0x16C,4)
 if syntaxcheck then return end
 paramUtils:restore("RestrictAllEffectsUuid31s")
 </AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>489718</ID>
+                      <Description>"Restrict Malicious Effects"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: Prevents most malicious effects being applied to your character.
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local maliciousEffects = {
+  13, --Humanity Steal
+  33, --Curse
+  34, --Crystal Curse
+  45, --Curse
+  1600, --Drain
+  1610, --Drain
+  1620, --Drain
+  3121, --Toxic from Oceiros Garden
+  4902, --Freeze self
+  5100, --Leeches
+  5101, --Leeches
+  7020, --7020
+  7030, --7030
+  7080, --7080
+  7092, --7092
+  7120, --7120
+  7130, --7130
+  7135, --7135
+  7140, --7140
+  7150, --7150
+  7160, --7160
+  7300, --7300
+  7400, --7400
+  11013, --Instadeath effect
+  12150, --12150
+  12153, --12153
+  103750410, --Instadeath
+}
+
+for k,id in pairs(maliciousEffects) do
+  local effect = SpEffectParam:new("RestrictMaliciousEffectsUuid53",id)
+  effect:patchByte(0x16C,0x4)
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("RestrictMaliciousEffectsUuid53")
+</AssemblerScript>
+                      <Hotkeys>
+                        <Hotkey>
+                          <Action>Toggle Activation</Action>
+                          <Keys>
+                            <Key>18</Key>
+                            <Key>49</Key>
+                          </Keys>
+                          <ID>0</ID>
+                        </Hotkey>
+                      </Hotkeys>
                     </CheatEntry>
                   </CheatEntries>
                 </CheatEntry>
