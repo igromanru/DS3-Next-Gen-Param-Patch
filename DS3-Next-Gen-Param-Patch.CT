@@ -1762,7 +1762,7 @@ function EquipParamProtector:defenseThunder(value)
 end
 
 
-function EquipParamProtector:Poise(value)
+function EquipParamProtector:poise(value)
 	self:patchFloat(0x110, value)
 end
 
@@ -1782,6 +1782,72 @@ end
 if syntaxcheck then return end
 
 </AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1337011545</ID>
+                  <Description>"new scripts"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>489715</ID>
+                      <Description>"Roy cosplay with several ring effects"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: My Roy cosplay with several ring effects
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local infoTable = {
+ {
+  0x1C22260, -- Shira's Crown
+  112056000, --Untrue Dark Ring
+  -1,
+  -1,
+ },
+ {
+  0x53EC9E8, -- Drakeblood Armor
+  112004300, --Ring of Steel Protection +3
+  112000300, --Life Ring +3
+  112005200, --Flame Stoneplate Ring +2
+ },
+ {
+  0x1C9CB50, -- Sorcerer Gloves
+  112011100, --Poisonbite Ring +1
+  112019300, --Wolf Ring +3
+  112020000, --Leo Ring
+ },
+ {
+  0x58B1CF8, -- Dragonslayer Leggings
+  112042000, --Silvercat Ring
+  112045000, --Carthus Milkring
+  112058000, --Obscuring Ring Effect
+ }
+}
+
+for i,arr in pairs(infoTable) do
+  if(arr ~= nil) then
+    local object = EquipParamProtector:new("MyRoycosplaywithseveralringeffects",arr[1])
+	object:residentSpEffectId(arr[2])
+	object:residentSpEffectId2(arr[3])
+	object:residentSpEffectId3(arr[4])
+	object:weight(0)
+  end
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("MyRoycosplaywithseveralringeffects")
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>293</ID>
@@ -2645,39 +2711,39 @@ function SpEffectParam:registFrostChange(value)
 end
 
 --Buff's
-function SpEffectParam:VigorBuff(value)
+function SpEffectParam:vigorBuff(value)
 	self:patchByte(0x308, value)
 end
 
-function SpEffectParam:AttunementBuff(value)
+function SpEffectParam:attunementBuff(value)
 	self:patchByte(0x309, value)
 end
 
-function SpEffectParam:EnduranceBuff(value)
+function SpEffectParam:enduranceBuff(value)
 	self:patchByte(0x30A, value)
 end
 
-function SpEffectParam:VitalityBuff(value)
+function SpEffectParam:vitalityBuff(value)
 	self:patchByte(0x30B, value)
 end
 
-function SpEffectParam:StrenghtBuff(value)
+function SpEffectParam:strenghtBuff(value)
 	self:patchByte(0x30C, value)
 end
 
-function SpEffectParam:DextrerityBuff(value)
+function SpEffectParam:dextrerityBuff(value)
 	self:patchByte(0x30D, value)
 end
 
-function SpEffectParam:IntelligenceBuff(value)
+function SpEffectParam:intelligenceBuff(value)
 	self:patchByte(0x30E, value)
 end
 
-function SpEffectParam:FaithBuff(value)
+function SpEffectParam:faithBuff(value)
 	self:patchByte(0x30F, value)
 end
 
-function SpEffectParam:LuckBuff(value)
+function SpEffectParam:luckBuff(value)
 	self:patchByte(0x310, value)
 end
 
@@ -2772,15 +2838,15 @@ end
 {$lua}
 if syntaxcheck then return end
 local effect = SpEffectParam:new("KnightsRingBuffIncreasesAllStatsBy30",112046000)
-effect:VigorBuff(30)
-effect:AttunementBuff(30)
-effect:EnduranceBuff(30)
-effect:VitalityBuff(30)
-effect:StrenghtBuff(30)
-effect:DextrerityBuff(30)
-effect:IntelligenceBuff(30)
-effect:FaithBuff(30)
-effect:LuckBuff(30)
+effect:vigorBuff(30)
+effect:attunementBuff(30)
+effect:enduranceBuff(30)
+effect:vitalityBuff(30)
+effect:strenghtBuff(30)
+effect:dextrerityBuff(30)
+effect:intelligenceBuff(30)
+effect:faithBuff(30)
+effect:luckBuff(30)
 
 [DISABLE]
 {$lua}
