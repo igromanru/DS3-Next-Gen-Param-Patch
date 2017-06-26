@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="24">
+<CheatTable CheatEngineTableVersion="26">
   <CheatEntries>
     <CheatEntry>
       <ID>249</ID>
@@ -515,28 +515,31 @@ BaseParamClass = {
 }
 
 function BaseParamClass:new(param, uuid, id)
-	local o = {}
-	setmetatable(o, self)
-	self.__index = self
-	if(param ~= nil) then
-		o.param = param
-	end
-	if(uuid ~= nil) then
-		o.backupUuid = uuid
-	end
-	if(id ~= nil) then
-		o.id = id
-	end
+  local o = {}
+  self.__index = self
+  setmetatable(o, self)
 
-	return o
+  o:init(param, uuid, id)
+  return o
 end
 
-function BaseParamClass:init()
-  if(paramUtils.patchBackUp[self.backupUuid] == nil) then
-    paramUtils.patchBackUp[self.backupUuid] = {}
+function BaseParamClass:init(param, uuid, id)
+  if(param ~= nil) then
+    self.param = param
   end
-  if(self.id ~= nil and self.id &gt; 0) then
-    self.address = paramUtils:getIdAddressInParam(self.param, self.id)
+  if(uuid ~= nil) then
+    self.backupUuid = uuid
+  end
+  if(id ~= nil) then
+    self.id = id
+  end
+  if(self.param ~= "" and self.backupUuid ~= "") then
+    if(paramUtils.patchBackUp[self.backupUuid] == nil) then
+      paramUtils.patchBackUp[self.backupUuid] = {}
+    end
+    if(self.id ~= nil and self.id &gt; 0) then
+      self.address = paramUtils:getIdAddressInParam(self.param, self.id)
+    end
   end
 end
 
@@ -633,22 +636,17 @@ end
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 {$lua}
-if syntaxcheck then return end
+--if syntaxcheck then return end
 
 --[[START EquipParamWeapon class]]--
 EquipParamWeapon = BaseParamClass:new()
 
 function EquipParamWeapon:new(uuid, id)
 	local o = {}
-	setmetatable(o, self)
 	self.__index = self
-	o.param = "EquipParamWeapon"
-	if(id ~= nil) then
-	  o.id = id
-    end
-	o.backupUuid = uuid
+	setmetatable(o, self)
 
-	o:init()
+	o:init("EquipParamWeapon", uuid, id)
     o:stripSelfIdForParams()
 	return o
 end
@@ -1549,15 +1547,10 @@ EquipParamProtector = BaseParamClass:new()
 
 function EquipParamProtector:new(uuid, id)
 	local o = {}
-	setmetatable(o, self)
 	self.__index = self
-	o.param = "EquipParamProtector"
-	if(id ~= nil) then
-	  o.id = id
-    end
-	o.backupUuid = uuid
+	setmetatable(o, self)
 
-	o:init()
+	o:init("EquipParamProtector", uuid, id)
 	o:stripSelfIdForParams()
 	return o
 end
@@ -1805,15 +1798,10 @@ EquipParamGoods = BaseParamClass:new()
 
 function EquipParamGoods:new(uuid, id)
 	local o = {}
-	setmetatable(o, self)
 	self.__index = self
-	o.param = "EquipParamGoods"
-	if(id ~= nil) then
-	  o.id = id
-    end
-	o.backupUuid = uuid
+	setmetatable(o, self)
 
-	o:init()
+	o:init("EquipParamGoods", uuid, id)
 	o:stripSelfIdForParams()
 	return o
 end
@@ -2113,15 +2101,10 @@ SpEffectParam = BaseParamClass:new()
 
 function SpEffectParam:new(uuid, id)
 	local o = {}
-	setmetatable(o, self)
 	self.__index = self
-	o.param = "SpEffectParam"
-	if(id ~= nil) then
-	  o.id = id
-    end
-	o.backupUuid = uuid
+	setmetatable(o, self)
 
-	o:init()
+	o:init("SpEffectParam", uuid, id)
 	return o
 end
 
@@ -2821,15 +2804,10 @@ Magic = BaseParamClass:new()
 
 function Magic:new(uuid, id)
 	local o = {}
-	setmetatable(o, self)
 	self.__index = self
-	o.param = "Magic"
-	if(id ~= nil) then
-	  o.id = id
-    end
-	o.backupUuid = uuid
+	setmetatable(o, self)
 
-	o:init()
+	o:init("Magic", uuid, id)
 	o:stripSelfIdForParams()
 	return o
 end
@@ -3142,15 +3120,10 @@ Bullet = BaseParamClass:new()
 
 function Bullet:new(uuid, id)
 	local o = {}
-	setmetatable(o, self)
 	self.__index = self
-	o.param = "Bullet"
-    if(id ~= nil) then
-	  o.id = id
-    end
-	o.backupUuid = uuid
+	setmetatable(o, self)
 
-	o:init()
+	o:init("Bullet", uuid, id)
 	o:stripSelfIdForParams()
 	return o
 end
