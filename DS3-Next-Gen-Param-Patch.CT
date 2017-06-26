@@ -271,7 +271,7 @@ function ParamUtils:paramIterator(ParamName,ChangeTable,uuid)
 		end
 	else
 		for k,v in pairs(ChangeTable) do
-			local idAddress = getIdAddress(IDTable,v[1])
+			local idAddress = self:getIdAddress(IDTable,v[1])
 			if idAddress ~= nil then
 				self:paramPatcher(idAddress,v[2],v[3],v[4])
 			end
@@ -4158,12 +4158,14 @@ end
                     <CheatEntry>
                       <ID>89281</ID>
                       <Description>"Chest Piece"</Description>
+                      <LastState Value="1000000" RealAddress="7FF5FF972CD0"/>
                       <VariableType>4 Bytes</VariableType>
                       <Address>Armor1</Address>
                     </CheatEntry>
                     <CheatEntry>
                       <ID>89282</ID>
                       <Description>"Head Piece"</Description>
+                      <LastState Value="1000000" RealAddress="7FF5FF97018C"/>
                       <VariableType>4 Bytes</VariableType>
                       <Address>Armor2</Address>
                     </CheatEntry>
