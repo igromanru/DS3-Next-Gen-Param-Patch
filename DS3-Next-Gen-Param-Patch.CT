@@ -291,10 +291,14 @@ function ParamUtils:paramPatcher(idAddress,DataOffset,Data,Symbol)
 end
 
 function ParamUtils:paramDepatcher(uuid)
-	for k,v in pairs(self.patchBackUpOld[uuid]) do
-		writeBytes(v[1],v[2])
-	end
-	self.patchBackUpOld[uuid] = nil
+  if(self.patchBackUpOld[uuid] ~= nil) then
+    for k,v in pairs(self.patchBackUpOld[uuid]) do
+	  if(v ~= nil) then
+        writeBytes(v[1],v[2])
+	  end
+    end
+    self.patchBackUpOld[uuid] = nil
+  end
 end
 
 function ParamUtils:patchMultipleOffsets(paramName, id, patchInfoTable, uuid)
@@ -21756,7 +21760,7 @@ end
     </SymbolEntry>
     <SymbolEntry>
       <Name>ParamPatchBase</Name>
-      <Address>1404EA050</Address>
+      <Address> 1404EA050</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
   <Comments>Copyright (C) 2017 Igromanru 
