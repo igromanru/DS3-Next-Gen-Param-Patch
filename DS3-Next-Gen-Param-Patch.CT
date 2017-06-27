@@ -480,6 +480,19 @@ function ParamUtils:printAllBackups()
   end
 end
 
+function ParamUtils:printAllOldBackups()
+  if(self.patchBackUpOld ~= nil) then
+    for uuid,tBackup in pairs(self.patchBackUpOld) do
+	  print("UUID: "..uuid)
+	  for address,byteArray in pairs(tBackup) do
+	    print("Address: "..address.." Byte Array: ")
+	  end
+    end
+  else
+    print("Old BackUp table is nil")
+  end
+end
+
 -- Creating an instance of ParamUtils
 paramUtils = ParamUtils:new()
 --[[END ParamUtils class]]--
@@ -4158,14 +4171,12 @@ end
                     <CheatEntry>
                       <ID>89281</ID>
                       <Description>"Chest Piece"</Description>
-                      <LastState Value="1000000" RealAddress="7FF5FF972CD0"/>
                       <VariableType>4 Bytes</VariableType>
                       <Address>Armor1</Address>
                     </CheatEntry>
                     <CheatEntry>
                       <ID>89282</ID>
                       <Description>"Head Piece"</Description>
-                      <LastState Value="1000000" RealAddress="7FF5FF97018C"/>
                       <VariableType>4 Bytes</VariableType>
                       <Address>Armor2</Address>
                     </CheatEntry>
@@ -21742,6 +21753,10 @@ end
     <SymbolEntry>
       <Name>AttackAddressToUse</Name>
       <Address>08DB0000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>ParamPatchBase</Name>
+      <Address>1404EA050</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
   <Comments>Copyright (C) 2017 Igromanru 
