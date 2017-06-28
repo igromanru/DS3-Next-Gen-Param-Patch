@@ -140,12 +140,15 @@ function ParamUtils:toHex(number, length)
 end
 
 function ParamUtils:isEmpty(value)
-  local result = value == nil
-  if(not result) then
+  local result = true
+  if(value ~= nil) then
     if(type(value) == "string") then
 	  result = value == ""
 	elseif(type(value) == "table") then
-	  result = value[1] == nil
+	  for key,tabl in pairs(value) do
+        result = key == nil
+        break
+      end
 	end
   end
   return result
@@ -513,6 +516,34 @@ function ParamUtils:printAllOldBackups()
 	  print("UUID: "..uuid)
 	  for address,byteArray in pairs(tBackup) do
 	    print("Address: "..address.." Byte Array: ")
+	  end
+    end
+  end
+end
+
+function ParamUtils:printParams()
+  if(self:isNotEmpty(self.masterParamTable)) then
+    for key,address in pairs(self.masterParamTable) do
+	  print("Param: "..key.." Address: "..self:toHex(address))
+    end
+  end
+end
+
+function ParamUtils:printParamsIds(param)
+  if(self:isNotEmpty(self.masterParamTable)) then
+    local idTable = self:getParamIdTable(param)
+    for id,address in pairs(idTable) do
+	  print("ID: "..id.." (0x"..self:toHex(id)..") Address: "..self:toHex(address))
+    end
+  end
+end
+
+function ParamUtils:printParamAddress(param)
+  if(self:isNotEmpty(self.masterParamTable)) then
+    for key,address in pairs(self.masterParamTable) do
+	  if(param == key) then
+	    print("Param: "..key.." Address: "..self:toHex(address))
+	    break
 	  end
     end
   end
@@ -4181,6 +4212,70 @@ local id = paramUtils:getIdByAddressInAnyParam(address)
 if(id ~= nil and id &gt; 0) then
   print("Your ID is "..id.."(0x"..paramUtils:toHex(id)..")")
 end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337011547</ID>
+              <Description>"Print all ID's for a Param"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{
+  Author: Igromanru
+  Description: Print all ID's for a Param
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+local paramName = "" --enter a param Name here, for example EquipParamWeapon
+--------------------------------------------------------
+paramUtils:printParamsIds(paramName)
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337011548</ID>
+              <Description>"Print the address of a Param"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{
+  Author: Igromanru
+  Description: Prints the address of a Param
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+local paramName = "" --enter a param Name here, for example EquipParamWeapon
+--------------------------------------------------------
+paramUtils:printParamAddress(paramName)
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337011549</ID>
+              <Description>"Print list of all Params"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{
+  Author: Igromanru
+  Description: Prints the address of a Param
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+paramUtils:printParams()
 
 [DISABLE]
 {$lua}
@@ -21812,161 +21907,138 @@ end
                         <CheatEntry>
                           <ID>90426</ID>
                           <Description>"AtkAnimId"</Description>
-                          <LastState Value="30400" RealAddress="7FF5FF9D568C"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff3+24</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90417</ID>
                           <Description>"AtkChrId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5668"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff3</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90433</ID>
                           <Description>"AtkEnableState"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D569D"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff3+35</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90434</ID>
                           <Description>"AtkSorbDmyId"</Description>
-                          <LastState Value="230" RealAddress="7FF5FF9D569E"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff3+36</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90439</ID>
                           <Description>"BOOL"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D56A3"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff3+3B</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90427</ID>
                           <Description>"DefAnimId"</Description>
-                          <LastState Value="70000" RealAddress="7FF5FF9D5690"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff3+28</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90418</ID>
                           <Description>"DefChrId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D566C"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff3+4</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90435</ID>
                           <Description>"DefSorbDmyId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D569F"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff3+37</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90421</ID>
                           <Description>"DiffAngMax"</Description>
-                          <LastState Value="180" RealAddress="7FF5FF9D5678"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff3+10</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90420</ID>
                           <Description>"DiffAngMin"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5674"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff3+c</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90424</ID>
                           <Description>"DiffAngMyToDef"</Description>
-                          <LastState Value="180" RealAddress="7FF5FF9D5684"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff3+1c</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90419</ID>
                           <Description>"Dist"</Description>
-                          <LastState Value="1.5" RealAddress="7FF5FF9D5670"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff3+8</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90438</ID>
                           <Description>"DmyHasChrDirType"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D56A2"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff3+3A</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90428</ID>
                           <Description>"EscHp"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5694"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff3+2c</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90423</ID>
                           <Description>"LowerYRange"</Description>
-                          <LastState Value="0.6499999762" RealAddress="7FF5FF9D5680"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff3+18</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90432</ID>
                           <Description>"PadType"</Description>
-                          <LastState Value="1" RealAddress="7FF5FF9D569C"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff3+34</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90437</ID>
                           <Description>"SelfEscCycleCnt"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D56A1"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff3+39</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90429</ID>
                           <Description>"SelfEscCycleTime"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5696"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff3+2e</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90431</ID>
                           <Description>"SphereCastRadiusRateLow"</Description>
-                          <LastState Value="70" RealAddress="7FF5FF9D569A"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff3+32</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90430</ID>
                           <Description>"SphereCastRadiusRateTop"</Description>
-                          <LastState Value="70" RealAddress="7FF5FF9D5698"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff3+30</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90436</ID>
                           <Description>"ThrowType"</Description>
-                          <LastState Value="1" RealAddress="7FF5FF9D56A0"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff3+38</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90425</ID>
                           <Description>"ThrowTypeId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5688"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff3+20</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90422</ID>
                           <Description>"UpperYRange"</Description>
-                          <LastState Value="0.5" RealAddress="7FF5FF9D567C"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff3+14</Address>
                         </CheatEntry>
@@ -21982,161 +22054,138 @@ end
                         <CheatEntry>
                           <ID>90499</ID>
                           <Description>"AtkAnimId"</Description>
-                          <LastState Value="30201" RealAddress="7FF5FF9D570C"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff+24</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90490</ID>
                           <Description>"AtkChrId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D56E8"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90506</ID>
                           <Description>"AtkEnableState"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D571D"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff+35</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90507</ID>
                           <Description>"AtkSorbDmyId"</Description>
-                          <LastState Value="231" RealAddress="7FF5FF9D571E"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff+36</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90512</ID>
                           <Description>"BOOL"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5723"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff+3B</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90500</ID>
                           <Description>"DefAnimId"</Description>
-                          <LastState Value="70010" RealAddress="7FF5FF9D5710"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff+28</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90491</ID>
                           <Description>"DefChrId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D56EC"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff+4</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90508</ID>
                           <Description>"DefSorbDmyId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D571F"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff+37</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90494</ID>
                           <Description>"DiffAngMax"</Description>
-                          <LastState Value="180" RealAddress="7FF5FF9D56F8"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff+10</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90493</ID>
                           <Description>"DiffAngMin"</Description>
-                          <LastState Value="90" RealAddress="7FF5FF9D56F4"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff+c</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90497</ID>
                           <Description>"DiffAngMyToDef"</Description>
-                          <LastState Value="60" RealAddress="7FF5FF9D5704"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff+1c</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90492</ID>
                           <Description>"Dist"</Description>
-                          <LastState Value="1.5" RealAddress="7FF5FF9D56F0"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff+8</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90511</ID>
                           <Description>"DmyHasChrDirType"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5722"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff+3A</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90501</ID>
                           <Description>"EscHp"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5714"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff+2c</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90496</ID>
                           <Description>"LowerYRange"</Description>
-                          <LastState Value="0.6499999762" RealAddress="7FF5FF9D5700"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff+18</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90505</ID>
                           <Description>"PadType"</Description>
-                          <LastState Value="1" RealAddress="7FF5FF9D571C"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff+34</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90510</ID>
                           <Description>"SelfEscCycleCnt"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5721"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff+39</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90502</ID>
                           <Description>"SelfEscCycleTime"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5716"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff+2e</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90504</ID>
                           <Description>"SphereCastRadiusRateLow"</Description>
-                          <LastState Value="70" RealAddress="7FF5FF9D571A"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff+32</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90503</ID>
                           <Description>"SphereCastRadiusRateTop"</Description>
-                          <LastState Value="70" RealAddress="7FF5FF9D5718"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff+30</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90509</ID>
                           <Description>"ThrowType"</Description>
-                          <LastState Value="8" RealAddress="7FF5FF9D5720"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff+38</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90498</ID>
                           <Description>"ThrowTypeId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9D5708"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff+20</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90495</ID>
                           <Description>"UpperYRange"</Description>
-                          <LastState Value="0.5" RealAddress="7FF5FF9D56FC"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff+14</Address>
                         </CheatEntry>
@@ -22152,161 +22201,138 @@ end
                         <CheatEntry>
                           <ID>90451</ID>
                           <Description>"AtkAnimId"</Description>
-                          <LastState Value="30202" RealAddress="7FF5FF9DD18C"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff2+24</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90442</ID>
                           <Description>"AtkChrId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9DD168"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff2</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90458</ID>
                           <Description>"AtkEnableState"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9DD19D"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff2+35</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90459</ID>
                           <Description>"AtkSorbDmyId"</Description>
-                          <LastState Value="231" RealAddress="7FF5FF9DD19E"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff2+36</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90464</ID>
                           <Description>"BOOL"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9DD1A3"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff2+3B</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90452</ID>
                           <Description>"DefAnimId"</Description>
-                          <LastState Value="70030" RealAddress="7FF5FF9DD190"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff2+28</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90443</ID>
                           <Description>"DefChrId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9DD16C"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff2+4</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90460</ID>
                           <Description>"DefSorbDmyId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9DD19F"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff2+37</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90446</ID>
                           <Description>"DiffAngMax"</Description>
-                          <LastState Value="180" RealAddress="7FF5FF9DD178"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff2+10</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90445</ID>
                           <Description>"DiffAngMin"</Description>
-                          <LastState Value="90" RealAddress="7FF5FF9DD174"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff2+c</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90449</ID>
                           <Description>"DiffAngMyToDef"</Description>
-                          <LastState Value="60" RealAddress="7FF5FF9DD184"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff2+1c</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90444</ID>
                           <Description>"Dist"</Description>
-                          <LastState Value="1.5" RealAddress="7FF5FF9DD170"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff2+8</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90463</ID>
                           <Description>"DmyHasChrDirType"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9DD1A2"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff2+3A</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90453</ID>
                           <Description>"EscHp"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9DD194"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff2+2c</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90448</ID>
                           <Description>"LowerYRange"</Description>
-                          <LastState Value="0.6499999762" RealAddress="7FF5FF9DD180"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff2+18</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90457</ID>
                           <Description>"PadType"</Description>
-                          <LastState Value="1" RealAddress="7FF5FF9DD19C"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff2+34</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90462</ID>
                           <Description>"SelfEscCycleCnt"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9DD1A1"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff2+39</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90454</ID>
                           <Description>"SelfEscCycleTime"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9DD196"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff2+2e</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90456</ID>
                           <Description>"SphereCastRadiusRateLow"</Description>
-                          <LastState Value="70" RealAddress="7FF5FF9DD19A"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff2+32</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90455</ID>
                           <Description>"SphereCastRadiusRateTop"</Description>
-                          <LastState Value="70" RealAddress="7FF5FF9DD198"/>
                           <VariableType>2 Bytes</VariableType>
                           <Address>InstaStuff2+30</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90461</ID>
                           <Description>"ThrowType"</Description>
-                          <LastState Value="12" RealAddress="7FF5FF9DD1A0"/>
                           <VariableType>Byte</VariableType>
                           <Address>InstaStuff2+38</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90450</ID>
                           <Description>"ThrowTypeId"</Description>
-                          <LastState Value="0" RealAddress="7FF5FF9DD188"/>
                           <VariableType>4 Bytes</VariableType>
                           <Address>InstaStuff2+20</Address>
                         </CheatEntry>
                         <CheatEntry>
                           <ID>90447</ID>
                           <Description>"UpperYRange"</Description>
-                          <LastState Value="0.5" RealAddress="7FF5FF9DD17C"/>
                           <VariableType>Float</VariableType>
                           <Address>InstaStuff2+14</Address>
                         </CheatEntry>
@@ -22349,10 +22375,6 @@ end
     <SymbolEntry>
       <Name>AttackAddressToUse</Name>
       <Address>08DB0000</Address>
-    </SymbolEntry>
-    <SymbolEntry>
-      <Name>ParamPatchBase</Name>
-      <Address> 1404EA050</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
   <Comments>Copyright (C) 2017 Igromanru 
