@@ -140,11 +140,12 @@ function ParamUtils:toHex(number, length)
 end
 
 function ParamUtils:isEmpty(value)
-  local result = true
-  if(value ~= nil) then
+  local result = value == nil
+  if(not result) then
     if(type(value) == "string") then
 	  result = value == ""
 	elseif(type(value) == "table") then
+	  result = true
 	  for key,tabl in pairs(value) do
         result = key == nil
         break
@@ -181,6 +182,10 @@ function ParamUtils:paramIndexer()
 	  end
 	  self.masterParamTable[ParamString] = ParamOffset
 	end
+end
+
+function ParamUtils:getParamAddress(param)
+  return self.masterParamTable[param]
 end
 
 function ParamUtils:getIdAddress(idTable, Id)
@@ -539,13 +544,11 @@ function ParamUtils:printParamsIds(param)
 end
 
 function ParamUtils:printParamAddress(param)
-  if(self:isNotEmpty(self.masterParamTable)) then
-    for key,address in pairs(self.masterParamTable) do
-	  if(param == key) then
-	    print("Param: "..key.." Address: "..self:toHex(address))
-	    break
-	  end
-    end
+  local address = self:getParamAddress(param)
+  if(self:isNotEmpty(address)) then
+    print("Param: "..param..", Address: "..self:toHex(address))
+  else
+	print("Param: "..param.." couldn't be found.")
   end
 end
 
