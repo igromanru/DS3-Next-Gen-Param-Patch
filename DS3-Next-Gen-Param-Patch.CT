@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="24">
+<CheatTable CheatEngineTableVersion="26">
   <CheatEntries>
     <CheatEntry>
       <ID>249</ID>
@@ -3512,7 +3512,7 @@ end
 
 --Special Effect IDs
 function Bullet:spEffectId0(value)
-	self:patch4Byte(0x7C, value)
+	self:patch4Byte(0x6C, value)
 end
 
 function Bullet:spEffectId1(value)
@@ -5006,6 +5006,7 @@ assert(false)
                                   <VariableType>String</VariableType>
                                   <Length>0</Length>
                                   <Unicode>0</Unicode>
+                                  <CodePage>0</CodePage>
                                   <ZeroTerminate>1</ZeroTerminate>
                                   <Address>+13C</Address>
                                 </CheatEntry>
