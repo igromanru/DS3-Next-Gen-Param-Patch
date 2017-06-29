@@ -694,6 +694,37 @@ function BaseParamClass:patchFloat(offset, value)
 	self:patchValue(offset, value, PatchInfo.TYPE.FLOAT)
 end
 
+-- Read value
+function BaseParamClass:readValue(offset, value, valueType, binaryOffset)
+	local patchInfo = PatchInfo:new(self.address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
+	return paramUtils:readValue(patchInfo)
+end
+
+function BaseParamClass:readBinary(offset, value, binaryOffset)
+	local bByte = self:readValue(offset, value, readInfo.TYPE.BINARY, binaryOffset)
+	return bAnd(bByte, PatchInfo:getBinaryOffset(binaryOffset)) ~= 0
+end
+
+function BaseParamClass:readByte(offset, value)
+	return self:readValue(offset, value, readInfo.TYPE.BYTE)
+end
+
+function BaseParamClass:read2Byte(offset, value)
+	return self:readValue(offset, value, readInfo.TYPE.TWO_BYTE)
+end
+
+function BaseParamClass:read4Byte(offset, value)
+	return self:readValue(offset, value, readInfo.TYPE.FOUR_BYTE)
+end
+
+function BaseParamClass:read8Byte(offset, value)
+	return self:readValue(offset, value, readInfo.TYPE.EIGHT_BYTE)
+end
+
+function BaseParamClass:readFloat(offset, value)
+	return self:readValue(offset, value, readInfo.TYPE.FLOAT)
+end
+
 --[[END BaseParamClass class]]--
 
 [DISABLE]
