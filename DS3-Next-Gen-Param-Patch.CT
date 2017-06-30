@@ -701,28 +701,28 @@ function BaseParamClass:readValue(offset, valueType, binaryOffset)
 end
 
 function BaseParamClass:readBinary(offset, binaryOffset)
-	local bByte = self:readValue(offset, readInfo.TYPE.BINARY, binaryOffset)
+	local bByte = self:readValue(offset, PatchInfo.TYPE.BINARY, binaryOffset)
 	return bAnd(bByte, PatchInfo:getBinaryOffset(binaryOffset)) ~= 0
 end
 
 function BaseParamClass:readByte(offset)
-	return self:readValue(offset, readInfo.TYPE.BYTE)
+	return self:readValue(offset, PatchInfo.TYPE.BYTE)
 end
 
 function BaseParamClass:read2Byte(offset)
-	return self:readValue(offset, readInfo.TYPE.TWO_BYTE)
+	return self:readValue(offset, PatchInfo.TYPE.TWO_BYTE)
 end
 
 function BaseParamClass:read4Byte(offset)
-	return self:readValue(offset, readInfo.TYPE.FOUR_BYTE)
+	return self:readValue(offset, PatchInfo.TYPE.FOUR_BYTE)
 end
 
 function BaseParamClass:read8Byte(offset)
-	return self:readValue(offset, readInfo.TYPE.EIGHT_BYTE)
+	return self:readValue(offset, PatchInfo.TYPE.EIGHT_BYTE)
 end
 
 function BaseParamClass:readFloat(offset)
-	return self:readValue(offset, readInfo.TYPE.FLOAT)
+	return self:readValue(offset, PatchInfo.TYPE.FLOAT)
 end
 
 --[[END BaseParamClass class]]--
