@@ -695,34 +695,34 @@ function BaseParamClass:patchFloat(offset, value)
 end
 
 -- Read value
-function BaseParamClass:readValue(offset, value, valueType, binaryOffset)
-	local patchInfo = PatchInfo:new(self.address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
+function BaseParamClass:readValue(offset, valueType, binaryOffset)
+	local patchInfo = PatchInfo:new(self.address + offset, nil, valueType, PatchInfo:getBinaryOffset(binaryOffset))
 	return paramUtils:readValue(patchInfo)
 end
 
-function BaseParamClass:readBinary(offset, value, binaryOffset)
-	local bByte = self:readValue(offset, value, readInfo.TYPE.BINARY, binaryOffset)
+function BaseParamClass:readBinary(offset, binaryOffset)
+	local bByte = self:readValue(offset, readInfo.TYPE.BINARY, binaryOffset)
 	return bAnd(bByte, PatchInfo:getBinaryOffset(binaryOffset)) ~= 0
 end
 
-function BaseParamClass:readByte(offset, value)
-	return self:readValue(offset, value, readInfo.TYPE.BYTE)
+function BaseParamClass:readByte(offset)
+	return self:readValue(offset, readInfo.TYPE.BYTE)
 end
 
-function BaseParamClass:read2Byte(offset, value)
-	return self:readValue(offset, value, readInfo.TYPE.TWO_BYTE)
+function BaseParamClass:read2Byte(offset)
+	return self:readValue(offset, readInfo.TYPE.TWO_BYTE)
 end
 
-function BaseParamClass:read4Byte(offset, value)
-	return self:readValue(offset, value, readInfo.TYPE.FOUR_BYTE)
+function BaseParamClass:read4Byte(offset)
+	return self:readValue(offset, readInfo.TYPE.FOUR_BYTE)
 end
 
-function BaseParamClass:read8Byte(offset, value)
-	return self:readValue(offset, value, readInfo.TYPE.EIGHT_BYTE)
+function BaseParamClass:read8Byte(offset)
+	return self:readValue(offset, readInfo.TYPE.EIGHT_BYTE)
 end
 
-function BaseParamClass:readFloat(offset, value)
-	return self:readValue(offset, value, readInfo.TYPE.FLOAT)
+function BaseParamClass:readFloat(offset)
+	return self:readValue(offset, readInfo.TYPE.FLOAT)
 end
 
 --[[END BaseParamClass class]]--
@@ -3067,6 +3067,43 @@ paramUtils:restore("RestrictMaliciousEffectsUuid53")
                           <ID>0</ID>
                         </Hotkey>
                       </Hotkeys>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1337011550</ID>
+                  <Description>"examples"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>1337011551</ID>
+                      <Description>"Patchs only special stateInfo"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+	Author: Igromanru
+	Description: Patchs only special stateInfo
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local idTable = paramUtils:getParamIdTable("SpEffectParam")
+for id,address in pairs(idTable) do
+  local object = SpEffectParam:new("PatchSpecialStateInfo", id)
+  local stateInfo = object:readByte(0x156)
+  if(stateInfo == 0x116 or stateInfo == 0x136 or stateInfo == 0x64) then
+	object:stateInfo(0)
+  end
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("PatchSpecialStateInfo")
+
+</AssemblerScript>
                     </CheatEntry>
                   </CheatEntries>
                 </CheatEntry>
