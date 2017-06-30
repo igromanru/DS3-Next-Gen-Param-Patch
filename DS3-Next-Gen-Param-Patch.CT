@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="26">
+<CheatTable CheatEngineTableVersion="24">
   <CheatEntries>
     <CheatEntry>
       <ID>249</ID>
@@ -9,7 +9,7 @@
       <VariableType>Auto Assembler Script</VariableType>
       <AssemblerScript>[ENABLE]
 {$lua}
---if syntaxcheck then return end
+if syntaxcheck then return end
 
 --[[START PatchInfo class
 	Author: Igromanru
@@ -579,7 +579,7 @@ paramUtils:destroy()
           <VariableType>Auto Assembler Script</VariableType>
           <AssemblerScript>[ENABLE]
 {$lua}
---if syntaxcheck then return end
+if syntaxcheck then return end
 
 --[[START BaseParamClass class]]--
 BaseParamClass = {
@@ -5079,7 +5079,6 @@ assert(false)
                                   <VariableType>String</VariableType>
                                   <Length>0</Length>
                                   <Unicode>0</Unicode>
-                                  <CodePage>0</CodePage>
                                   <ZeroTerminate>1</ZeroTerminate>
                                   <Address>+13C</Address>
                                 </CheatEntry>
