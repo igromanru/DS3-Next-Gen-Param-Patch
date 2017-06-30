@@ -589,16 +589,16 @@ BaseParamClass = {
 	address = 0
 }
 
-function BaseParamClass:new(param, uuid, id)
+function BaseParamClass:new(param, uuid, id, address)
   local o = {}
   self.__index = self
   setmetatable(o, self)
 
-  o:init(param, uuid, id)
+  o:init(param, uuid, id, address)
   return o
 end
 
-function BaseParamClass:init(param, uuid, id)
+function BaseParamClass:init(param, uuid, id, address)
   if(param ~= nil) then
     self.param = param
   end
@@ -612,7 +612,9 @@ function BaseParamClass:init(param, uuid, id)
     if(paramUtils.patchBackUp[self.backupUuid] == nil) then
       paramUtils.patchBackUp[self.backupUuid] = {}
     end
-    if(self.id ~= nil and self.id &gt; 0) then
+	if(address ~= nil and address &gt; 0) then
+	  self.address = address
+    elseif(self.id ~= nil and self.id &gt; 0) then
 	  self:stripSelfIdForParams()
       self.address = paramUtils:getIdAddressInParam(self.param, self.id)
     end
@@ -747,12 +749,12 @@ end
 --[[START EquipParamWeapon class]]--
 EquipParamWeapon = BaseParamClass:new()
 
-function EquipParamWeapon:new(uuid, id)
+function EquipParamWeapon:new(uuid, id, address)
 	local o = {}
 	self.__index = self
 	setmetatable(o, self)
 
-	o:init("EquipParamWeapon", uuid, id)
+	o:init("EquipParamWeapon", uuid, id, address)
 	return o
 end
 
@@ -1650,12 +1652,12 @@ if syntaxcheck then return end
 --[[START EquipParamProtector class]]--
 EquipParamProtector = BaseParamClass:new()
 
-function EquipParamProtector:new(uuid, id)
+function EquipParamProtector:new(uuid, id, address)
 	local o = {}
 	self.__index = self
 	setmetatable(o, self)
 
-	o:init("EquipParamProtector", uuid, id)
+	o:init("EquipParamProtector", uuid, id, address)
 	return o
 end
 
@@ -1965,12 +1967,12 @@ if syntaxcheck then return end
 --[[START EquipParamGoods class]]--
 EquipParamGoods = BaseParamClass:new()
 
-function EquipParamGoods:new(uuid, id)
+function EquipParamGoods:new(uuid, id, address)
 	local o = {}
 	self.__index = self
 	setmetatable(o, self)
 
-	o:init("EquipParamGoods", uuid, id)
+	o:init("EquipParamGoods", uuid, id, address)
 	return o
 end
 
@@ -2320,12 +2322,12 @@ if syntaxcheck then return end
 --[[START SpEffectParam class]]--
 SpEffectParam = BaseParamClass:new()
 
-function SpEffectParam:new(uuid, id)
+function SpEffectParam:new(uuid, id, address)
 	local o = {}
 	self.__index = self
 	setmetatable(o, self)
 
-	o:init("SpEffectParam", uuid, id)
+	o:init("SpEffectParam", uuid, id, address)
 	return o
 end
 
@@ -3091,7 +3093,7 @@ paramUtils:restore("RestrictMaliciousEffectsUuid53")
 if syntaxcheck then return end
 local idTable = paramUtils:getParamIdTable("SpEffectParam")
 for id,address in pairs(idTable) do
-  local object = SpEffectParam:new("PatchSpecialStateInfo", id)
+  local object = SpEffectParam:new("PatchSpecialStateInfo", nil, address)
   local stateInfo = object:readByte(0x156)
   if(stateInfo == 116 or stateInfo == 136 or stateInfo == 64) then
 	object:stateInfo(0)
@@ -3123,12 +3125,12 @@ if syntaxcheck then return end
 --[[START Magic class]]--
 Magic = BaseParamClass:new()
 
-function Magic:new(uuid, id)
+function Magic:new(uuid, id, address)
 	local o = {}
 	self.__index = self
 	setmetatable(o, self)
 
-	o:init("Magic", uuid, id)
+	o:init("Magic", uuid, id, address)
 	return o
 end
 
@@ -3461,12 +3463,12 @@ if syntaxcheck then return end
 --[[START Bullet class]]--
 Bullet = BaseParamClass:new()
 
-function Bullet:new(uuid, id)
+function Bullet:new(uuid, id, address)
 	local o = {}
 	self.__index = self
 	setmetatable(o, self)
 
-	o:init("Bullet", uuid, id)
+	o:init("Bullet", uuid, id, address)
 	return o
 end
 
