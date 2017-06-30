@@ -3093,7 +3093,7 @@ local idTable = paramUtils:getParamIdTable("SpEffectParam")
 for id,address in pairs(idTable) do
   local object = SpEffectParam:new("PatchSpecialStateInfo", id)
   local stateInfo = object:readByte(0x156)
-  if(stateInfo == 0x116 or stateInfo == 0x136 or stateInfo == 0x64) then
+  if(stateInfo == 116 or stateInfo == 136 or stateInfo == 64) then
 	object:stateInfo(0)
   end
 end
