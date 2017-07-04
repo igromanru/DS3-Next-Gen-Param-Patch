@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="24">
+<CheatTable CheatEngineTableVersion="26">
   <CheatEntries>
     <CheatEntry>
       <ID>249</ID>
@@ -3835,6 +3835,521 @@ paramUtils:restore("PerserverenceWarmth")
               </CheatEntries>
             </CheatEntry>
             <CheatEntry>
+              <ID>1337011552</ID>
+              <Description>"BehaviorParam_PC"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <Color>008000</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START BehaviorParam_PC class]]--
+BehaviorParam_PC = BaseParamClass:new()
+
+function BehaviorParam_PC:new(uuid, id, address)
+	local o = {}
+	self.__index = self
+	setmetatable(o, self)
+
+	o:init("BehaviorParam_PC", uuid, id, address)
+	return o
+end
+
+function BehaviorParam_PC:variationId(value)
+	self:patch4Byte(0x0, value)
+end
+
+function BehaviorParam_PC:behaviorJudgeId(value)
+	self:patch4Byte(0x4, value)
+end
+
+function BehaviorParam_PC:ezStateBehaviorType_old(value)
+	self:patchByte(0x8, value)
+end
+
+function BehaviorParam_PC:refType(value)
+	self:patchByte(0x9, value)
+end
+
+function BehaviorParam_PC:refId(value)
+	self:patch4Byte(0xC, value)
+end
+
+function BehaviorParam_PC:sfxVariationId(value)
+	self:patch4Byte(0x10, value)
+end
+
+function BehaviorParam_PC:stamina(value)
+	self:patch4Byte(0x14, value)
+end
+
+function BehaviorParam_PC:mp(value)
+	self:patch4Byte(0x18, value)
+end
+
+function BehaviorParam_PC:category(value)
+	self:patchByte(0x1C, value)
+end
+
+function BehaviorParam_PC:heroPoint(value)
+	self:patchByte(0x1D, value)
+end
+
+function BehaviorParam_PC:pad1(value)
+	self:patchByte(0x1E, value)
+end
+
+-- insert 0x1F here
+
+--[[END BehaviorParam_PC class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1337011553</ID>
+                  <Description>"converted scripts"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>1337011554</ID>
+                      <Description>"All bullets gives Bonfire &amp; Budding Green Moss on Hit"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: All bullets gives Bonfire &amp; Budding Green Moss on Hit
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local object = Bullet:new("AllBulletsAppliesBoneFireAndGreenMoss")
+object:patchAll4Byte(0x6C,110)  --Apply Bonfire on spEffectId0
+object:patchAll4Byte(0x74,2030) --Apply Green Moss on spEffectId2
+
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("AllBulletsAppliesBoneFireAndGreenMoss")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011555</ID>
+                      <Description>"Set all bullets life to 0"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: Changes all bullets life to 0
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local object = Bullet:new("SetAllBulletsLifeToZero")
+object:patchAllFloat(0x10,0.0)
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("SetAllBulletsLifeToZero")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011556</ID>
+                      <Description>"Perserverence Warmth"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Authror: Igromanru
+  Credits: Fockboxx (from Reverse Souls) (original script)
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local effectId = 12470000 -- Warmth
+local effect = SpEffectParam:new("PerserverenceWarmth", effectId)
+effect:life(9999.0) -- Life of bullet
+effect:hitRadius(9999.0)
+effect:hitRadiusMax(-1.0)
+effect:spEffectId2(120700) -- Perserverence Effect
+effect:spEffectId3(3100) -- Repair Powder effect
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("PerserverenceWarmth")
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337011557</ID>
+              <Description>"AttackParam_PC"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <Color>008000</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START AttackParam_PC class]]--
+AttackParam_PC = BaseParamClass:new()
+
+function AttackParam_PC:new(uuid, id, address)
+	local o = {}
+	self.__index = self
+	setmetatable(o, self)
+
+	o:init("AttackParam_PC", uuid, id, address)
+	return o
+end
+
+function AttackParam_PC:Hit0_Radius(value)
+	self:patchFloat(0x0, value)
+end
+
+function AttackParam_PC:Hit1_Radius(value)
+	self:patchFloat(0x4, value)
+end
+
+function AttackParam_PC:Hit2_Radius(value)
+	self:patchFloat(0x8, value)
+end
+
+function AttackParam_PC:Hit3_Radius(value)
+	self:patchFloat(0xC, value)
+end
+
+function AttackParam_PC:KnockbackDist(value)
+	self:patchFloat(0x10, value)
+end
+
+function AttackParam_PC:HitStopTime(value)
+	self:patchFloat(0x14, value)
+end
+
+--Special Effect IDs
+function AttackParam_PC:SpecialEffectId0(value)
+	self:patch4Byte(0x18, value)
+end
+
+function AttackParam_PC:SpecialEffectId1(value)
+	self:patch4Byte(0x1C, value)
+end
+
+function AttackParam_PC:SpecialEffectId2(value)
+	self:patch4Byte(0x20, value)
+end
+
+function AttackParam_PC:SpecialEffectId3(value)
+	self:patch4Byte(0x24, value)
+end
+
+function AttackParam_PC:SpecialEffectId4(value)
+	self:patch4Byte(0x28, value)
+end
+
+--Hit DmyPoly
+function AttackParam_PC:Hit0_DmyPoly1(value)
+	self:patch2Byte(0x2C, value)
+end
+
+function AttackParam_PC:Hit1_DmyPoly1(value)
+	self:patch2Byte(0x2E, value)
+end
+
+function AttackParam_PC:Hit2_DmyPoly1(value)
+	self:patch2Byte(0x30, value)
+end
+
+function AttackParam_PC:Hit3_DmyPoly1(value)
+	self:patch2Byte(0x32, value)
+end
+
+function AttackParam_PC:Hit0_DmyPoly2(value)
+	self:patch2Byte(0x34, value)
+end
+
+function AttackParam_PC:Hit1_DmyPoly2(value)
+	self:patch2Byte(0x36, value)
+end
+
+function AttackParam_PC:Hit2_DmyPoly2(value)
+	self:patch2Byte(0x38, value)
+end
+
+function AttackParam_PC:Hit3_DmyPoly2(value)
+	self:patch2Byte(0x3A, value)
+end
+--
+
+function AttackParam_PC:BlowingCorrection(value)
+	self:patch2Byte(0x3C, value)
+end
+
+--Corrections
+function AttackParam_PC:AtkPhysCorrection(value)
+	self:patch2Byte(0x3E, value)
+end
+
+function AttackParam_PC:AtkMagCorrection(value)
+	self:patch2Byte(0x40, value)
+end
+
+function AttackParam_PC:AtkFireCorrection(value)
+	self:patch2Byte(0x42, value)
+end
+
+function AttackParam_PC:AtkThunCorrection(value)
+	self:patch2Byte(0x44, value)
+end
+
+function AttackParam_PC:AtkStamCorrection(value)
+	self:patch2Byte(0x46, value)
+end
+
+function AttackParam_PC:GuardAtkRateCorrection(value)
+	self:patch2Byte(0x48, value)
+end
+
+function AttackParam_PC:GuardBreakCorrection(value)
+	self:patch2Byte(0x4A, value)
+end
+
+function AttackParam_PC:AtkThrowEscapeCorrection(value)
+	self:patch2Byte(0x4C, value)
+end
+
+function AttackParam_PC:AtkSuperArmorCorrection(value)
+	self:patch2Byte(0x4E, value)
+end
+--
+
+--Attack
+function AttackParam_PC:AtkPhys(value)
+	self:patch2Byte(0x50, value)
+end
+
+function AttackParam_PC:AtkMag(value)
+	self:patch2Byte(0x52, value)
+end
+
+function AttackParam_PC:AtkFire(value)
+	self:patch2Byte(0x54, value)
+end
+
+function AttackParam_PC:AtkThun(value)
+	self:patch2Byte(0x56, value)
+end
+
+function AttackParam_PC:AtkStam(value)
+	self:patch2Byte(0x58, value)
+end
+
+function AttackParam_PC:GuardAtkRate(value)
+	self:patch2Byte(0x5A, value)
+end
+
+function AttackParam_PC:GuardBreakRate(value)
+	self:patch2Byte(0x5C, value)
+end
+
+function AttackParam_PC:AtkSuperArmor(value)
+	self:patch2Byte(0x5E, value)
+end
+
+function AttackParam_PC:AtkThrowEscape(value)
+	self:patch2Byte(0x60, value)
+end
+
+function AttackParam_PC:AtkObj(value)
+	self:patch2Byte(0x62, value)
+end
+--
+
+function AttackParam_PC:GuardStaminaCutRate(value)
+	self:patch2Byte(0x64, value)
+end
+
+function AttackParam_PC:GuardRate(value)
+	self:patch2Byte(0x66, value)
+end
+
+function AttackParam_PC:ThrowTypeId(value)
+	self:patch2Byte(0x68, value)
+end
+
+--Hit Type
+function AttackParam_PC:Hit0_hitType(value)
+	self:patchByte(0x6A, value)
+end
+
+function AttackParam_PC:Hit1_hitType(value)
+	self:patchByte(0x6B, value)
+end
+
+function AttackParam_PC:Hit2_hitType(value)
+	self:patchByte(0x6C, value)
+end
+
+function AttackParam_PC:Hit3_hitType(value)
+	self:patchByte(0x6D, value)
+end
+
+
+-- insert Unknown 1 6E-71
+
+function AttackParam_PC:DamageLevel(value)
+	self:patchByte(0x72, value)
+end
+
+function AttackParam_PC:MapHitType(value)
+	self:patchByte(0x73, value)
+end
+
+function AttackParam_PC:GuardCutCancelRate(value)
+	self:patchByte(0x74, value)
+end
+
+function AttackParam_PC:AtkAttribute(value)
+	self:patchByte(0x75, value)
+end
+
+function AttackParam_PC:SpecialAttributes(value)
+	self:patchByte(0x76, value)
+end
+
+function AttackParam_PC:AttackType(value)
+	self:patchByte(0x77, value)
+end
+
+function AttackParam_PC:AtkMaterial(value)
+	self:patchByte(0x78, value)
+end
+
+function AttackParam_PC:AtkSize(value)
+	self:patchByte(0x79, value)
+end
+
+function AttackParam_PC:DefMaterial(value)
+	self:patchByte(0x7A, value)
+end
+
+function AttackParam_PC:DefSfxMaterial(value)
+	self:patchByte(0x7B, value)
+end
+
+function AttackParam_PC:HitSourceType(value)
+	self:patchByte(0x7C, value)
+end
+
+function AttackParam_PC:ThrowFlag(value)
+	self:patchByte(0x7D, value)
+end
+
+-- insert Unknown 2 7E-1A4 here
+
+--[[END AttackParam_PC class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+
+</AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1337011558</ID>
+                  <Description>"converted scripts"</Description>
+                  <Options moHideChildren="1"/>
+                  <LastState Value="" RealAddress="00000000"/>
+                  <GroupHeader>1</GroupHeader>
+                  <CheatEntries>
+                    <CheatEntry>
+                      <ID>1337011559</ID>
+                      <Description>"All bullets gives Bonfire &amp; Budding Green Moss on Hit"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: All bullets gives Bonfire &amp; Budding Green Moss on Hit
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local object = Bullet:new("AllBulletsAppliesBoneFireAndGreenMoss")
+object:patchAll4Byte(0x6C,110)  --Apply Bonfire on spEffectId0
+object:patchAll4Byte(0x74,2030) --Apply Green Moss on spEffectId2
+
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("AllBulletsAppliesBoneFireAndGreenMoss")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011560</ID>
+                      <Description>"Set all bullets life to 0"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Author: Igromanru
+  Description: Changes all bullets life to 0
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local object = Bullet:new("SetAllBulletsLifeToZero")
+object:patchAllFloat(0x10,0.0)
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("SetAllBulletsLifeToZero")
+</AssemblerScript>
+                    </CheatEntry>
+                    <CheatEntry>
+                      <ID>1337011561</ID>
+                      <Description>"Perserverence Warmth"</Description>
+                      <LastState/>
+                      <VariableType>Auto Assembler Script</VariableType>
+                      <AssemblerScript>{
+  Authror: Igromanru
+  Credits: Fockboxx (from Reverse Souls) (original script)
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local effectId = 12470000 -- Warmth
+local effect = SpEffectParam:new("PerserverenceWarmth", effectId)
+effect:life(9999.0) -- Life of bullet
+effect:hitRadius(9999.0)
+effect:hitRadiusMax(-1.0)
+effect:spEffectId2(120700) -- Perserverence Effect
+effect:spEffectId3(3100) -- Repair Powder effect
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("PerserverenceWarmth")
+</AssemblerScript>
+                    </CheatEntry>
+                  </CheatEntries>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
               <ID>1337011533</ID>
               <Description>"Scripts"</Description>
               <LastState Value="" RealAddress="00000000"/>
@@ -5079,6 +5594,7 @@ assert(false)
                                   <VariableType>String</VariableType>
                                   <Length>0</Length>
                                   <Unicode>0</Unicode>
+                                  <CodePage>0</CodePage>
                                   <ZeroTerminate>1</ZeroTerminate>
                                   <Address>+13C</Address>
                                 </CheatEntry>
