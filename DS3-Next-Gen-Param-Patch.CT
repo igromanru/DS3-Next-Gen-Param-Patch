@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheatTable CheatEngineTableVersion="26">
+<CheatTable CheatEngineTableVersion="24">
   <CheatEntries>
     <CheatEntry>
       <ID>249</ID>
@@ -608,8 +608,8 @@ function BaseParamClass:init(param, uuid, id, address)
   if(id ~= nil) then
     self.id = id
   end
-  if(self.param ~= "" and self.backupUuid ~= "") then
-    if(paramUtils.patchBackUp[self.backupUuid] == nil) then
+  if(self.param ~= "") then
+    if(paramUtils:isNotEmpty(self.backupUuid) and paramUtils:isEmpty(paramUtils.patchBackUp[self.backupUuid])) then
       paramUtils.patchBackUp[self.backupUuid] = {}
     end
 	if(address ~= nil and address &gt; 0) then
@@ -635,11 +635,15 @@ end
 
 --Patch all values
 function BaseParamClass:patchAll(offset, value, valueType, binaryOffset)
-	local addresses = paramUtils:getAllAddressFromParam(self.param)
-	for key,address in pairs(addresses) do
-		local patchInfo = PatchInfo:new(address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
-		paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
-	end
+  local addresses = paramUtils:getAllAddressFromParam(self.param)
+  for key,address in pairs(addresses) do
+    local patchInfo = PatchInfo:new(address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
+	if(paramUtils:isEmpty(self.backupUuid)) then
+	  paramUtils:patchValue(patchInfo)
+    else
+      paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
+    end
+  end
 end
 
 function BaseParamClass:patchAllBinary(offset, value, binaryOffset)
@@ -669,10 +673,10 @@ end
 -- Patch value
 function BaseParamClass:patchValue(offset, value, valueType, binaryOffset)
   local patchInfo = PatchInfo:new(self.address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
-  if(paramUtils:isNotEmpty(self.backupUuid)) then
-    paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
-  else
+  if(paramUtils:isEmpty(self.backupUuid)) then
     paramUtils:patchValue(patchInfo)
+  else
+    paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
   end
 end
 
@@ -4723,6 +4727,34 @@ end
           <CheatEntries>
             <CheatEntry>
               <ID>1337011531</ID>
+              <Description>"Find address by ID in a param"</Description>
+              <LastState/>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>{
+  Author: Igromanru
+  Description: Searches for an address by ID in an param
+}
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+local id =  --enter ID
+local paramName = "" -- enter Param Name here
+--------------------------------------------------------
+local address = paramUtils:getIdAddressInParam(paramName, id)
+if(address ~= nil and address &gt; 0) then
+  print("Your address is "..address.." (0x"..paramUtils:toHex(address)..")")
+else
+  print("The address for ID "..id.." (0x"..paramUtils:toHex(id)..") couldn't be found in param "..paramName)
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337011559</ID>
               <Description>"Find ID by address in special param"</Description>
               <LastState/>
               <VariableType>Auto Assembler Script</VariableType>
@@ -5557,7 +5589,6 @@ assert(false)
                                   <VariableType>String</VariableType>
                                   <Length>0</Length>
                                   <Unicode>0</Unicode>
-                                  <CodePage>0</CodePage>
                                   <ZeroTerminate>1</ZeroTerminate>
                                   <Address>+13C</Address>
                                 </CheatEntry>
