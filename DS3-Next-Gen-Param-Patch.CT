@@ -668,8 +668,12 @@ end
 
 -- Patch value
 function BaseParamClass:patchValue(offset, value, valueType, binaryOffset)
-	local patchInfo = PatchInfo:new(self.address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
-	paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
+  local patchInfo = PatchInfo:new(self.address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
+  if(paramUtils:isNotEmpty(self.backupUuid)) then
+    paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
+  else
+    paramUtils:patchValue(patchInfo)
+  end
 end
 
 function BaseParamClass:patchBinary(offset, value, binaryOffset)
