@@ -3921,7 +3921,7 @@ if syntaxcheck then return end
             </CheatEntry>
             <CheatEntry>
               <ID>1337011557</ID>
-              <Description>"AttackParam_PC"</Description>
+              <Description>"AtkParam_Pc"</Description>
               <Options moHideChildren="1"/>
               <LastState/>
               <Color>008000</Color>
@@ -3930,270 +3930,295 @@ if syntaxcheck then return end
 {$lua}
 if syntaxcheck then return end
 
---[[START AttackParam_PC class]]--
-AttackParam_PC = BaseParamClass:new()
+--[[START AtkParam_Pc class]]--
+AtkParam_Pc = BaseParamClass:new()
 
-function AttackParam_PC:new(uuid, id, address)
+function AtkParam_Pc:new(uuid, id, address)
 	local o = {}
 	self.__index = self
 	setmetatable(o, self)
 
-	o:init("AttackParam_PC", uuid, id, address)
+	o:init("AtkParam_Pc", uuid, id, address)
 	return o
 end
 
-function AttackParam_PC:Hit0_Radius(value)
+function AtkParam_Pc:Hit0_Radius(value)
 	self:patchFloat(0x0, value)
 end
 
-function AttackParam_PC:Hit1_Radius(value)
+function AtkParam_Pc:Hit1_Radius(value)
 	self:patchFloat(0x4, value)
 end
 
-function AttackParam_PC:Hit2_Radius(value)
+function AtkParam_Pc:Hit2_Radius(value)
 	self:patchFloat(0x8, value)
 end
 
-function AttackParam_PC:Hit3_Radius(value)
+function AtkParam_Pc:Hit3_Radius(value)
 	self:patchFloat(0xC, value)
 end
 
-function AttackParam_PC:KnockbackDist(value)
+function AtkParam_Pc:KnockbackDist(value)
 	self:patchFloat(0x10, value)
 end
 
-function AttackParam_PC:HitStopTime(value)
+function AtkParam_Pc:HitStopTime(value)
 	self:patchFloat(0x14, value)
 end
 
 --Special Effect IDs
-function AttackParam_PC:SpecialEffectId0(value)
+function AtkParam_Pc:SpecialEffectId0(value)
 	self:patch4Byte(0x18, value)
 end
 
-function AttackParam_PC:SpecialEffectId1(value)
+function AtkParam_Pc:SpecialEffectId1(value)
 	self:patch4Byte(0x1C, value)
 end
 
-function AttackParam_PC:SpecialEffectId2(value)
+function AtkParam_Pc:SpecialEffectId2(value)
 	self:patch4Byte(0x20, value)
 end
 
-function AttackParam_PC:SpecialEffectId3(value)
+function AtkParam_Pc:SpecialEffectId3(value)
 	self:patch4Byte(0x24, value)
 end
 
-function AttackParam_PC:SpecialEffectId4(value)
+function AtkParam_Pc:SpecialEffectId4(value)
 	self:patch4Byte(0x28, value)
 end
 
 --Hit DmyPoly
-function AttackParam_PC:Hit0_DmyPoly1(value)
+function AtkParam_Pc:Hit0_DmyPoly1(value)
 	self:patch2Byte(0x2C, value)
 end
 
-function AttackParam_PC:Hit1_DmyPoly1(value)
+function AtkParam_Pc:Hit1_DmyPoly1(value)
 	self:patch2Byte(0x2E, value)
 end
 
-function AttackParam_PC:Hit2_DmyPoly1(value)
+function AtkParam_Pc:Hit2_DmyPoly1(value)
 	self:patch2Byte(0x30, value)
 end
 
-function AttackParam_PC:Hit3_DmyPoly1(value)
+function AtkParam_Pc:Hit3_DmyPoly1(value)
 	self:patch2Byte(0x32, value)
 end
 
-function AttackParam_PC:Hit0_DmyPoly2(value)
+function AtkParam_Pc:Hit0_DmyPoly2(value)
 	self:patch2Byte(0x34, value)
 end
 
-function AttackParam_PC:Hit1_DmyPoly2(value)
+function AtkParam_Pc:Hit1_DmyPoly2(value)
 	self:patch2Byte(0x36, value)
 end
 
-function AttackParam_PC:Hit2_DmyPoly2(value)
+function AtkParam_Pc:Hit2_DmyPoly2(value)
 	self:patch2Byte(0x38, value)
 end
 
-function AttackParam_PC:Hit3_DmyPoly2(value)
+function AtkParam_Pc:Hit3_DmyPoly2(value)
 	self:patch2Byte(0x3A, value)
 end
 --
 
-function AttackParam_PC:BlowingCorrection(value)
+function AtkParam_Pc:BlowingCorrection(value)
 	self:patch2Byte(0x3C, value)
 end
 
 --Corrections
-function AttackParam_PC:AtkPhysCorrection(value)
+function AtkParam_Pc:AtkPhysCorrection(value)
 	self:patch2Byte(0x3E, value)
 end
 
-function AttackParam_PC:AtkMagCorrection(value)
+function AtkParam_Pc:AtkMagCorrection(value)
 	self:patch2Byte(0x40, value)
 end
 
-function AttackParam_PC:AtkFireCorrection(value)
+function AtkParam_Pc:AtkFireCorrection(value)
 	self:patch2Byte(0x42, value)
 end
 
-function AttackParam_PC:AtkThunCorrection(value)
+function AtkParam_Pc:AtkThunCorrection(value)
 	self:patch2Byte(0x44, value)
 end
 
-function AttackParam_PC:AtkStamCorrection(value)
+function AtkParam_Pc:AtkStamCorrection(value)
 	self:patch2Byte(0x46, value)
 end
 
-function AttackParam_PC:GuardAtkRateCorrection(value)
+function AtkParam_Pc:GuardAtkRateCorrection(value)
 	self:patch2Byte(0x48, value)
 end
 
-function AttackParam_PC:GuardBreakCorrection(value)
+function AtkParam_Pc:GuardBreakCorrection(value)
 	self:patch2Byte(0x4A, value)
 end
 
-function AttackParam_PC:AtkThrowEscapeCorrection(value)
+function AtkParam_Pc:AtkThrowEscapeCorrection(value)
 	self:patch2Byte(0x4C, value)
 end
 
-function AttackParam_PC:AtkSuperArmorCorrection(value)
+function AtkParam_Pc:AtkSuperArmorCorrection(value)
 	self:patch2Byte(0x4E, value)
 end
 --
 
 --Attack
-function AttackParam_PC:AtkPhys(value)
+function AtkParam_Pc:AtkPhys(value)
 	self:patch2Byte(0x50, value)
 end
 
-function AttackParam_PC:AtkMag(value)
+function AtkParam_Pc:AtkMag(value)
 	self:patch2Byte(0x52, value)
 end
 
-function AttackParam_PC:AtkFire(value)
+function AtkParam_Pc:AtkFire(value)
 	self:patch2Byte(0x54, value)
 end
 
-function AttackParam_PC:AtkThun(value)
+function AtkParam_Pc:AtkThun(value)
 	self:patch2Byte(0x56, value)
 end
 
-function AttackParam_PC:AtkStam(value)
+function AtkParam_Pc:AtkStam(value)
 	self:patch2Byte(0x58, value)
 end
 
-function AttackParam_PC:GuardAtkRate(value)
+function AtkParam_Pc:GuardAtkRate(value)
 	self:patch2Byte(0x5A, value)
 end
 
-function AttackParam_PC:GuardBreakRate(value)
+function AtkParam_Pc:GuardBreakRate(value)
 	self:patch2Byte(0x5C, value)
 end
 
-function AttackParam_PC:AtkSuperArmor(value)
+function AtkParam_Pc:AtkSuperArmor(value)
 	self:patch2Byte(0x5E, value)
 end
 
-function AttackParam_PC:AtkThrowEscape(value)
+function AtkParam_Pc:AtkThrowEscape(value)
 	self:patch2Byte(0x60, value)
 end
 
-function AttackParam_PC:AtkObj(value)
+function AtkParam_Pc:AtkObj(value)
 	self:patch2Byte(0x62, value)
 end
 --
 
-function AttackParam_PC:GuardStaminaCutRate(value)
+function AtkParam_Pc:GuardStaminaCutRate(value)
 	self:patch2Byte(0x64, value)
 end
 
-function AttackParam_PC:GuardRate(value)
+function AtkParam_Pc:GuardRate(value)
 	self:patch2Byte(0x66, value)
 end
 
-function AttackParam_PC:ThrowTypeId(value)
+function AtkParam_Pc:ThrowTypeId(value)
 	self:patch2Byte(0x68, value)
 end
 
 --Hit Type
-function AttackParam_PC:Hit0_hitType(value)
+function AtkParam_Pc:Hit0_hitType(value)
 	self:patchByte(0x6A, value)
 end
 
-function AttackParam_PC:Hit1_hitType(value)
+function AtkParam_Pc:Hit1_hitType(value)
 	self:patchByte(0x6B, value)
 end
 
-function AttackParam_PC:Hit2_hitType(value)
+function AtkParam_Pc:Hit2_hitType(value)
 	self:patchByte(0x6C, value)
 end
 
-function AttackParam_PC:Hit3_hitType(value)
+function AtkParam_Pc:Hit3_hitType(value)
 	self:patchByte(0x6D, value)
 end
 
 
 -- insert Unknown 1 6E-71
 
-function AttackParam_PC:DamageLevel(value)
+function AtkParam_Pc:DamageLevel(value)
 	self:patchByte(0x72, value)
 end
 
-function AttackParam_PC:MapHitType(value)
+function AtkParam_Pc:MapHitType(value)
 	self:patchByte(0x73, value)
 end
 
-function AttackParam_PC:GuardCutCancelRate(value)
+function AtkParam_Pc:GuardCutCancelRate(value)
 	self:patchByte(0x74, value)
 end
 
-function AttackParam_PC:AtkAttribute(value)
+function AtkParam_Pc:AtkAttribute(value)
 	self:patchByte(0x75, value)
 end
 
-function AttackParam_PC:SpecialAttributes(value)
+function AtkParam_Pc:SpecialAttributes(value)
 	self:patchByte(0x76, value)
 end
 
-function AttackParam_PC:AttackType(value)
+function AtkParam_Pc:AttackType(value)
 	self:patchByte(0x77, value)
 end
 
-function AttackParam_PC:AtkMaterial(value)
+function AtkParam_Pc:AtkMaterial(value)
 	self:patchByte(0x78, value)
 end
 
-function AttackParam_PC:AtkSize(value)
+function AtkParam_Pc:AtkSize(value)
 	self:patchByte(0x79, value)
 end
 
-function AttackParam_PC:DefMaterial(value)
+function AtkParam_Pc:DefMaterial(value)
 	self:patchByte(0x7A, value)
 end
 
-function AttackParam_PC:DefSfxMaterial(value)
+function AtkParam_Pc:DefSfxMaterial(value)
 	self:patchByte(0x7B, value)
 end
 
-function AttackParam_PC:HitSourceType(value)
+function AtkParam_Pc:HitSourceType(value)
 	self:patchByte(0x7C, value)
 end
 
-function AttackParam_PC:ThrowFlag(value)
+function AtkParam_Pc:ThrowFlag(value)
 	self:patchByte(0x7D, value)
 end
 
 -- insert Unknown 2 7E-1A4 here
 
---[[END AttackParam_PC class]]--
+--[[END AtkParam_Pc class]]--
 
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
-
 </AssemblerScript>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1337021579</ID>
+                  <Description>"Sets damage of sacred flame"</Description>
+                  <LastState/>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>//Sacred flame tutorial script
+[ENABLE]
+{$lua}
+if syntaxcheck then return end
+local ID = 4100501
+local Atk = AtkParam_Pc:new("SacredFlameDmgUUID", ID)
+Atk:SpecialEffectId0(33)
+Atk:AtkPhys(200)
+Atk:AtkMag(200)
+Atk:AtkThun(200)
+Atk:AtkFire(200)
+Atk:AtkStam(200)
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+paramUtils:restore("SacredFlameDmgUUID")
+</AssemblerScript>
+                </CheatEntry>
+              </CheatEntries>
             </CheatEntry>
             <CheatEntry>
               <ID>1337011558</ID>
@@ -4314,6 +4339,51 @@ end
 {$lua}
 if syntaxcheck then return end
 
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337011560</ID>
+              <Description>"SwordArtsParam"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <Color>008000</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START SwordArtsParam class]]--
+SwordArtsParam = BaseParamClass:new()
+
+function SwordArtsParam:new(uuid, id, address)
+    local o = {}
+    self.__index = self
+    setmetatable(o, self)
+
+    o:init("SwordArtsParam", uuid, id, address)
+    return o
+end
+
+function SwordArtsParam:WeaponArtId(value)
+    self:patchByte(0x0,value)
+end
+
+function SwordArtsParam:FPcost(value)
+    self:patch2Byte(0xE,value)
+end
+
+function SwordArtsParam:R1FP(value)
+    self:patch2Byte(0x10,value)
+end
+
+function SwordArtsParam:R2FP(value)
+    self:patch2Byte(0x12,value)
+end
+--[[END SwordArtsParam class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
 </AssemblerScript>
             </CheatEntry>
             <CheatEntry>
