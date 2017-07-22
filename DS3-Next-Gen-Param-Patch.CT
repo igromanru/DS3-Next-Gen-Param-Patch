@@ -4387,6 +4387,107 @@ if syntaxcheck then return end
 </AssemblerScript>
             </CheatEntry>
             <CheatEntry>
+              <ID>1337021580</ID>
+              <Description>"EquipParamAccessory"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <Color>008000</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START EquipParamAccessory class]]--
+EquipParamAccessory = BaseParamClass:new()
+
+function EquipParamAccessory:new(uuid, id, address)
+    local o = {}
+    self.__index = self
+    setmetatable(o, self)
+
+    o:init("EquipParamAccessory", uuid, id, address)
+    return o
+end
+
+function EquipParamAccessory:refId(value)
+    self:patch4Byte(0x0, value)
+end
+
+function EquipParamAccessory:sfxVariation(value)
+    self:patch4Byte(0x4, value)
+end
+
+function EquipParamAccessory:weight(value)
+    self:patchFloat(0x8, value)
+end
+
+function EquipParamAccessory:behaviorId(value)
+    self:patch4Byte(0xC, value)
+end
+
+function EquipParamAccessory:basicPrice(value)
+    self:patch4Byte(0x10, value)
+end
+
+function EquipParamAccessory:sellValue(value)
+    self:patch4Byte(0x14, value)
+end
+
+function EquipParamAccessory:sortId(value)
+    self:patch4Byte(0x18, value)
+end
+
+function EquipParamAccessory:qwcId(value)
+    self:patch4Byte(0x1C, value)
+end
+
+function EquipParamAccessory:equipModelId(value)
+    self:patch2Byte(0x20, value)
+end
+
+function EquipParamAccessory:iconId(value)
+    self:patch2Byte(0x22, value)
+end
+
+function EquipParamAccessory:shopLv(value)
+    self:patch2Byte(0x24, value)
+end
+
+function EquipParamAccessory:trophySGradeId(value)
+    self:patch2Byte(0x26, value)
+end
+
+function EquipParamAccessory:trophySeqId(value)
+    self:patch2Byte(0x28, value)
+end
+
+function EquipParamAccessory:equipModelCategory(value)
+    self:patchByte(0x2A, value)
+end
+
+function EquipParamAccessory:equipModelGender(value)
+    self:patchByte(0x2B, value)
+end
+
+function EquipParamAccessory:accessoryCategory(value)
+    self:patchByte(0x2C, value)
+end
+
+function EquipParamAccessory:refCategory(value)
+    self:patchByte(0x2D, value)
+end
+
+function EquipParamAccessory:spEffectCategory(value)
+    self:patchByte(0x2E, value)
+end
+--[[END EquipParamAccessory class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
               <ID>1337011533</ID>
               <Description>"Scripts"</Description>
               <LastState Value="" RealAddress="00000000"/>
