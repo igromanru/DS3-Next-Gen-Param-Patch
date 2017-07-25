@@ -4488,6 +4488,139 @@ if syntaxcheck then return end
 </AssemblerScript>
             </CheatEntry>
             <CheatEntry>
+              <ID>1337021581</ID>
+              <Description>"SpEffectVfxParam"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <Color>008000</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START SpEffectVfxParam class]]--
+SpEffectVfxParam = BaseParamClass:new()
+
+function SpEffectVfxParam:new(uuid, id, address)
+	local o = {}
+	self.__index = self
+	setmetatable(o, self)
+
+	o:init("SpEffectVfxParam", uuid, id, address)
+	return o
+end
+
+function SpEffectVfxParam:midstSfxID(value)
+    self:patch4Byte(0x0, value)
+end
+
+function SpEffectVfxParam:midstSeID(value)
+    self:patch4Byte(0x4, value)
+end
+
+function SpEffectVfxParam:initSfxID(value)
+    self:patch4Byte(0x8, value)
+end
+
+function SpEffectVfxParam:InitSeID(value)
+    self:patch4Byte(0xC, value)
+end
+
+function SpEffectVfxParam:FinishSfxID(value)
+    self:patch4Byte(0x10, value)
+end
+
+function SpEffectVfxParam:FinishSeID(value)
+    self:patch4Byte(0x14, value)
+end
+
+function SpEffectVfxParam:camouflageBeginDist(value)
+    self:patchFloat(0x18, value)
+end
+
+function SpEffectVfxParam:camouflageEndDist(value)
+    self:patchFloat(0x1C, value)
+end
+
+function SpEffectVfxParam:transformProtectorID(value)
+    self:patch4Byte(0x20, value)
+end
+
+function SpEffectVfxParam:midstDmyID(value)
+    self:patch2Byte(0x24, value)
+end
+
+function SpEffectVfxParam:initDmyID(value)
+    self:patch2Byte(0x26, value)
+end
+
+function SpEffectVfxParam:FinishDmyID(value)
+    self:patch2Byte(0x28, value)
+end
+
+function SpEffectVfxParam:EffectType(value)
+    self:patchByte(0x2A, value)
+end
+
+function SpEffectVfxParam:SoulParamIDForWepEnchant(value)
+    self:patchByte(0x2B, value)
+end
+
+function SpEffectVfxParam:PlayCategory(value)
+    self:patchByte(0x2C, value)
+end
+
+function SpEffectVfxParam:PlayPriority(value)
+    self:patchByte(0x2D, value)
+end
+
+function SpEffectVfxParam:ExistEffectForLarge(value)
+    self:patchBinary(0x2E, value , 0)
+end
+
+function SpEffectVfxParam:ExistEffectForSoul(value)
+    self:patchBinary(0x2E, value , 1)
+end
+
+function SpEffectVfxParam:EffectInvisibleAtCamouflage(value)
+    self:patchBinary(0x2E, value , 2)
+end
+
+function SpEffectVfxParam:useCamouflage(value)
+    self:patchBinary(0x2E, value , 3)
+end
+
+function SpEffectVfxParam:InvisibleAtFriendCamouflage(value)
+    self:patchBinary(0x2E, value , 4)
+end
+
+function SpEffectVfxParam:addMapAreaBlock(value)
+    self:patchBinary(0x2E, value , 5)
+end
+
+function SpEffectVfxParam:halfCamouflage(value)
+    self:patchBinary(0x2E, value , 6)
+end
+
+function SpEffectVfxParam:isFullBodyTransformProtectorID(value)
+    self:patchBinary(0x2E, value , 7)
+end
+
+function SpEffectVfxParam:IsInvisibleWeapon(value)
+    self:patchBinary(0x2F, value , 0)
+end
+
+function SpEffectVfxParam:IsSilence(value)
+    self:patchBinary(0x2F, value , 1)
+end
+--[[END SpEffectVfxParam class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
               <ID>1337011533</ID>
               <Description>"Scripts"</Description>
               <LastState Value="" RealAddress="00000000"/>
