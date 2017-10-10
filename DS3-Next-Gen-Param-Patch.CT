@@ -608,8 +608,8 @@ function BaseParamClass:init(param, uuid, id, address)
   if(id ~= nil) then
     self.id = id
   end
-  if(self.param ~= "") then
-    if(paramUtils:isNotEmpty(self.backupUuid) and paramUtils:isEmpty(paramUtils.patchBackUp[self.backupUuid])) then
+  if(self.param ~= "" and self.backupUuid ~= "") then
+    if(paramUtils.patchBackUp[self.backupUuid] == nil) then
       paramUtils.patchBackUp[self.backupUuid] = {}
     end
 	if(address ~= nil and address &gt; 0) then
@@ -635,15 +635,11 @@ end
 
 --Patch all values
 function BaseParamClass:patchAll(offset, value, valueType, binaryOffset)
-  local addresses = paramUtils:getAllAddressFromParam(self.param)
-  for key,address in pairs(addresses) do
-    local patchInfo = PatchInfo:new(address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
-	if(paramUtils:isEmpty(self.backupUuid)) then
-	  paramUtils:patchValue(patchInfo)
-    else
-      paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
-    end
-  end
+	local addresses = paramUtils:getAllAddressFromParam(self.param)
+	for key,address in pairs(addresses) do
+		local patchInfo = PatchInfo:new(address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
+		paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
+	end
 end
 
 function BaseParamClass:patchAllBinary(offset, value, binaryOffset)
@@ -672,12 +668,8 @@ end
 
 -- Patch value
 function BaseParamClass:patchValue(offset, value, valueType, binaryOffset)
-  local patchInfo = PatchInfo:new(self.address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
-  if(paramUtils:isEmpty(self.backupUuid)) then
-    paramUtils:patchValue(patchInfo)
-  else
-    paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
-  end
+	local patchInfo = PatchInfo:new(self.address + offset, value, valueType, PatchInfo:getBinaryOffset(binaryOffset))
+	paramUtils:patchValueWithBackup(patchInfo, self.backupUuid)
 end
 
 function BaseParamClass:patchBinary(offset, value, binaryOffset)
@@ -1035,7 +1027,7 @@ function EquipParamWeapon:trophySeqId(value)
 	self:patch2Byte(0xDA, value)
 end
 
-function EquipParamWeapon:throwAtkRate(value)
+function EquipParamWeapon:throwAtkRate(value) --100 minimum
 	self:patch2Byte(0xDC, value)
 end
 
@@ -1087,11 +1079,9 @@ function EquipParamWeapon:spAtkcategory(value)
 	self:patchByte(0xEA, value)
 end
 
---[[
-function EquipParamWeapon:?(value)
+function EquipParamWeapon:AnimationList(value)
 	self:patchByte(0xEB, value)
 end
-]]--
 
 function EquipParamWeapon:wepmotionOneHandId(value)
 	self:patchByte(0xEC, value)
@@ -1322,6 +1312,9 @@ function EquipParamWeapon:scalingCategories(value)
 	self:patch4Byte(0x228, value)
 end
 -- insert Unknown 3 197-258 here
+function EquipParamWeapon:StackSize(value)
+    self:patchByte(0x231, value)
+end
 
 --[[END EquipParamWeapon class]]--
 
@@ -1845,6 +1838,9 @@ function EquipParamProtector:resistCurse(value)
 	self:patchByte(0xC6, value)
 end
 
+function EquipParamProtector:ArmorSlot(value)
+    self:patchByte(0xD2, value)
+end
 --Defense
 function EquipParamProtector:defensePhysical(value)
 	self:patchFloat(0xE0, value)
@@ -1984,7 +1980,7 @@ function EquipParamGoods:new(uuid, id, address)
 	return o
 end
 
-function EquipParamGoods:refId(value)
+function EquipParamGoods:refId1(value)
 	self:patch4Byte(0x0, value)
 end
 
@@ -2198,7 +2194,7 @@ function EquipParamGoods:isOnlyOne(value)
 	self:patchBinary(0x45, value, 2)
 end
 
-function EquipParamGoods:isDrop(value)
+function EquipParamGoods:isDiscard(value)
 	self:patchBinary(0x45, value, 3)
 end
 
@@ -2222,7 +2218,7 @@ function EquipParamGoods:isFullSuppleItem(value)
 	self:patchBinary(0x46, value, 0)
 end
 
-function EquipParamGoods:isEnhance(value)
+function EquipParamGoods:isEnhance1(value)
 	self:patchBinary(0x46, value, 1)
 end
 
@@ -2242,6 +2238,13 @@ function EquipParamGoods:disableUseAtOutOfColiseum(value)
 	self:patchBinary(0x46, value, 5)
 end
 
+function EquipParamGoods:refId2(value)
+    self:patch4Byte(0x48, value)
+end
+
+function EquipParamGoods:DamageScaling(value)
+    self:patch4Byte(0x4C, value)
+end
 
 function EquipParamGoods:vagrantItemLotId(value)
 	self:patch4Byte(0x50, value)
@@ -2253,6 +2256,46 @@ end
 
 function EquipParamGoods:vagrantItemEneDropItemLotId(value)
 	self:patch4Byte(0x58, value)
+end
+
+function EquipParamGoods:SfxId1(value)
+    self:patch4Byte(0x5C, value)
+end
+
+function EquipParamGoods:SfxId2(value)
+    self:patch4Byte(0x60, value)
+end
+
+function EquipParamGoods:SfxId3(value)
+    self:patch4Byte(0x64, value)
+end
+
+function EquipParamGoods:isUse(value)
+    self:patchBinary(0x68, value, 0)
+end
+
+function EquipParamGoods:isEnhance2(value)
+    self:patchBinary(0x68, value, 5)
+end
+
+function EquipParamGoods:BlockUse(value)
+    self:patchBinary(0x68, value, 7)
+end
+
+function EquipParamGoods:isDrop(value)
+    self:patchBinary(0x6B, value, 0)
+end
+
+function EquipParamGoods:StorageLimit(value)
+    self:patch2Byte(0x6C, value)
+end
+
+function EquipParamGoods:FPCost(value)
+    self:patch2Byte(0x74, value)
+end
+
+function EquipParamGoods:SpearFragment(value)
+    self:patchByte(0x76, value)
 end
 
 --[[END EquipParamGoods class]]--
@@ -2315,6 +2358,134 @@ end
                   </CheatEntries>
                 </CheatEntry>
               </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337021580</ID>
+              <Description>"EquipParamAccessory"</Description>
+              <Options moHideChildren="1"/>
+              <LastState/>
+              <Color>008000</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+
+EquipParamAccessory = BaseParamClass:new()
+
+function EquipParamAccessory:new(uuid, id, address)
+	local o = {}
+	self.__index = self
+	setmetatable(o, self)
+
+	o:init("EquipParamAccessory", uuid, id, address)
+	return o
+end
+
+function EquipParamAccessory:refId1(value)
+    self:patch4Byte(0x0, value)
+end
+
+function EquipParamAccessory:sfxVariation(value)
+    self:patch4Byte(0x4, value)
+end
+
+function EquipParamAccessory:weight(value)
+    self:patchFloat(0x8, value)
+end
+
+function EquipParamAccessory:behaviorId(value)
+    self:patch4Byte(0xC, value)
+end
+
+function EquipParamAccessory:basicPrice(value)
+    self:patch4Byte(0x10, value)
+end
+
+function EquipParamAccessory:sellValue(value)
+    self:patch4Byte(0x14, value)
+end
+
+function EquipParamAccessory:sortId(value)
+    self:patch4Byte(0x18, value)
+end
+
+function EquipParamAccessory:qwcId(value)
+    self:patch4Byte(0x1C, value)
+end
+
+function EquipParamAccessory:equipModelId(value)
+    self:patch2Byte(0x20, value)
+end
+
+function EquipParamAccessory:iconId(value)
+    self:patch2Byte(0x22, value)
+end
+
+function EquipParamAccessory:shopLv(value)
+    self:patch2Byte(0x24, value)
+end
+
+function EquipParamAccessory:trophySGradeId(value)
+    self:patch2Byte(0x26, value)
+end
+
+function EquipParamAccessory:trophySeqId(value)
+    self:patch2Byte(0x28, value)
+end
+
+function EquipParamAccessory:equipModelCategory(value)
+    self:patchByte(0x2A, value)
+end
+
+function EquipParamAccessory:equipModelGender(value)
+    self:patchByte(0x2B, value)
+end
+
+function EquipParamAccessory:accessoryCategory(value)
+    self:patchByte(0x2C, value)
+end
+
+function EquipParamAccessory:refCategory(value)
+    self:patchByte(0x2D, value)
+end
+
+function EquipParamAccessory:spEffectCategory(value)
+    self:patchByte(0x2E, value)
+end
+
+function EquipParamAccessory:isDiscard(value)
+    self:patchBinary(0x3C, value, 3)
+end
+
+function EquipParamAccessory:isDrop(value)
+    self:patchBinary(0x3C, value, 4)
+end
+
+function EquipParamAccessory:Covenant(value)
+    self:patchByte(0x46, value)
+end
+
+function EquipParamAccessory:refId2(value)
+    self:patch4Byte(0x48, value)
+end
+
+function EquipParamAccessory:refId3(value)
+    self:patch4Byte(0x4C, value)
+end
+
+function EquipParamAccessory:refId4(value)
+    self:patch4Byte(0x50, value)
+end
+
+function EquipParamAccessory:refId5(value)
+    self:patch4Byte(0x54, value)
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
             </CheatEntry>
             <CheatEntry>
               <ID>273</ID>
@@ -3695,7 +3866,7 @@ function Bullet:Material_Size(value)
 end
 
 function Bullet:launchConditionType(value)
-	self:patchByte(0x99, value)
+    self:patchByte(0x99, value)
 end
 
 --Falgs
@@ -3930,7 +4101,7 @@ if syntaxcheck then return end
 {$lua}
 if syntaxcheck then return end
 
---[[START AtkParam_Pc class]]--
+--[[START AttackParam_PC class]]--
 AtkParam_Pc = BaseParamClass:new()
 
 function AtkParam_Pc:new(uuid, id, address)
@@ -4185,13 +4356,42 @@ function AtkParam_Pc:ThrowFlag(value)
 	self:patchByte(0x7D, value)
 end
 
+function AtkParam_Pc:isEffectDisabled(value)
+	self:patchBinary(0x7E, value, 2)
+end
+
+function AtkParam_Pc:DoubleDamage(value) --Clientside
+	self:patchBinary(0x7D, value, 6)
+end
+
+function AtkParam_Pc:isHitboxEnabled(value)
+	self:patchBinary(0x81, value, 0)
+end
+
+function AtkParam_Pc:isHitBothTeams(value)
+	self:patchBinary(0x81, value, 1)
+end
+
+function AtkParam_Pc:isSelfHit(value)
+	self:patchBinary(0x81, value, 2)
+end
+
+function AtkParam_Pc:CameraActOnHit(value) --clientside
+	self:patch4Byte(0x98, value)
+end
+
+function AtkParam_Pc:ThrowCameraAct(value) --clientside
+	self:patch4Byte(0x9C, value)
+end
+
 -- insert Unknown 2 7E-1A4 here
 
---[[END AtkParam_Pc class]]--
+--[[END AttackParam_PC class]]--
 
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
+
 </AssemblerScript>
               <CheatEntries>
                 <CheatEntry>
@@ -4356,12 +4556,12 @@ if syntaxcheck then return end
 SwordArtsParam = BaseParamClass:new()
 
 function SwordArtsParam:new(uuid, id, address)
-    local o = {}
-    self.__index = self
-    setmetatable(o, self)
+	local o = {}
+	self.__index = self
+	setmetatable(o, self)
 
-    o:init("SwordArtsParam", uuid, id, address)
-    return o
+	o:init("SwordArtsParam", uuid, id, address)
+	return o
 end
 
 function SwordArtsParam:WeaponArtId(value)
@@ -4379,112 +4579,11 @@ end
 function SwordArtsParam:R2FP(value)
     self:patch2Byte(0x12,value)
 end
---[[END SwordArtsParam class]]--
 
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
-</AssemblerScript>
-            </CheatEntry>
-            <CheatEntry>
-              <ID>1337021580</ID>
-              <Description>"EquipParamAccessory"</Description>
-              <Options moHideChildren="1"/>
-              <LastState/>
-              <Color>008000</Color>
-              <VariableType>Auto Assembler Script</VariableType>
-              <AssemblerScript>[ENABLE]
-{$lua}
-if syntaxcheck then return end
 
---[[START EquipParamAccessory class]]--
-EquipParamAccessory = BaseParamClass:new()
-
-function EquipParamAccessory:new(uuid, id, address)
-    local o = {}
-    self.__index = self
-    setmetatable(o, self)
-
-    o:init("EquipParamAccessory", uuid, id, address)
-    return o
-end
-
-function EquipParamAccessory:refId(value)
-    self:patch4Byte(0x0, value)
-end
-
-function EquipParamAccessory:sfxVariation(value)
-    self:patch4Byte(0x4, value)
-end
-
-function EquipParamAccessory:weight(value)
-    self:patchFloat(0x8, value)
-end
-
-function EquipParamAccessory:behaviorId(value)
-    self:patch4Byte(0xC, value)
-end
-
-function EquipParamAccessory:basicPrice(value)
-    self:patch4Byte(0x10, value)
-end
-
-function EquipParamAccessory:sellValue(value)
-    self:patch4Byte(0x14, value)
-end
-
-function EquipParamAccessory:sortId(value)
-    self:patch4Byte(0x18, value)
-end
-
-function EquipParamAccessory:qwcId(value)
-    self:patch4Byte(0x1C, value)
-end
-
-function EquipParamAccessory:equipModelId(value)
-    self:patch2Byte(0x20, value)
-end
-
-function EquipParamAccessory:iconId(value)
-    self:patch2Byte(0x22, value)
-end
-
-function EquipParamAccessory:shopLv(value)
-    self:patch2Byte(0x24, value)
-end
-
-function EquipParamAccessory:trophySGradeId(value)
-    self:patch2Byte(0x26, value)
-end
-
-function EquipParamAccessory:trophySeqId(value)
-    self:patch2Byte(0x28, value)
-end
-
-function EquipParamAccessory:equipModelCategory(value)
-    self:patchByte(0x2A, value)
-end
-
-function EquipParamAccessory:equipModelGender(value)
-    self:patchByte(0x2B, value)
-end
-
-function EquipParamAccessory:accessoryCategory(value)
-    self:patchByte(0x2C, value)
-end
-
-function EquipParamAccessory:refCategory(value)
-    self:patchByte(0x2D, value)
-end
-
-function EquipParamAccessory:spEffectCategory(value)
-    self:patchByte(0x2E, value)
-end
---[[END EquipParamAccessory class]]--
-
-[DISABLE]
-{$lua}
-if syntaxcheck then return end
 </AssemblerScript>
             </CheatEntry>
             <CheatEntry>
@@ -4613,7 +4712,263 @@ end
 function SpEffectVfxParam:IsSilence(value)
     self:patchBinary(0x2F, value , 1)
 end
---[[END SpEffectVfxParam class]]--
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337033283</ID>
+              <Description>"ItemLotParam"</Description>
+              <LastState/>
+              <Color>0080FF</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+ItemLotParam = BaseParamClass:new()
+
+function ItemLotParam:new(uuid, id, address)
+	local o = {}
+	self.__index = self
+	setmetatable(o, self)
+
+	o:init("ItemLotParam", uuid, id, address)
+	return o
+end
+
+function ShopLineupParam:ItemId(value)
+    self:patch4Byte(0x0,value)
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337033282</ID>
+              <Description>"ShopLineupParam"</Description>
+              <LastState/>
+              <Color>0080FF</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+ShopLineupParam = BaseParamClass:new()
+
+function ShopLineupParam:new(uuid, id, address)
+	local o = {}
+	self.__index = self
+	setmetatable(o, self)
+
+	o:init("ShopLineupParam", uuid, id, address)
+	return o
+end
+
+function ShopLineupParam:ItemId(value)
+    self:patch4Byte(0x0,value)
+end
+
+function ShopLineupParam:Price(value)
+    self:patch2Byte(0x4,value)
+end
+
+function ShopLineupParam:ModelId(value)
+    self:patch2Byte(0x10,value)
+end
+
+function ShopLineupParam:Amount(value)
+    self:patch2Byte(0x14,value)
+end
+
+function ShopLineupParam:Category(value)
+    self:patchByte(0x17,value)
+end
+
+function ShopLineupParam:Durability(value)
+    self:patch2Byte(0x18,value)
+end
+
+function ShopLineupParam:CostMultiplier(value)
+    self:patchFloat(0x20,value)
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337033281</ID>
+              <Description>"HitSfxClass"</Description>
+              <LastState/>
+              <Color>4080FF</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+HitEffectSfxParam = BaseParamClass:new()
+
+function HitEffectSfxParam:new(uuid, id, address)
+	local o = {}
+	self.__index = self
+	setmetatable(o, self)
+
+	o:init("HitEffectSfxParam", uuid, id, address)
+	return o
+end
+
+function HitEffectSfxParam:Sfx1(value)
+    self:patch4Byte(0x0, value)
+end
+
+function HitEffectSfxParam:Sfx2(value)
+    self:patch4Byte(0x4, value)
+end
+
+function HitEffectSfxParam:Sfx3(value)
+    self:patch4Byte(0x8, value)
+end
+
+function HitEffectSfxParam:Sfx4(value)
+    self:patch4Byte(0xC, value)
+end
+
+function HitEffectSfxParam:Sfx5(value)
+    self:patch4Byte(0x10, value)
+end
+
+function HitEffectSfxParam:Sfx6(value)
+    self:patch4Byte(0x14, value)
+end
+
+function HitEffectSfxParam:Sfx7(value)
+    self:patch4Byte(0x18, value)
+end
+
+function HitEffectSfxParam:Sfx8(value)
+    self:patch4Byte(0x1C, value)
+end
+
+function HitEffectSfxParam:Sfx9(value)
+    self:patch4Byte(0x20, value)
+end
+
+function HitEffectSfxParam:Sfx10(value)
+    self:patch4Byte(0x24, value)
+end
+
+function HitEffectSfxParam:Sfx11(value)
+    self:patch4Byte(0x28, value)
+end
+
+function HitEffectSfxParam:Sfx12(value)
+    self:patch4Byte(0x2C, value)
+end
+
+function HitEffectSfxParam:Sfx13(value)
+    self:patch4Byte(0x30, value)
+end
+
+function HitEffectSfxParam:Sfx14(value)
+    self:patch4Byte(0x34, value)
+end
+
+function HitEffectSfxParam:Sfx15(value)
+    self:patch4Byte(0x38, value)
+end
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337033280</ID>
+              <Description>"BonfireWarpParam"</Description>
+              <LastState/>
+              <Color>0080FF</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START BonfireWarpParam class]]--
+BonfireWarpParam = BaseParamClass:new()
+
+function BonfireWarpParam:new(uuid, id, address)
+	local o = {}
+	self.__index = self
+	setmetatable(o, self)
+
+	o:init("BonfireWarpParam", uuid, id, address)
+	return o
+end
+
+function BonfireWarpParam:LocationID(value)
+    self:patch4Byte(0x0, value)
+end
+
+function BonfireWarpParam:WarpID(value)
+    self:patch4Byte(0x4, value)
+end
+
+function BonfireWarpParam:NameID(value)
+    self:patch4Byte(0x8, value)
+end
+
+--+C
+
+function BonfireWarpParam:PictureID(value)
+    self:patch4Byte(0x10, value)
+end
+
+function BonfireWarpParam:SectionID(value)
+    self:patchByte(0x14, value)
+end
+
+--14
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1337033279</ID>
+              <Description>"ObjectParamClass"</Description>
+              <LastState/>
+              <Color>4080FF</Color>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+
+--[[START ObjectParam class]]--
+ObjectParam = BaseParamClass:new()
+
+function ObjectParam:new(uuid, id, address)
+	local o = {}
+	self.__index = self
+	setmetatable(o, self)
+
+	o:init("ObjectParam", uuid, id, address)
+	return o
+end
+
+function ObjectParam:HP(value)
+    self:patch2Byte(0x0, value)
+end
+
+function ObjectParam:IsBreakbyPlayerCollide(value)
+    self:patchBinary(0x9, value, 1)
+end
+
 
 [DISABLE]
 {$lua}
