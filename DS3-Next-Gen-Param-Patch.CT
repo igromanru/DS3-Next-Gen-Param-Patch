@@ -168,20 +168,20 @@ end
 
 function ParamUtils:paramIndexer()
 	local Param = getAddress("ParamPatch")
-	local Start = readQword(Param)
-	local End = readQword(Param+8)
+	local Start = readQword(Param + 0x8)
+	local End = readQword(Param + 0x10) - 0x8
 	local Count = (End-Start)/8
 	self.masterParamTable = {}
 
 	for i = 0, Count - 1 do
-	  local ParamOffset = readQword(Start+i*8)
-	  local ParamString = "Unknown"
-	  if readInteger(ParamOffset+0x20) &gt; 7 then
-		 ParamString = readString(readQword(ParamOffset+0x10),90,true)
-	  else
-		 ParamString = readString(ParamOffset+0x10,90,true)
-	  end
-	  self.masterParamTable[ParamString] = ParamOffset
+	  local ParamAddress = readQword(Start+i*8)
+	  local ParamString = ""
+      if(self:isNotEmpty(ParamAddress)) then
+        ParamString = readString(readQword(ParamAddress+0x18),150,true)
+      end
+      if(self:isNotEmpty(ParamString)) then
+	    self.masterParamTable[ParamString] = ParamAddress
+      end
 	end
 end
 
@@ -531,8 +531,9 @@ end
 
 function ParamUtils:printParams()
   if(self:isNotEmpty(self.masterParamTable)) then
-    for key,address in pairs(self.masterParamTable) do
-	  print("Param: "..key.." Address: "..self:toHex(address))
+    for param,address in pairs(self.masterParamTable) do
+      print("Param: "..param)
+      print("Address: "..self:toHex(address))
     end
   else
     self:logError("masterParamTable is empty")
@@ -553,7 +554,8 @@ end
 function ParamUtils:printParamAddress(param)
   local address = self:getParamAddress(param)
   if(self:isNotEmpty(address)) then
-    print("Param: "..param..", Address: "..self:toHex(address))
+    print("Param: "..param)
+    print("Address: "..self:toHex(address))
   else
 	print("Param: "..param.." couldn't be found.")
   end
