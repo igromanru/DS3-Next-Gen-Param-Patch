@@ -513,6 +513,8 @@ function ParamUtils:printAllBackups()
 	    print("Address: "..object.address.." Value: "..object.value.." Type: "..object.valueType)
 	  end
     end
+  else
+    print("Backups list is empty")
   end
 end
 
@@ -532,6 +534,8 @@ function ParamUtils:printParams()
     for key,address in pairs(self.masterParamTable) do
 	  print("Param: "..key.." Address: "..self:toHex(address))
     end
+  else
+    self:logError("masterParamTable is empty")
   end
 end
 
@@ -541,6 +545,8 @@ function ParamUtils:printParamsIds(param)
     for id,address in pairs(idTable) do
 	  print("ID: "..id.." (0x"..self:toHex(id)..") Address: "..self:toHex(address))
     end
+  else
+    print("masterParamTable is empty")
   end
 end
 
@@ -23522,6 +23528,6 @@ end
       <Address>08DB0000</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
-  <Comments>Copyright (C) 2017 Igromanru 
+  <Comments>Copyright (C) 2017-2022 Igromanru 
 </Comments>
 </CheatTable>
